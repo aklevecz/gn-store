@@ -1,0 +1,778 @@
+/* Good Neighbor Music - Complete Design System */
+
+/* ============================================
+   COLOR SYSTEM
+   ============================================ */
+:root {
+  /* Primary Colors */
+  --white-label: #f4f4f4;
+  --black-wax: #141412;
+  --light-purple: #e6dfff;
+  --aqua-blue: #59a0c4;
+  --neon-plum: #9e80ff;
+  --sage-green: #99caa9;
+  --yellow-sunburst: #fed141;
+  --orange: #fe6844;
+  --off-white: #fffbef;
+  --white: #ffffff;
+  --black-wax-grey: #1414121a;
+  
+  /* Vinyl Record Colors */
+  --cosmic-black: #1a1a1a;
+  --purple-haze: #8b5fbf;
+  --ocean-floor: #2c5f6f;
+  --sky-blue: #87ceeb;
+  --salsa-verde: #4a7c59;
+  --limoncello: #fff700;
+  --habanero: #ff6b35;
+  --red-alert: #ff4444;
+  --hibiscus: #ff69b4;
+  --lightning: #ffff00;
+  --glassy-ice: rgba(255, 255, 255, 0.8);
+}
+
+/* ============================================
+   TYPOGRAPHY SYSTEM
+   ============================================ */
+@font-face {
+  font-family: 'ITC Avant Garde Pro';
+  src: url('/fonts/ITCAVANTGARDEPRO-BOLD.OTF') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Doyle';
+  src: url('/fonts/Doyle-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: 'Doyle';
+  src: url('/fonts/Doyle-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: block;
+}
+
+/* Base font size for easy rem calculations */
+html { 
+  font-size: 10px;
+}
+
+body {
+  font-family: 'Doyle', sans-serif;
+  font-size: 1.6rem;
+  line-height: 1.5;
+  color: var(--black-wax);
+  background-color: var(--white-label);
+}
+
+/* Hero/Display Typography */
+.hero-title {
+  font-size: 6rem;
+  font-weight: 700;
+  line-height: 100%;
+  text-transform: uppercase;
+  text-align: center;
+  font-family: 'Doyle', sans-serif;
+}
+
+/* Tagline with Image Fill Effect */
+.tagline {
+  font-size: 8rem;
+  font-family: 'ITC Avant Garde Pro', sans-serif;
+  font-weight: 700;
+  background-image: url('/images/texture-bg.jpg');
+  background-position: 50%;
+  background-size: cover;
+  background-attachment: fixed;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Section Headings */
+.section-heading {
+  font-size: 4.4rem;
+  line-height: 130%;
+  font-family: 'Doyle', sans-serif;
+  font-weight: 700;
+  margin-bottom: 1.6rem;
+}
+
+/* Card Headings */
+.card-heading {
+  font-size: 3.8rem;
+  font-family: 'ITC Avant Garde Pro', sans-serif;
+  font-weight: 700;
+}
+
+/* Body Text */
+.body-text {
+  font-size: 2.4rem;
+  line-height: 130%;
+  font-family: 'Doyle', sans-serif;
+  color: var(--black-wax);
+}
+
+/* Product Names */
+.product-name {
+  font-size: clamp(1.6rem, 2.5vw, 3.2rem);
+  font-family: 'ITC Avant Garde Pro', sans-serif;
+  font-weight: 700;
+  line-height: 117%;
+}
+
+/* H2 Typography */
+h2 {
+  font-size: 3.6rem;
+  font-family: 'Doyle', sans-serif;
+  font-weight: 700;
+  line-height: 130%;
+  margin-bottom: 2rem;
+  color: var(--black-wax);
+}
+
+/* Product Description */
+.product-description {
+  font-size: 2rem;
+  line-height: 150%;
+  font-family: 'Doyle', sans-serif;
+  color: var(--black-wax);
+  margin: 2rem 0;
+}
+
+/* ============================================
+   BUTTON SYSTEM
+   ============================================ */
+.button {
+  background-color: var(--black-wax);
+  color: var(--white);
+  border-radius: 4.8rem;
+  padding: 1.6rem 3.4rem;
+  font-family: 'ITC Avant Garde Pro', sans-serif;
+  font-size: 1.6rem;
+  line-height: 100%;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 transparent;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.button:hover {
+  transform: scale(1.25);
+  box-shadow: 0 0 0 0 rgba(0,0,0,0.1);
+}
+
+/* Button text positioning fix */
+.button span {
+  display: inline-block;
+  transform: translateY(0.15rem);
+}
+
+/* Color Variants */
+.button--blue { background-color: var(--aqua-blue); }
+.button--purple { background-color: var(--neon-plum); }
+.button--green { background-color: var(--sage-green); }
+.button--pink { background-color: #ff8082; }
+.button--bright-pink { background-color: #ff80bf; }
+.button--orange { background-color: var(--orange); }
+.button--yellow { 
+  background-color: var(--yellow-sunburst);
+  color: var(--black-wax);
+}
+
+/* Large CTA Buttons */
+.button--large {
+  width: 100%;
+  padding: 2.8rem;
+  font-size: 3.2rem;
+  margin-top: 3.2rem;
+}
+
+.button--large:hover {
+  transform: scale(1.05);
+}
+
+/* ============================================
+   CARD COMPONENT SYSTEM
+   ============================================ */
+.contact-card {
+  background-color: var(--light-purple);
+  border-radius: 4rem;
+  padding: 2rem;
+  box-shadow: 
+    0px 178px 50px 0px rgba(0, 0, 0, 0.00),
+    0px 114px 46px 0px rgba(0, 0, 0, 0.03),
+    0px 64px 38px 0px rgba(0, 0, 0, 0.10),
+    0px 28px 28px 0px rgba(0, 0, 0, 0.17),
+    0px 7px 16px 0px rgba(0, 0, 0, 0.20);
+}
+
+.contact-card__inner {
+  border: 6px solid var(--black-wax);
+  border-radius: 2rem;
+  padding: 2rem;
+  display: flex;
+  flex-wrap: wrap-reverse;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.contact-card__copy {
+  color: var(--black-wax);
+  font-family: 'ITC Avant Garde Pro', sans-serif;
+  font-size: 3.2rem;
+  line-height: 110%;
+  text-align: center;
+  flex: 2 1 0;
+  margin-bottom: 20px;
+}
+
+/* ============================================
+   PRODUCT GALLERY SYSTEM (Vinyl Grid)
+   ============================================ */
+.vinyl-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4rem;
+  justify-content: center;
+  align-items: flex-start;
+  padding-bottom: 6rem;
+}
+
+.product-wrapper {
+  flex: 0 30%;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.product-image {
+  transition: all 0.2s ease;
+  filter: drop-shadow(0 0 0 transparent);
+  will-change: filter;
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  height: auto;
+}
+
+.product-wrapper:hover .product-image {
+  z-index: 1;
+  transform: scale(1.2);
+  transition: all 0.3s ease;
+  filter: 
+    drop-shadow(0px 37px 15px rgba(0, 0, 0, 0.1))
+    drop-shadow(0px 21px 13px rgba(0, 0, 0, 0.2));
+}
+
+.product-wrapper .product-name {
+  z-index: 2;
+  color: var(--black-wax);
+  width: 100%;
+  max-width: 90%;
+  margin: 10px auto 20px;
+  font-family: 'ITC Avant Garde Pro', sans-serif;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+  text-align: center;
+}
+
+.product-wrapper:hover .product-name {
+  opacity: 1;
+}
+
+/* ============================================
+   NAVIGATION SYSTEM
+   ============================================ */
+.nav-buttons {
+  z-index: 5;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  align-items: center;
+  max-width: calc(100% - 51vw);
+  position: fixed;
+  top: 15rem;
+  right: 14vw;
+  transform: translate(0, -50%);
+  transition: all 0.3s ease;
+}
+
+.nav-buttons.scrolled {
+  top: 6rem;
+  transform: translate(0);
+}
+
+/* ============================================
+   FORM SYSTEM
+   ============================================ */
+.input {
+  border: none;
+  border-bottom: 2px solid var(--black-wax);
+  background-color: transparent;
+  border-radius: 0;
+  margin-bottom: 3rem;
+  font-size: 2.4rem;
+  line-height: 150%;
+  padding: 1rem 0;
+  color: var(--black-wax);
+  width: 100%;
+}
+
+.input::placeholder {
+  color: rgba(20, 20, 18, 0.5);
+}
+
+.input:focus {
+  border-color: var(--black-wax);
+  outline: none;
+}
+
+.textarea {
+  border: 2px solid var(--black-wax);
+  background-color: transparent;
+  border-radius: 0.8rem;
+  min-height: 14rem;
+  font-size: 2rem;
+  line-height: 150%;
+  padding: 1rem;
+  resize: vertical;
+  width: 100%;
+}
+
+/* ============================================
+   BACKGROUND EFFECTS
+   ============================================ */
+.hero-background {
+  background-image: url('/images/hero-bg.jpg');
+  background-position: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  padding: 6rem;
+}
+
+.text-with-image-fill {
+  background-image: url('/images/texture-bg.jpg');
+  background-position: 50% 100%;
+  background-size: cover;
+  background-attachment: fixed;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ============================================
+   LAYOUT CONTAINERS
+   ============================================ */
+.central-container {
+  background-image: url('/images/main-bg.jpg');
+  background-position: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  padding: 0 6rem;
+}
+
+.central-wrapper {
+  background-color: var(--white-label);
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 0 4rem;
+}
+
+.central-wrapper--wide {
+  max-width: 2400px;
+  padding: 0;
+}
+
+/* ============================================
+   MOBILE RESPONSIVE STYLES
+   ============================================ */
+@media (max-width: 991px) {
+  .vinyl-grid { gap: 2rem; }
+  .product-wrapper { flex: 0 calc(33.333% - 1.5rem); }
+  .contact-card__copy { font-size: 2.4rem; }
+  
+  .nav-buttons {
+    z-index: 2;
+    width: auto;
+    max-width: 120px;
+    height: 4.8rem;
+    top: 10rem;
+    right: 3rem;
+    transform: translate(0);
+  }
+  
+  .nav-buttons.scrolled {
+    top: 4rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .hero-title { font-size: 3.2rem; }
+  .tagline { font-size: 3.6rem; }
+  .section-heading { font-size: 2.4rem; }
+  .body-text { font-size: 1.6rem; }
+  .card-heading { font-size: 2.8rem; }
+  h2 { font-size: 2.8rem; }
+  .product p { font-size: 1.6rem; }
+  
+  .button--large {
+    padding: 2.4rem;
+    font-size: 2.8rem;
+    margin-top: 2rem;
+  }
+  
+  .contact-card { padding: 1.2rem; }
+  .contact-card__inner { padding: 2rem; }
+  .contact-card__copy { flex-grow: 1; }
+  
+  .product-wrapper { flex: 0 calc(50% - 1rem); }
+  
+  .hero-background {
+    background-position: 50% 0;
+    background-size: contain;
+    background-attachment: scroll;
+    padding: 4rem 3rem;
+  }
+  
+  .central-container {
+    padding: 0;
+  }
+  
+  .central-wrapper {
+    border-top-left-radius: 6rem;
+    border-top-right-radius: 6rem;
+    margin: 0;
+    padding: 0 3rem;
+  }
+  
+  .central-wrapper--wide {
+    padding: 0;
+  }
+  
+  .input {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .textarea {
+    min-height: 12rem;
+    font-size: 1.6rem;
+  }
+}
+
+/* ============================================
+   OVERRIDE EXISTING STYLES
+   ============================================ */
+.header {
+  background: var(--white-label);
+  border-bottom: 2px solid var(--black-wax);
+  height: auto;
+  padding: 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.header a {
+  color: var(--black-wax);
+  text-decoration: none;
+  font-family: 'ITC Avant Garde Pro', sans-serif;
+  font-weight: 700;
+  font-size: 1.8rem;
+  transition: color 0.2s ease;
+}
+
+.header a:hover {
+  color: var(--neon-plum);
+}
+
+.footer {
+  background: var(--black-wax);
+  color: var(--white-label);
+  padding: 4rem 2rem;
+  margin-top: 8rem;
+}
+
+.footer a {
+  color: var(--white-label);
+  font-family: 'Doyle', sans-serif;
+  font-size: 1.6rem;
+  transition: color 0.2s ease;
+}
+
+.footer a:hover {
+  color: var(--yellow-sunburst);
+}
+
+/* Product Grid Override */
+.recommended-products-grid,
+.products-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4rem;
+  justify-content: center;
+  padding: 4rem 0;
+}
+
+.recommended-products-grid > *,
+.products-grid > * {
+  flex: 0 30%;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.recommended-products-grid img,
+.products-grid img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  transition: all 0.2s ease;
+  filter: drop-shadow(0 0 0 transparent);
+  will-change: filter;
+}
+
+.recommended-products-grid > *:hover img,
+.products-grid > *:hover img {
+  transform: scale(1.2);
+  filter: 
+    drop-shadow(0px 37px 15px rgba(0, 0, 0, 0.1))
+    drop-shadow(0px 21px 13px rgba(0, 0, 0, 0.2));
+}
+
+/* Featured Collection Override */
+.featured-collection {
+  background-color: var(--light-purple);
+  border-radius: 4rem;
+  padding: 4rem;
+  margin: 4rem 0;
+  text-align: center;
+}
+
+.featured-collection h1 {
+  font-family: 'ITC Avant Garde Pro', sans-serif;
+  font-size: 4.4rem;
+  color: var(--black-wax);
+  margin-top: 2rem;
+}
+
+.featured-collection img {
+  border-radius: 2rem;
+}
+
+/* Cart Aside Override */
+aside {
+  background: var(--off-white);
+  border-left: 4px solid var(--black-wax);
+}
+
+aside header {
+  border-bottom: 2px solid var(--black-wax);
+  background: var(--yellow-sunburst);
+}
+
+aside header h3 {
+  font-family: 'ITC Avant Garde Pro', sans-serif;
+  font-size: 2.4rem;
+  color: var(--black-wax);
+}
+
+/* Cart Buttons */
+.cart-line button,
+.cart-discount button,
+aside button[type="submit"],
+aside button {
+  background-color: var(--black-wax);
+  color: var(--white);
+  border: none;
+  border-radius: 2.4rem;
+  padding: 0.8rem 1.6rem;
+  font-family: 'ITC Avant Garde Pro', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cart-line button:hover,
+.cart-discount button:hover,
+aside button[type="submit"]:hover,
+aside button:hover {
+  background-color: var(--neon-plum);
+  transform: scale(1.05);
+}
+
+/* Cart checkout button */
+aside a[href*="checkout"],
+.cart-summary-aside a[href*="checkout"] {
+  background-color: var(--yellow-sunburst);
+  color: var(--black-wax);
+  border-radius: 4.8rem;
+  padding: 1.6rem 3.4rem;
+  font-family: 'ITC Avant Garde Pro', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+  transition: all 0.2s ease;
+  margin-top: 1rem;
+}
+
+aside a[href*="checkout"]:hover,
+.cart-summary-aside a[href*="checkout"]:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+/* Cart Inputs */
+.cart-line input[type="number"],
+.cart-discount input,
+aside input[type="text"],
+aside input[type="email"] {
+  border: none;
+  border-bottom: 2px solid var(--black-wax);
+  background-color: transparent;
+  font-size: 1.6rem;
+  padding: 0.5rem;
+  font-family: 'Doyle', sans-serif;
+  color: var(--black-wax);
+  width: 100%;
+}
+
+.cart-line input[type="number"]:focus,
+.cart-discount input:focus,
+aside input:focus {
+  outline: none;
+  border-bottom-color: var(--neon-plum);
+}
+
+/* Quantity selector specific */
+.cart-line-quantity input {
+  width: 60px;
+  text-align: center;
+  margin: 0 0.5rem;
+}
+
+/* Search Override */
+.predictive-search-form {
+  background: var(--white-label);
+  padding: 2rem;
+  border-bottom: 2px solid var(--black-wax);
+}
+
+.predictive-search-form input {
+  border: none;
+  border-bottom: 2px solid var(--black-wax);
+  background: transparent;
+  font-size: 2rem;
+  padding: 1rem 0;
+  width: 100%;
+  font-family: 'Doyle', sans-serif;
+}
+
+.predictive-search-form input:focus {
+  outline: none;
+  border-bottom-color: var(--neon-plum);
+}
+
+/* Search button in nav - match other nav links */
+.header-ctas button,
+.header button[type="button"] {
+  background-color: transparent;
+  color: var(--black-wax);
+  border: none;
+  padding: 0;
+  font-family: 'ITC Avant Garde Pro', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  text-decoration: none;
+}
+
+.header-ctas button:hover,
+.header button[type="button"]:hover {
+  color: var(--neon-plum);
+}
+
+/* Product Page Override */
+.product {
+  padding: 4rem 0;
+}
+
+.product h1 {
+  font-family: 'ITC Avant Garde Pro', sans-serif;
+  font-size: 4.4rem;
+  color: var(--black-wax);
+  margin-bottom: 2rem;
+}
+
+.product-image img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 2rem;
+}
+
+/* Product page description */
+.product p {
+  font-size: 2rem;
+  line-height: 150%;
+  font-family: 'Doyle', sans-serif;
+  color: var(--black-wax);
+  margin: 2rem 0;
+}
+
+.product button[type="submit"] {
+  background-color: var(--yellow-sunburst);
+  color: var(--black-wax);
+  border-radius: 4.8rem;
+  padding: 2rem 4rem;
+  font-family: 'ITC Avant Garde Pro', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.product button[type="submit"]:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.product-options-item {
+  border: 2px solid var(--black-wax);
+  border-radius: 2.4rem;
+  padding: 1rem 2rem;
+  background: transparent;
+  font-family: 'Doyle', sans-serif;
+  font-size: 1.6rem;
+  transition: all 0.2s ease;
+}
+
+.product-options-item:hover:not(:disabled) {
+  background: var(--light-purple);
+  transform: scale(1.1);
+}
+
+.product-options-item[aria-selected="true"] {
+  background: var(--neon-plum);
+  color: var(--white);
+}

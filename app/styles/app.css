@@ -276,6 +276,13 @@ button.reset:hover:not(:has(> *)) {
 
 .cart-line-quantity {
   display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cart-line-quantity-buttons {
+  display: flex;
+  align-items: center;
 }
 
 .cart-discount {

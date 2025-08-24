@@ -27,6 +27,8 @@ import cardsStyles from '~/styles/ui/cards.css?url';
 import headerStyles from '~/styles/layout/header.css?url';
 import footerStyles from '~/styles/layout/footer.css?url';
 import responsiveStyles from '~/styles/layout/responsive.css?url';
+import heroStyles from '~/styles/hero/hero.css?url';
+
 import {PageLayout} from './components/PageLayout';
 
 /**
@@ -179,6 +181,7 @@ export function Layout({children}) {
         <link rel="stylesheet" href={headerStyles}></link>
         <link rel="stylesheet" href={footerStyles}></link>
         <link rel="stylesheet" href={responsiveStyles}></link>
+        <link rel="stylesheet" href={heroStyles}></link>
         <Meta />
         <Links />
       </head>

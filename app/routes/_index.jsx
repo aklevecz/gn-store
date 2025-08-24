@@ -2,6 +2,7 @@ import {Await, useLoaderData, Link} from 'react-router';
 import {Suspense} from 'react';
 import {Image} from '@shopify/hydrogen';
 import {ProductItem} from '~/components/ProductItem';
+import { WelcomeHero } from '~/components/WelcomeHero';
 
 /**
  * @type {MetaFunction}
@@ -65,7 +66,7 @@ export default function Homepage() {
   return (
     <div className="home">
       {/* <FeaturedCollection collection={data.featuredCollection} /> */}
-      <img className="hero-logo" src="/images/header-stacked.png" alt="Good Neighbor Records" />
+      <WelcomeHero />
       <RecommendedProducts products={data.recommendedProducts} />
     </div>
   );
@@ -102,7 +103,7 @@ function FeaturedCollection({collection}) {
 function RecommendedProducts({products}) {
   return (
     <div className="recommended-products">
-      <h2>Recommended Products</h2>
+      <h2>Records & Merch</h2>
       <Suspense fallback={<div>Loading...</div>}>
         <Await resolve={products}>
           {(response) => (

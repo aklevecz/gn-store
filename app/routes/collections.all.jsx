@@ -62,18 +62,17 @@ export default function Collection() {
   const merch = [];
   
   products?.nodes?.forEach(product => {
-    const title = product.title.toLowerCase();
-    const handle = product.handle.toLowerCase();
-    const price = parseFloat(product.priceRange?.minVariantPrice?.amount || 0);
+    const categoryName = product.category?.name?.toLowerCase() || '';
     
-    // Check if it's a record - look for quotes, artist names, or typical record pricing
-    // Records typically have artist "album" format and are priced higher
-    if (title.includes('"') || 
-        handle.includes('vinyl') || 
-        handle.includes('record') ||
-        handle.includes('lp') ||
-        handle.includes('album') ||
-        price >= 50) {  // Most vinyl records are $50+
+    // Use the native Shopify category field as primary source
+    const isRecord = 
+      categoryName.includes('vinyl') ||
+      categoryName.includes('record') ||
+      categoryName.includes('music') ||
+      categoryName.includes('album') ||
+      categoryName.includes('sound recording');
+      
+    if (isRecord) {
       records.push(product);
     } else {
       merch.push(product);
@@ -82,12 +81,10 @@ export default function Collection() {
 
   return (
     <div className="collection">
-      <h1>All Products</h1>
-      
       {/* Records Section */}
       {records.length > 0 && (
         <div className="products-section products-section--records">
-          <h2>Vinyl Records</h2>
+          <h2>Records</h2>
           <div className="products-grid vinyl-grid">
             {records.map((product, index) => (
               <ProductItem
@@ -144,6 +141,12 @@ const COLLECTION_ITEM_FRAGMENT = `#graphql
     id
     handle
     title
+    productType
+    tags
+    category {
+      id
+      name
+    }
     featuredImage {
       id
       altText
@@ -157,6 +160,12 @@ const COLLECTION_ITEM_FRAGMENT = `#graphql
       }
       maxVariantPrice {
         ...MoneyCollectionItem
+      }
+    }
+    collections(first: 5) {
+      nodes {
+        title
+        handle
       }
     }
   }

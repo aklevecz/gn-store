@@ -66,3 +66,91 @@
   align-items: center;
   gap: 1rem;
 }
+
+/* Mobile Menu Popout Styling */
+aside[aria-modal] {
+  background: var(--off-white);
+  border-left: 4px solid var(--black-wax);
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.2);
+}
+
+aside header {
+  border-bottom: 3px solid var(--black-wax);
+  background: var(--yellow-sunburst);
+  padding: 2rem;
+  min-height: auto;
+  height: auto;
+}
+
+aside header h3 {
+  font-family: 'ITC Avant Garde Pro', sans-serif;
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--black-wax);
+  margin: 0;
+  letter-spacing: 0.1em;
+}
+
+aside header .close {
+  background: var(--black-wax);
+  color: var(--white);
+  border: none;
+  border-radius: 50%;
+  width: 4rem;
+  height: 4rem;
+  font-size: 2.4rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+aside header .close:hover {
+  background: var(--neon-plum);
+  transform: scale(1.1);
+}
+
+aside main {
+  margin: 0;
+  padding: 3rem 2rem;
+}
+
+.header-menu-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.header-menu-mobile .header-menu-item {
+  font-family: 'Doyle', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: var(--black-wax);
+  text-decoration: none;
+  padding: 1rem 0;
+  margin: 0;
+  border: none;
+  border-bottom: 1px solid transparent;
+  transition: all 0.3s ease;
+  position: relative;
+  text-align: left;
+  background: none;
+  cursor: pointer;
+  width: 100%;
+  display: block;
+  line-height: 1.8rem;
+  min-height: 3.8rem;
+  box-sizing: border-box;
+}
+
+.header-menu-mobile .header-menu-item:hover {
+  color: var(--neon-plum);
+  border-bottom-color: var(--neon-plum);
+}
+
+.header-menu-mobile .header-menu-item[aria-current="page"] {
+  color: var(--yellow-sunburst);
+  border-bottom-color: var(--yellow-sunburst);
+}

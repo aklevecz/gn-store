@@ -14,6 +14,10 @@ export async function loader({context}) {
           vendor
           productType
           tags
+          category {
+            id
+            name
+          }
           collections(first: 10) {
             nodes {
               title
@@ -118,6 +122,7 @@ export async function loader({context}) {
       type: p.productType,
       vendor: p.vendor,
       tags: p.tags,
+      category: p.category,
       collections: p.collections.nodes.map(c => c.title),
       variants: p.variants.nodes.map(v => v.title),
       price: `$${p.priceRange.minVariantPrice.amount}`

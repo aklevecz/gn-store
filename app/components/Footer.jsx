@@ -6,21 +6,30 @@ import {Await, NavLink} from 'react-router';
  */
 export function Footer({footer: footerPromise, header, publicStoreDomain}) {
   return (
-    <Suspense>
-      <Await resolve={footerPromise}>
-        {(footer) => (
-          <footer className="footer">
-            {footer?.menu && header.shop.primaryDomain?.url && (
-              <FooterMenu
-                menu={footer.menu}
-                primaryDomainUrl={header.shop.primaryDomain.url}
-                publicStoreDomain={publicStoreDomain}
-              />
-            )}
-          </footer>
-        )}
-      </Await>
-    </Suspense>
+    <footer className="footer">
+      <div className="footer-follow">
+        <h2 className="footer-follow__title">Follow Us</h2>
+        <div className="follow-icons">
+          <a href="https://www.instagram.com/goodneighboreco/" target="_blank" rel="noopener noreferrer" className="social-link instagram-link">
+            Instagram
+          </a>
+          <a href="https://www.tiktok.com/@goodneighborrecords" target="_blank" rel="noopener noreferrer" className="social-link tiktok-link">
+            TikTok
+          </a>
+          <a href="https://x.com/goodneighboreco" target="_blank" rel="noopener noreferrer" className="social-link twitter-link">
+            X
+          </a>
+        </div>
+      </div>
+      <div className="footer-right">
+        <div className="footer-links">
+          <NavLink to="/policies/privacy-policy" className="footer-link pp">Privacy Policy</NavLink>
+          <NavLink to="/policies/terms-of-service" className="footer-link pp">Terms of Service</NavLink>
+          <a href="#subscribe" className="footer-link">Subscribe for Updates</a>
+        </div>
+        <p className="footer-copyright">© 2025 Good Neighbor</p>
+      </div>
+    </footer>
   );
 }
 

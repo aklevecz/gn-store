@@ -120,3 +120,17 @@ aside input:focus {
 .cart-gift-card button {
   flex-shrink: 0;
 }
+
+.cart-quantity {
+  font-size: 1.2rem;
+  font-weight: 700;
+  background: var(--neon-plum);
+  position: absolute;
+  top: -8px;
+  color: var(--white-label);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  text-align: center;
+  right: -10px;
+}

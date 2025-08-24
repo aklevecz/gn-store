@@ -1,0 +1,56 @@
+.welcome-hero {
+    margin: 16px auto;
+    position: relative;
+    max-width: 500px;
+}
+
+#welcome-hero-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.welcome-hero img {
+    width: 70%;
+    margin: 0rem auto 4rem;
+    padding-top: 3rem;
+    display: block;
+}
+
+
+/* SVG Styles */
+
+.cls-1 {
+    fill: #231f20;
+    font-family: Doyle-Bold, Doyle;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+/* Text Animation */
+.text-anim {
+    animation: colorWave 4s ease-in-out infinite, scaleWave 4s ease-in-out infinite;
+    animation-delay: calc(var(--char-index) * 0.05s);
+}
+
+@keyframes colorWave {
+    0%, 100% {
+        fill: #FFD93D;
+    }
+    33% {
+        fill: #FF6B6B;
+    }
+    66% {
+        fill: #4ECDC4;
+    }
+}
+
+@keyframes scaleWave {
+    0%, 100% {
+        font-size: 11px;
+    }
+    50% {
+        font-size: 14px;
+    }
+}

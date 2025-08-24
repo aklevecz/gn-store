@@ -1,0 +1,24 @@
+/* Good Neighbor Music - Header Layout Styles */
+
+.header {
+  background: var(--white-label);
+  border-bottom: 2px solid var(--black-wax);
+  height: auto;
+  padding: 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.header a {
+  color: var(--black-wax);
+  text-decoration: none;
+  font-family: 'ITC Avant Garde Pro', sans-serif;
+  font-weight: 700;
+  font-size: 1.8rem;
+  transition: color 0.2s ease;
+}
+
+.header a:hover {
+  color: var(--neon-plum);
+}

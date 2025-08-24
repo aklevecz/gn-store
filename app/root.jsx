@@ -13,7 +13,19 @@ import favicon from '~/assets/favicon.svg';
 import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
 import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
-import goodneighborStyles from '~/styles/goodneighbor.css?url';
+
+// Good Neighbor Modular Styles
+import variablesStyles from '~/styles/foundation/variables.css?url';
+import baseStyles from '~/styles/foundation/base.css?url';
+import productStyles from '~/styles/shop/product.css?url';
+import cartStyles from '~/styles/shop/cart.css?url';
+import buttonsStyles from '~/styles/ui/buttons.css?url';
+import formsStyles from '~/styles/ui/forms.css?url';
+import navigationStyles from '~/styles/ui/navigation.css?url';
+import cardsStyles from '~/styles/ui/cards.css?url';
+import headerStyles from '~/styles/layout/header.css?url';
+import footerStyles from '~/styles/layout/footer.css?url';
+import responsiveStyles from '~/styles/layout/responsive.css?url';
 import {PageLayout} from './components/PageLayout';
 
 /**
@@ -154,7 +166,17 @@ export function Layout({children}) {
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <link rel="stylesheet" href={resetStyles}></link>
         <link rel="stylesheet" href={appStyles}></link>
-        <link rel="stylesheet" href={goodneighborStyles}></link>
+        <link rel="stylesheet" href={variablesStyles}></link>
+        <link rel="stylesheet" href={baseStyles}></link>
+        <link rel="stylesheet" href={productStyles}></link>
+        <link rel="stylesheet" href={cartStyles}></link>
+        <link rel="stylesheet" href={buttonsStyles}></link>
+        <link rel="stylesheet" href={formsStyles}></link>
+        <link rel="stylesheet" href={navigationStyles}></link>
+        <link rel="stylesheet" href={cardsStyles}></link>
+        <link rel="stylesheet" href={headerStyles}></link>
+        <link rel="stylesheet" href={footerStyles}></link>
+        <link rel="stylesheet" href={responsiveStyles}></link>
         <Meta />
         <Links />
       </head>

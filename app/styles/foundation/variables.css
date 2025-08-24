@@ -1,0 +1,29 @@
+/* Good Neighbor Music - CSS Custom Properties */
+
+:root {
+  /* Primary Colors */
+  --white-label: #f4f4f4;
+  --black-wax: #141412;
+  --light-purple: #e6dfff;
+  --aqua-blue: #59a0c4;
+  --neon-plum: #9e80ff;
+  --sage-green: #99caa9;
+  --yellow-sunburst: #fed141;
+  --orange: #fe6844;
+  --off-white: #fffbef;
+  --white: #ffffff;
+  --black-wax-grey: #1414121a;
+  
+  /* Vinyl Record Colors */
+  --cosmic-black: #1a1a1a;
+  --purple-haze: #8b5fbf;
+  --ocean-floor: #2c5f6f;
+  --sky-blue: #87ceeb;
+  --salsa-verde: #4a7c59;
+  --limoncello: #fff700;
+  --habanero: #ff6b35;
+  --red-alert: #ff4444;
+  --hibiscus: #ff69b4;
+  --lightning: #ffff00;
+  --glassy-ice: rgba(255, 255, 255, 0.8);
+}

@@ -1,0 +1,54 @@
+/* Good Neighbor Music - Card Component Styles */
+
+.contact-card {
+  background-color: var(--light-purple);
+  border-radius: 4rem;
+  padding: 2rem;
+  box-shadow: 
+    0px 178px 50px 0px rgba(0, 0, 0, 0.00),
+    0px 114px 46px 0px rgba(0, 0, 0, 0.03),
+    0px 64px 38px 0px rgba(0, 0, 0, 0.10),
+    0px 28px 28px 0px rgba(0, 0, 0, 0.17),
+    0px 7px 16px 0px rgba(0, 0, 0, 0.20);
+}
+
+.contact-card__inner {
+  border: 6px solid var(--black-wax);
+  border-radius: 2rem;
+  padding: 2rem;
+  display: flex;
+  flex-wrap: wrap-reverse;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.contact-card__copy {
+  color: var(--black-wax);
+  font-family: 'ITC Avant Garde Pro', sans-serif;
+  font-size: 3.2rem;
+  line-height: 110%;
+  text-align: center;
+  flex: 2 1 0;
+  margin-bottom: 20px;
+}
+
+/* Featured Collection Override */
+.featured-collection {
+  background-color: var(--light-purple);
+  border-radius: 4rem;
+  padding: 4rem;
+  margin: 4rem 0;
+  text-align: center;
+}
+
+.featured-collection h1 {
+  font-family: 'ITC Avant Garde Pro', sans-serif;
+  font-size: 4.4rem;
+  color: var(--black-wax);
+  margin-top: 2rem;
+}
+
+.featured-collection img {
+  border-radius: 2rem;
+}

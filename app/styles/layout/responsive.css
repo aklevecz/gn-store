@@ -1,0 +1,109 @@
+/* Good Neighbor Music - Responsive Design */
+
+/* Mobile container adjustments */
+@media (max-width: 991px) {
+  .vinyl-grid { gap: 2rem; }
+  .product-wrapper { flex: 0 calc(33.333% - 1.5rem); }
+  .contact-card__copy { font-size: 2.4rem; }
+  
+  /* Hide desktop-only elements on mobile */
+  .header-ctas-desktop {
+    display: none;
+  }
+  
+  .nav-buttons {
+    z-index: 2;
+    width: auto;
+    max-width: 120px;
+    height: 4.8rem;
+    top: 10rem;
+    right: 3rem;
+    transform: translate(0);
+  }
+  
+  .nav-buttons.scrolled {
+    top: 4rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .hero-title { font-size: 3.2rem; }
+  .tagline { font-size: 3.6rem; }
+  .section-heading { font-size: 2.4rem; }
+  .body-text { font-size: 1.6rem; }
+  .card-heading { font-size: 2.8rem; }
+  h2 { font-size: 2.8rem; }
+  
+  .product h1 { 
+    font-size: 2.8rem; 
+    margin-bottom: 1rem;
+  }
+  
+  .product-price { 
+    font-size: 2rem; 
+  }
+  
+  .product p strong { 
+    font-size: 2.4rem; 
+  }
+  
+  .product .product-main div[dangerouslySetInnerHTML] { 
+    font-size: 1.8rem !important; 
+  }
+  
+  .product .product-main div[dangerouslySetInnerHTML] p { 
+    font-size: 1.8rem !important; 
+  }
+  
+  .product .product-main p { 
+    font-size: 1.8rem !important; 
+  }
+  
+  .product .product-main div:last-child { 
+    font-size: 1.8rem !important; 
+  }
+  
+  .button--large {
+    padding: 2.4rem;
+    font-size: 2.8rem;
+    margin-top: 2rem;
+  }
+  
+  .contact-card { padding: 1.2rem; }
+  .contact-card__inner { padding: 2rem; }
+  .contact-card__copy { flex-grow: 1; }
+  
+  .product-wrapper { flex: 0 calc(50% - 1rem); }
+  
+  .hero-background {
+    background-position: 50% 0;
+    background-size: contain;
+    background-attachment: scroll;
+    padding: 4rem 3rem;
+  }
+  
+  .central-container {
+    padding: 0;
+  }
+  
+  .central-wrapper {
+    border-top-left-radius: 6rem;
+    border-top-right-radius: 6rem;
+    margin: 0;
+    padding: 0 3rem;
+  }
+  
+  .central-wrapper--wide {
+    padding: 0;
+  }
+  
+  .input {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .textarea {
+    min-height: 12rem;
+    font-size: 1.6rem;
+  }
+}

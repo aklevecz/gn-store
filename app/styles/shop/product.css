@@ -1,0 +1,217 @@
+/* Good Neighbor Music - Product Page Styles */
+
+/* Product Grid (Vinyl Records) */
+.vinyl-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4rem;
+  justify-content: center;
+  align-items: flex-start;
+  padding-bottom: 6rem;
+}
+
+.product-wrapper {
+  flex: 0 30%;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.product-image {
+  transition: all 0.2s ease;
+  filter: drop-shadow(0 0 0 transparent);
+  will-change: filter;
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  height: auto;
+}
+
+.product-wrapper:hover .product-image {
+  z-index: 1;
+  transform: scale(1.2);
+  transition: all 0.3s ease;
+  filter: 
+    drop-shadow(0px 37px 15px rgba(0, 0, 0, 0.1))
+    drop-shadow(0px 21px 13px rgba(0, 0, 0, 0.2));
+}
+
+.product-wrapper .product-name {
+  z-index: 2;
+  color: var(--black-wax);
+  width: 100%;
+  max-width: 90%;
+  margin: 10px auto 20px;
+  font-family: 'ITC Avant Garde Pro', sans-serif;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+  text-align: center;
+}
+
+.product-wrapper:hover .product-name {
+  opacity: 1;
+}
+
+/* Product Grid Override */
+.recommended-products-grid,
+.products-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4rem;
+  justify-content: center;
+  padding: 4rem 0;
+}
+
+.recommended-products-grid > *,
+.products-grid > * {
+  flex: 0 30%;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.recommended-products-grid img,
+.products-grid img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  /* border-radius: 50%; */
+  transition: all 0.2s ease;
+  filter: drop-shadow(0 0 0 transparent);
+  will-change: filter;
+}
+
+.recommended-products-grid > *:hover img,
+.products-grid > *:hover img {
+  transform: scale(1.2);
+  filter: 
+    drop-shadow(0px 37px 15px rgba(0, 0, 0, 0.1))
+    drop-shadow(0px 21px 13px rgba(0, 0, 0, 0.2));
+}
+
+/* Individual Product Page */
+.product {
+  padding: 4rem 0;
+}
+
+.product h1 {
+  font-family: 'ITC Avant Garde Pro', sans-serif;
+  font-size: 3.6rem;
+  color: var(--black-wax);
+  margin-bottom: 1rem;
+  line-height: 120%;
+}
+
+.product-image img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 2rem;
+}
+
+/* Product page price */
+.product-price {
+  font-size: 2.4rem;
+  font-family: 'Doyle', sans-serif;
+  font-weight: 700;
+  color: var(--black-wax);
+  margin-bottom: 2rem;
+}
+
+/* Product description section */
+.product p strong {
+  font-family: 'ITC Avant Garde Pro', sans-serif;
+  font-size: 2.8rem;
+  color: var(--black-wax);
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+  display: block;
+}
+
+/* Product description text - targeting the reset.css p selector */
+.product .product-main div[dangerouslySetInnerHTML] {
+  font-size: 2rem !important;
+  line-height: 150% !important;
+  font-family: 'Doyle', sans-serif !important;
+  color: var(--black-wax) !important;
+  margin-top: 0.8rem;
+}
+
+.product .product-main div[dangerouslySetInnerHTML] p {
+  margin: 0 0 1.6rem 0 !important;
+  font-size: 2rem !important;
+  line-height: 150% !important;
+  font-family: 'Doyle', sans-serif !important;
+  color: var(--black-wax) !important;
+}
+
+.product .product-main div[dangerouslySetInnerHTML] * {
+  font-size: 2rem !important;
+  line-height: 150% !important;
+  font-family: 'Doyle', sans-serif !important;
+  color: var(--black-wax) !important;
+}
+
+/* Override the reset.css p styles specifically for product descriptions */
+.product .product-main p {
+  font-size: 2rem !important;
+  line-height: 150% !important;
+  font-family: 'Doyle', sans-serif !important;
+}
+
+/* Fallback for any text content in product description */
+.product .product-main div:last-child {
+  font-size: 2rem !important;
+  line-height: 150% !important;
+  font-family: 'Doyle', sans-serif !important;
+  color: var(--black-wax) !important;
+}
+
+/* Fix spacing between elements */
+.product-main > * + * {
+  margin-top: 2rem;
+}
+
+.product-main br {
+  display: none;
+}
+
+.product button[type="submit"] {
+  background-color: var(--yellow-sunburst);
+  color: var(--black-wax);
+  border-radius: 4.8rem;
+  padding: 2rem 4rem;
+  font-family: 'ITC Avant Garde Pro', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.product button[type="submit"]:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.product-options-item {
+  border: 2px solid var(--black-wax);
+  border-radius: 2.4rem;
+  padding: 1rem 2rem;
+  background: transparent;
+  font-family: 'Doyle', sans-serif;
+  font-size: 1.6rem;
+  transition: all 0.2s ease;
+}
+
+.product-options-item:hover:not(:disabled) {
+  background: var(--light-purple);
+  transform: scale(1.1);
+}
+
+.product-options-item[aria-selected="true"] {
+  background: var(--neon-plum);
+  color: var(--white);
+}

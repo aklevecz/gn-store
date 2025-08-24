@@ -1,0 +1,19 @@
+/* Good Neighbor Music - Footer Layout Styles */
+
+.footer {
+  background: var(--black-wax);
+  color: var(--white-label);
+  padding: 4rem 2rem;
+  margin-top: 8rem;
+}
+
+.footer a {
+  color: var(--white-label);
+  font-family: 'Doyle', sans-serif;
+  font-size: 1.6rem;
+  transition: color 0.2s ease;
+}
+
+.footer a:hover {
+  color: var(--yellow-sunburst);
+}

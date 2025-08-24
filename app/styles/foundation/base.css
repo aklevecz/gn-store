@@ -1,0 +1,148 @@
+/* Good Neighbor Music - Base Typography and Layout */
+
+/* Font Loading */
+@font-face {
+  font-family: 'ITC Avant Garde Pro';
+  src: url('/fonts/ITCAVANTGARDEPRO-BOLD.OTF') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Doyle';
+  src: url('/fonts/Doyle-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: 'Doyle';
+  src: url('/fonts/Doyle-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: block;
+}
+
+/* Base font size for easy rem calculations */
+html { 
+  font-size: 10px;
+}
+
+body {
+  font-family: 'Doyle', sans-serif;
+  font-size: 1.6rem;
+  line-height: 1.5;
+  color: var(--black-wax);
+  background-color: var(--white-label);
+  background-image: url('/images/main-bg.jpg');
+  background-position: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+/* Typography Scale */
+.hero-title {
+  font-size: 6rem;
+  font-weight: 700;
+  line-height: 100%;
+  text-transform: uppercase;
+  text-align: center;
+  font-family: 'Doyle', sans-serif;
+}
+
+.tagline {
+  font-size: 8rem;
+  font-family: 'ITC Avant Garde Pro', sans-serif;
+  font-weight: 700;
+  background-image: url('/images/texture-bg.jpg');
+  background-position: 50%;
+  background-size: cover;
+  background-attachment: fixed;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.section-heading {
+  font-size: 4.4rem;
+  line-height: 130%;
+  font-family: 'Doyle', sans-serif;
+  font-weight: 700;
+  margin-bottom: 1.6rem;
+}
+
+.card-heading {
+  font-size: 3.8rem;
+  font-family: 'ITC Avant Garde Pro', sans-serif;
+  font-weight: 700;
+}
+
+.body-text {
+  font-size: 2.4rem;
+  line-height: 130%;
+  font-family: 'Doyle', sans-serif;
+  color: var(--black-wax);
+}
+
+.product-name {
+  font-size: clamp(1.6rem, 2.5vw, 3.2rem);
+  font-family: 'ITC Avant Garde Pro', sans-serif;
+  font-weight: 700;
+  line-height: 117%;
+}
+
+/* H2 Typography */
+h2 {
+  font-size: 3.6rem;
+  font-family: 'Doyle', sans-serif;
+  font-weight: 700;
+  line-height: 130%;
+  margin-bottom: 2rem;
+  color: var(--black-wax);
+}
+
+/* Layout Containers */
+.central-container {
+  background-image: url('/images/main-bg.jpg');
+  background-position: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  padding: 0 6rem;
+}
+
+.central-wrapper {
+  background-color: var(--white-label);
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 0 4rem;
+}
+
+.central-wrapper--wide {
+  max-width: 2400px;
+  padding: 0;
+}
+
+/* Background Effects */
+.hero-background {
+  background-image: url('/images/hero-bg.jpg');
+  background-position: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  padding: 6rem;
+}
+
+.text-with-image-fill {
+  background-image: url('/images/texture-bg.jpg');
+  background-position: 50% 100%;
+  background-size: cover;
+  background-attachment: fixed;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

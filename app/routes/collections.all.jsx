@@ -57,21 +57,80 @@ export default function Collection() {
   /** @type {LoaderReturnData} */
   const {products} = useLoaderData();
 
+  // Separate products into records and merch
+  const records = [];
+  const merch = [];
+  
+  products?.nodes?.forEach(product => {
+    const title = product.title.toLowerCase();
+    const handle = product.handle.toLowerCase();
+    const price = parseFloat(product.priceRange?.minVariantPrice?.amount || 0);
+    
+    // Check if it's a record - look for quotes, artist names, or typical record pricing
+    // Records typically have artist "album" format and are priced higher
+    if (title.includes('"') || 
+        handle.includes('vinyl') || 
+        handle.includes('record') ||
+        handle.includes('lp') ||
+        handle.includes('album') ||
+        price >= 50) {  // Most vinyl records are $50+
+      records.push(product);
+    } else {
+      merch.push(product);
+    }
+  });
+
   return (
     <div className="collection">
-      <h1>Products</h1>
-      <PaginatedResourceSection
-        connection={products}
-        resourcesClassName="products-grid"
-      >
-        {({node: product, index}) => (
-          <ProductItem
-            key={product.id}
-            product={product}
-            loading={index < 8 ? 'eager' : undefined}
-          />
-        )}
-      </PaginatedResourceSection>
+      <h1>All Products</h1>
+      
+      {/* Records Section */}
+      {records.length > 0 && (
+        <div className="products-section products-section--records">
+          <h2>Vinyl Records</h2>
+          <div className="products-grid vinyl-grid">
+            {records.map((product, index) => (
+              <ProductItem
+                key={product.id}
+                product={product}
+                loading={index < 4 ? 'eager' : undefined}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+      
+      {/* Merch Section */}
+      {merch.length > 0 && (
+        <div className="products-section products-section--merch">
+          <h2>Merch & Apparel</h2>
+          <div className="products-grid">
+            {merch.map((product, index) => (
+              <ProductItem
+                key={product.id}
+                product={product}
+                loading={index < 4 ? 'eager' : undefined}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+      
+      {/* Fallback if no categorization */}
+      {records.length === 0 && merch.length === 0 && (
+        <PaginatedResourceSection
+          connection={products}
+          resourcesClassName="products-grid"
+        >
+          {({node: product, index}) => (
+            <ProductItem
+              key={product.id}
+              product={product}
+              loading={index < 8 ? 'eager' : undefined}
+            />
+          )}
+        </PaginatedResourceSection>
+      )}
     </div>
   );
 }

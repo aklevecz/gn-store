@@ -49,21 +49,76 @@ export default function Collections() {
   /** @type {LoaderReturnData} */
   const {collections} = useLoaderData();
 
+  // Separate collections by type based on title/handle
+  const recordCollections = [];
+  const merchCollections = [];
+  
+  collections?.nodes?.forEach(collection => {
+    const title = collection.title.toLowerCase();
+    const handle = collection.handle.toLowerCase();
+    console.log(collection)
+    // Check if it's a record/vinyl/album collection
+    if (title.includes('record') || title.includes('vinyl') || 
+        title.includes('album') || title.includes('music') ||
+        handle.includes('record') || handle.includes('vinyl')) {
+      recordCollections.push(collection);
+    } else {
+      // Everything else is merch (hats, clothing, etc.)
+      merchCollections.push(collection);
+    }
+  });
+
   return (
     <div className="collections">
-      <h1>Collections</h1>
-      <PaginatedResourceSection
-        connection={collections}
-        resourcesClassName="collections-grid"
-      >
-        {({node: collection, index}) => (
-          <CollectionItem
-            key={collection.id}
-            collection={collection}
-            index={index}
-          />
-        )}
-      </PaginatedResourceSection>
+      <h1>Shop Good Neighbor</h1>
+      
+      {/* Records Section */}
+      {recordCollections.length > 0 && (
+        <div className="collections-section collections-section--records">
+          <h2>Records & Music</h2>
+          <div className="collections-grid">
+            {recordCollections.map((collection, index) => (
+              <CollectionItem
+                key={collection.id}
+                collection={collection}
+                index={index}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+      
+      {/* Merch Section */}
+      {merchCollections.length > 0 && (
+        <div className="collections-section collections-section--merch">
+          <h2>Merch & Apparel</h2>
+          <div className="collections-grid">
+            {merchCollections.map((collection, index) => (
+              <CollectionItem
+                key={collection.id}
+                collection={collection}
+                index={index + recordCollections.length}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+      
+      {/* If no specific categorization, show all */}
+      {recordCollections.length === 0 && merchCollections.length === 0 && (
+        <PaginatedResourceSection
+          connection={collections}
+          resourcesClassName="collections-grid"
+        >
+          {({node: collection, index}) => (
+            <CollectionItem
+              key={collection.id}
+              collection={collection}
+              index={index}
+            />
+          )}
+        </PaginatedResourceSection>
+      )}
     </div>
   );
 }

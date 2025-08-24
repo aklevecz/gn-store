@@ -1,0 +1,8 @@
+- reorganize the products
+- some sort of navigation or filtering for products, e.g. click on Merch see Merch and not the records
+- make the hamburger menu not look like shit
+- improve header
+- consider what should actually be on the homepage
+- style the footer
+- add character images
+- add an AR cta

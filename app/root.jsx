@@ -19,6 +19,7 @@ import variablesStyles from '~/styles/foundation/variables.css?url';
 import baseStyles from '~/styles/foundation/base.css?url';
 import productStyles from '~/styles/shop/product.css?url';
 import cartStyles from '~/styles/shop/cart.css?url';
+import collectionsStyles from '~/styles/shop/collections.css?url';
 import buttonsStyles from '~/styles/ui/buttons.css?url';
 import formsStyles from '~/styles/ui/forms.css?url';
 import navigationStyles from '~/styles/ui/navigation.css?url';
@@ -170,6 +171,7 @@ export function Layout({children}) {
         <link rel="stylesheet" href={baseStyles}></link>
         <link rel="stylesheet" href={productStyles}></link>
         <link rel="stylesheet" href={cartStyles}></link>
+        <link rel="stylesheet" href={collectionsStyles}></link>
         <link rel="stylesheet" href={buttonsStyles}></link>
         <link rel="stylesheet" href={formsStyles}></link>
         <link rel="stylesheet" href={navigationStyles}></link>

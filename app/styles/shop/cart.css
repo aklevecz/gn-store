@@ -101,3 +101,22 @@ aside input:focus {
   text-align: center;
   margin: 0 0.5rem;
 }
+
+/* Discount and Gift Card Form Layout */
+.cart-discount div,
+.cart-gift-card div {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cart-discount input,
+.cart-gift-card input {
+  flex: 1;
+  width: auto;
+}
+
+.cart-discount button,
+.cart-gift-card button {
+  flex-shrink: 0;
+}

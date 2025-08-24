@@ -1,5 +1,66 @@
 /* Good Neighbor Music - Product Page Styles */
 
+/* Product Sections for All Products page */
+.products-section {
+  margin-bottom: 6rem;
+  padding: 0 2rem;
+}
+
+.products-section h2 {
+  font-family: 'ITC Avant Garde Pro', sans-serif;
+  font-size: 3.6rem;
+  color: var(--black-wax);
+  margin-bottom: 3rem;
+  text-align: center;
+  padding-bottom: 1rem;
+  border-bottom: 3px solid var(--black-wax);
+}
+
+.products-section--records h2 {
+  color: var(--black-wax);
+}
+
+.products-section--merch {
+  /* background-color: var(--off-white); */
+  padding: 4rem 2rem;
+  border-radius: 2rem;
+  margin: 4rem 2rem;
+}
+
+/* Mobile styles for product sections */
+@media (max-width: 768px) {
+  .products-section {
+    margin-bottom: 3rem;
+    padding: 0;
+  }
+  
+  .products-section h2 {
+    font-size: 2.4rem;
+    margin-bottom: 2rem;
+    padding: 0 1rem 1rem;
+  }
+  
+  .products-section--merch {
+    padding: 2rem 0;
+    border-radius: 0;
+    margin: 2rem 0 0 0;
+  }
+  
+  .collection > h1 {
+    font-size: 3.2rem;
+    margin: 2rem 1rem;
+  }
+}
+
+.collection > h1 {
+  font-family: 'ITC Avant Garde Pro', sans-serif;
+  font-size: 4.8rem;
+  color: var(--black-wax);
+  text-align: center;
+  margin: 4rem 0;
+  text-transform: uppercase;
+}
+
 /* Product Grid (Vinyl Records) */
 .vinyl-grid {
   display: flex;
@@ -66,6 +127,28 @@
   flex: 0 30%;
   position: relative;
   transition: all 0.3s ease;
+}
+
+/* Mobile product grid - 2 columns, full width */
+@media (max-width: 768px) {
+  .recommended-products-grid,
+  .products-grid {
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .recommended-products-grid > *,
+  .products-grid > * {
+    flex: 0 calc(50% - 0.5rem);
+    max-width: calc(50% - 0.5rem);
+  }
+  
+  /* Full width grid container on mobile */
+  .products-section .products-grid,
+  .products-section .vinyl-grid {
+    padding: 0 1rem;
+    gap: 1rem;
+  }
 }
 
 .recommended-products-grid img,

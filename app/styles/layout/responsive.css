@@ -73,7 +73,20 @@
   .contact-card__inner { padding: 2rem; }
   .contact-card__copy { flex-grow: 1; }
   
-  .product-wrapper { flex: 0 calc(50% - 1rem); }
+  .product-wrapper { 
+    flex: 0 calc(50% - 0.5rem);
+    max-width: calc(50% - 0.5rem);
+  }
+  
+  /* Product grids full width on mobile */
+  .vinyl-grid {
+    gap: 1rem;
+    padding: 0 1rem;
+  }
+  
+  .products-grid {
+    padding: 0 1rem;
+  }
   
   .hero-background {
     background-position: 50% 0;

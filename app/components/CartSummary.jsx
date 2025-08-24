@@ -72,9 +72,8 @@ function CartDiscounts({discountCodes}) {
 
       {/* Show an input to apply a discount */}
       <UpdateDiscountForm discountCodes={codes}>
-        <div>
+        <div className="cart-discount">
           <input type="text" name="discountCode" placeholder="Discount code" />
-          &nbsp;
           <button type="submit">Apply</button>
         </div>
       </UpdateDiscountForm>
@@ -142,21 +141,20 @@ function CartGiftCard({giftCardCodes}) {
       </dl>
 
       {/* Show an input to apply a discount */}
-      <UpdateGiftCardForm
+      {/* <UpdateGiftCardForm
         giftCardCodes={appliedGiftCardCodes.current}
         saveAppliedCode={saveAppliedCode}
       >
-        <div>
+        <div className="cart-gift-card">
           <input
             type="text"
             name="giftCardCode"
             placeholder="Gift card code"
             ref={giftCardCodeInput}
           />
-          &nbsp;
           <button type="submit">Apply</button>
         </div>
-      </UpdateGiftCardForm>
+      </UpdateGiftCardForm> */}
     </div>
   );
 }

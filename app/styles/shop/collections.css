@@ -1,0 +1,107 @@
+/* Good Neighbor Music - Collections Page Styles */
+
+.collections {
+  padding: 4rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.collections h1 {
+  font-family: 'ITC Avant Garde Pro', sans-serif;
+  font-size: 4.4rem;
+  color: var(--black-wax);
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+/* Collection Categories */
+.collections-section {
+  margin-bottom: 6rem;
+}
+
+.collections-section h2 {
+  font-family: 'Doyle', sans-serif;
+  font-size: 3.2rem;
+  color: var(--black-wax);
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 3px solid var(--black-wax);
+}
+
+/* Collections Grid */
+.collections-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 3rem;
+  margin-bottom: 4rem;
+}
+
+.collection-item {
+  text-decoration: none;
+  color: var(--black-wax);
+  transition: transform 0.3s ease;
+  display: block;
+}
+
+.collection-item:hover {
+  transform: scale(1.05);
+}
+
+.collection-item img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 2rem;
+  margin-bottom: 1rem;
+}
+
+.collection-item h5 {
+  font-family: 'ITC Avant Garde Pro', sans-serif;
+  font-size: 2rem;
+  color: var(--black-wax);
+  text-align: center;
+  margin: 0;
+}
+
+/* Special styling for Records section */
+.collections-section--records .collection-item img {
+  border-radius: 50%;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.collections-section--records .collection-item:hover img {
+  transform: rotate(15deg);
+  transition: transform 0.5s ease;
+}
+
+/* Special styling for Merch section */
+.collections-section--merch .collection-item {
+  background: var(--light-purple);
+  border-radius: 2rem;
+  padding: 1rem;
+}
+
+.collections-section--merch .collection-item img {
+  border-radius: 1rem;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .collections h1 {
+    font-size: 3.2rem;
+  }
+  
+  .collections-section h2 {
+    font-size: 2.4rem;
+  }
+  
+  .collections-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 2rem;
+  }
+  
+  .collection-item h5 {
+    font-size: 1.6rem;
+  }
+}

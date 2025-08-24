@@ -137,4 +137,5 @@ aside input:focus {
   border-radius: 50%;
   text-align: center;
   right: -10px;
+  padding-top: .5px;
 }

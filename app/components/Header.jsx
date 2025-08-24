@@ -140,16 +140,20 @@ function SearchToggle() {
  * @param {{count: number | null}}
  */
 function CartBadge({ count }) {
-  const { open } = useAside();
+  const { open, type, close } = useAside();
   const { publish, shop, cart, prevCart } = useAnalytics();
 
   return (
     <a
       href="/cart"
-      style={{position: 'relative', display: 'flex'}}
+      style={{ position: 'relative', display: 'flex' }}
       onClick={(e) => {
         e.preventDefault();
-        open('cart');
+        if (type === 'closed') {
+          open('cart');
+        } else {
+          close();  
+        }
         publish('cart_viewed', {
           cart,
           prevCart,

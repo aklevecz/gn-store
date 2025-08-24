@@ -6,3 +6,6 @@
 - style the footer
 - add character images
 - add an AR cta
+
+FIX
+- product variant selector colors

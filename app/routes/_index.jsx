@@ -64,7 +64,8 @@ export default function Homepage() {
   const data = useLoaderData();
   return (
     <div className="home">
-      <FeaturedCollection collection={data.featuredCollection} />
+      {/* <FeaturedCollection collection={data.featuredCollection} /> */}
+      <img style={{width: 400, margin: '7rem auto', display: 'block', height: 'auto'}} src="/images/header-stacked.png" alt="Good Neighbor Records" />
       <RecommendedProducts products={data.recommendedProducts} />
     </div>
   );

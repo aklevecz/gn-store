@@ -39,20 +39,32 @@ export function HeaderMenu({
   publicStoreDomain,
 }) {
   const className = `header-menu-${viewport}`;
-  const { close } = useAside();
+  const { close, open } = useAside();
 
   return (
     <nav className={className} role="navigation">
       {viewport === 'mobile' && (
-        <NavLink
-          end
-          onClick={close}
-          prefetch="intent"
-          style={activeLinkStyle}
-          to="/"
-        >
-          Home
-        </NavLink>
+        <>
+          <NavLink
+            end
+            onClick={close}
+            prefetch="intent"
+            style={activeLinkStyle}
+            to="/"
+          >
+            Home
+          </NavLink>
+          <button 
+            className="header-menu-item reset" 
+            onClick={() => {
+              close();
+              open('search');
+            }}
+            style={activeLinkStyle({ isActive: false, isPending: false })}
+          >
+            Search
+          </button>
+        </>
       )}
       {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
         if (!item.url) return null;
@@ -89,14 +101,16 @@ function HeaderCtas({ isLoggedIn, cart }) {
   return (
     <nav className="header-ctas" role="navigation">
       <HeaderMenuMobileToggle />
-      <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
-        <Suspense fallback="Sign in">
-          <Await resolve={isLoggedIn} errorElement="Sign in">
-            {(isLoggedIn) => (isLoggedIn ? 'Account' : 'Sign in')}
-          </Await>
-        </Suspense>
-      </NavLink>
-      <SearchToggle />
+      <div className="header-ctas-desktop">
+        <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
+          <Suspense fallback="Sign in">
+            <Await resolve={isLoggedIn} errorElement="Sign in">
+              {(isLoggedIn) => (isLoggedIn ? 'Account' : 'Sign in')}
+            </Await>
+          </Suspense>
+        </NavLink>
+        <SearchToggle />
+      </div>
       <CartToggle cart={cart} />
     </nav>
   );

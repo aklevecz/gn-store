@@ -202,7 +202,7 @@ button.reset:hover:not(:has(> *)) {
 .header-ctas {
   align-items: center;
   display: flex;
-  grid-gap: 1rem;
+  gap: 1rem;
   margin-left: auto;
 }
 

@@ -362,6 +362,82 @@ export type RecommendedProductsQuery = {
   };
 };
 
+export type TestMenuQueryVariables = StorefrontAPI.Exact<{
+  [key: string]: never;
+}>;
+
+export type TestMenuQuery = {
+  menu?: StorefrontAPI.Maybe<
+    Pick<StorefrontAPI.Menu, 'id' | 'handle' | 'title'> & {
+      items: Array<
+        Pick<StorefrontAPI.MenuItem, 'id' | 'title' | 'url'> & {
+          items: Array<Pick<StorefrontAPI.MenuItem, 'id' | 'title' | 'url'>>;
+        }
+      >;
+    }
+  >;
+  footerMenu?: StorefrontAPI.Maybe<
+    Pick<StorefrontAPI.Menu, 'id' | 'handle' | 'title'> & {
+      items: Array<Pick<StorefrontAPI.MenuItem, 'id' | 'title' | 'url'>>;
+    }
+  >;
+  shop: Pick<StorefrontAPI.Shop, 'name'> & {
+    primaryDomain: Pick<StorefrontAPI.Domain, 'url'>;
+  };
+};
+
+export type TestProductsQueryVariables = StorefrontAPI.Exact<{
+  [key: string]: never;
+}>;
+
+export type TestProductsQuery = {
+  products: {
+    nodes: Array<
+      Pick<
+        StorefrontAPI.Product,
+        'id' | 'title' | 'handle' | 'vendor' | 'productType' | 'tags'
+      > & {
+        category?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.TaxonomyCategory, 'id' | 'name'>
+        >;
+        collections: {
+          nodes: Array<Pick<StorefrontAPI.Collection, 'title' | 'handle'>>;
+        };
+        priceRange: {
+          minVariantPrice: Pick<
+            StorefrontAPI.MoneyV2,
+            'amount' | 'currencyCode'
+          >;
+        };
+        featuredImage?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.Image, 'url' | 'altText'>
+        >;
+        variants: {
+          nodes: Array<
+            Pick<StorefrontAPI.ProductVariant, 'title'> & {
+              selectedOptions: Array<
+                Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
+              >;
+            }
+          >;
+        };
+      }
+    >;
+  };
+  collections: {
+    nodes: Array<
+      Pick<
+        StorefrontAPI.Collection,
+        'id' | 'title' | 'handle' | 'description'
+      > & {
+        products: {
+          nodes: Array<Pick<StorefrontAPI.Product, 'title' | 'productType'>>;
+        };
+      }
+    >;
+  };
+};
+
 export type ArticleQueryVariables = StorefrontAPI.Exact<{
   articleHandle: StorefrontAPI.Scalars['String']['input'];
   blogHandle: StorefrontAPI.Scalars['String']['input'];
@@ -597,14 +673,20 @@ export type MoneyCollectionItemFragment = Pick<
 
 export type CollectionItemFragment = Pick<
   StorefrontAPI.Product,
-  'id' | 'handle' | 'title'
+  'id' | 'handle' | 'title' | 'productType' | 'tags'
 > & {
+  category?: StorefrontAPI.Maybe<
+    Pick<StorefrontAPI.TaxonomyCategory, 'id' | 'name'>
+  >;
   featuredImage?: StorefrontAPI.Maybe<
     Pick<StorefrontAPI.Image, 'id' | 'altText' | 'url' | 'width' | 'height'>
   >;
   priceRange: {
     minVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
     maxVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+  };
+  collections: {
+    nodes: Array<Pick<StorefrontAPI.Collection, 'title' | 'handle'>>;
   };
 };
 
@@ -624,7 +706,13 @@ export type CatalogQueryVariables = StorefrontAPI.Exact<{
 export type CatalogQuery = {
   products: {
     nodes: Array<
-      Pick<StorefrontAPI.Product, 'id' | 'handle' | 'title'> & {
+      Pick<
+        StorefrontAPI.Product,
+        'id' | 'handle' | 'title' | 'productType' | 'tags'
+      > & {
+        category?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.TaxonomyCategory, 'id' | 'name'>
+        >;
         featuredImage?: StorefrontAPI.Maybe<
           Pick<
             StorefrontAPI.Image,
@@ -640,6 +728,9 @@ export type CatalogQuery = {
             StorefrontAPI.MoneyV2,
             'amount' | 'currencyCode'
           >;
+        };
+        collections: {
+          nodes: Array<Pick<StorefrontAPI.Collection, 'title' | 'handle'>>;
         };
       }
     >;
@@ -1206,6 +1297,14 @@ interface GeneratedQueryTypes {
     return: RecommendedProductsQuery;
     variables: RecommendedProductsQueryVariables;
   };
+  '#graphql\n    query TestMenu {\n      menu(handle: "main-menu") {\n        id\n        handle\n        title\n        items {\n          id\n          title\n          url\n          items {\n            id\n            title\n            url\n          }\n        }\n      }\n      # Also try common menu handles\n      footerMenu: menu(handle: "footer") {\n        id\n        handle\n        title\n        items {\n          id\n          title\n          url\n        }\n      }\n      # Get all available menus\n      shop {\n        name\n        primaryDomain {\n          url\n        }\n      }\n    }\n  ': {
+    return: TestMenuQuery;
+    variables: TestMenuQueryVariables;
+  };
+  '#graphql\n    query TestProducts {\n      products(first: 50) {\n        nodes {\n          id\n          title\n          handle\n          vendor\n          productType\n          tags\n          category {\n            id\n            name\n          }\n          collections(first: 10) {\n            nodes {\n              title\n              handle\n            }\n          }\n          priceRange {\n            minVariantPrice {\n              amount\n              currencyCode\n            }\n          }\n          featuredImage {\n            url\n            altText\n          }\n          variants(first: 10) {\n            nodes {\n              title\n              selectedOptions {\n                name\n                value\n              }\n            }\n          }\n        }\n      }\n      collections(first: 20) {\n        nodes {\n          id\n          title\n          handle\n          description\n          products(first: 5) {\n            nodes {\n              title\n              productType\n            }\n          }\n        }\n      }\n    }\n  ': {
+    return: TestProductsQuery;
+    variables: TestProductsQueryVariables;
+  };
   '#graphql\n  query Article(\n    $articleHandle: String!\n    $blogHandle: String!\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(language: $language, country: $country) {\n    blog(handle: $blogHandle) {\n      handle\n      articleByHandle(handle: $articleHandle) {\n        handle\n        title\n        contentHtml\n        publishedAt\n        author: authorV2 {\n          name\n        }\n        image {\n          id\n          altText\n          url\n          width\n          height\n        }\n        seo {\n          description\n          title\n        }\n      }\n    }\n  }\n': {
     return: ArticleQuery;
     variables: ArticleQueryVariables;
@@ -1226,7 +1325,7 @@ interface GeneratedQueryTypes {
     return: StoreCollectionsQuery;
     variables: StoreCollectionsQueryVariables;
   };
-  '#graphql\n  query Catalog(\n    $country: CountryCode\n    $language: LanguageCode\n    $first: Int\n    $last: Int\n    $startCursor: String\n    $endCursor: String\n  ) @inContext(country: $country, language: $language) {\n    products(first: $first, last: $last, before: $startCursor, after: $endCursor) {\n      nodes {\n        ...CollectionItem\n      }\n      pageInfo {\n        hasPreviousPage\n        hasNextPage\n        startCursor\n        endCursor\n      }\n    }\n  }\n  #graphql\n  fragment MoneyCollectionItem on MoneyV2 {\n    amount\n    currencyCode\n  }\n  fragment CollectionItem on Product {\n    id\n    handle\n    title\n    featuredImage {\n      id\n      altText\n      url\n      width\n      height\n    }\n    priceRange {\n      minVariantPrice {\n        ...MoneyCollectionItem\n      }\n      maxVariantPrice {\n        ...MoneyCollectionItem\n      }\n    }\n  }\n\n': {
+  '#graphql\n  query Catalog(\n    $country: CountryCode\n    $language: LanguageCode\n    $first: Int\n    $last: Int\n    $startCursor: String\n    $endCursor: String\n  ) @inContext(country: $country, language: $language) {\n    products(first: $first, last: $last, before: $startCursor, after: $endCursor) {\n      nodes {\n        ...CollectionItem\n      }\n      pageInfo {\n        hasPreviousPage\n        hasNextPage\n        startCursor\n        endCursor\n      }\n    }\n  }\n  #graphql\n  fragment MoneyCollectionItem on MoneyV2 {\n    amount\n    currencyCode\n  }\n  fragment CollectionItem on Product {\n    id\n    handle\n    title\n    productType\n    tags\n    category {\n      id\n      name\n    }\n    featuredImage {\n      id\n      altText\n      url\n      width\n      height\n    }\n    priceRange {\n      minVariantPrice {\n        ...MoneyCollectionItem\n      }\n      maxVariantPrice {\n        ...MoneyCollectionItem\n      }\n    }\n    collections(first: 5) {\n      nodes {\n        title\n        handle\n      }\n    }\n  }\n\n': {
     return: CatalogQuery;
     variables: CatalogQueryVariables;
   };

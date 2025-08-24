@@ -107,33 +107,32 @@ export default function Product() {
 
   return (
     <div className="product">
-      <div>
+      <div className="product-title-price">
         <h1>{title}</h1>
         <ProductPrice
           price={selectedVariant?.price}
           compareAtPrice={selectedVariant?.compareAtPrice}
         />
+      </div>
+      <div className="product-image-section">
         <ProductImage image={selectedVariant?.image} />
       </div>
-      <div className="product-main">
-        {/* <h1>{title}</h1>
-        <ProductPrice
-          price={selectedVariant?.price}
-          compareAtPrice={selectedVariant?.compareAtPrice}
-        /> */}
-        <br />
-        <ProductForm
-          productOptions={productOptions}
-          selectedVariant={selectedVariant}
-        />
-        <br />
-        <br />
-        <p>
-          <strong>Description</strong>
-        </p>
-        <br />
-        <div dangerouslySetInnerHTML={{ __html: descriptionHtml }} />
-        <br />
+      <div className="product-content-section">
+        <div className="product-main">
+          <br />
+          <ProductForm
+            productOptions={productOptions}
+            selectedVariant={selectedVariant}
+          />
+          <br />
+          <br />
+          <p>
+            <strong>Description</strong>
+          </p>
+          <br />
+          <div dangerouslySetInnerHTML={{ __html: descriptionHtml }} />
+          <br />
+        </div>
       </div>
       <Analytics.ProductView
         data={{

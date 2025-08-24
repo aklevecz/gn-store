@@ -21,7 +21,7 @@
 
 /* Search Override */
 .predictive-search-form {
-  background: var(--white-label);
+  /* background: var(--white-label); */
   padding: 2rem;
   border-bottom: 2px solid var(--black-wax);
 }

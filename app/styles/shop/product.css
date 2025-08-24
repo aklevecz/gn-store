@@ -173,7 +173,7 @@
 
 /* Individual Product Page */
 .product {
-  padding: 4rem 0;
+  padding: 24px 0;
 }
 
 .product h1 {
@@ -269,8 +269,10 @@
   border: none;
   cursor: pointer;
   transition: all 0.2s ease;
-  width: 100%;
+  width: 90%;
   margin-top: 2rem;
+  margin: 0 auto;
+  display: block;
 }
 
 .product button[type="submit"]:hover {

@@ -179,8 +179,7 @@
   .product {
     display: grid !important;
     grid-template-columns: 1fr 1fr !important;
-    grid-template-rows: auto auto !important;
-    gap: 2rem 4rem !important;
+    gap: 4rem !important;
     align-items: start !important;
     max-width: 1200px !important;
     margin: 0 auto !important;
@@ -188,19 +187,73 @@
   }
   
   .product-title-price {
-    grid-column: 2 !important;
-    grid-row: 1 !important;
+    display: none;
+  }
+  
+  .product-title-price-desktop {
+    display: block;
+    margin-bottom: 2rem;
   }
   
   .product-image-section {
-    grid-column: 1 !important;
-    grid-row: 1 / 3 !important;
+    grid-column: 1;
   }
   
   .product-content-section {
-    grid-column: 2 !important;
-    grid-row: 2 !important;
+    grid-column: 2;
   }
+}
+
+/* Mobile Layout */
+@media (max-width: 767px) {
+  .product-title-price-desktop {
+    display: none;
+  }
+  
+  .product-image-section-qr {
+    display: none;
+  }
+}
+
+/* QR Code Section Styling */
+.product-image-section-qr {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  text-align: center;
+}
+
+.product-image-section-qr div {
+  font-family: 'ITC Avant Garde Pro', sans-serif;
+  font-size: 1.4rem;
+  color: var(--black-wax);
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.sparkle {
+  display: inline-block;
+  animation: hueShift 3s ease-in-out infinite;
+}
+
+@keyframes hueShift {
+  0%, 100% {
+    filter: hue-rotate(0deg);
+  }
+  25% {
+    filter: hue-rotate(90deg);
+  }
+  50% {
+    filter: hue-rotate(180deg);
+  }
+  75% {
+    filter: hue-rotate(270deg);
+  }
+}
+
+.product-image-section-qr img {
+  border-radius: 0.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
 .product h1 {

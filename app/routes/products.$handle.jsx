@@ -116,12 +116,20 @@ export default function Product() {
       </div>
       <div className="product-image-section">
         <ProductImage image={selectedVariant?.image} />
-        <div className="product-image-section-qr">
-          <div> Scan to see magic ✨</div>
-          <img src="/images/gizzard_yaytso_art_QR.png" alt="QR code for AR"  style={{width: 200, height: 200}}/>
-        </div>
+        {/* PATCH TO SHOW QR CODE FOR GIZZRD, BUT NEEDS TO BE GENERALIZED FOR OTHER EXPERIENCES */}
+        {product.handle === 'king-gizzard-the-lizard-wizard-bootleg-rpet' && <div className="product-image-section-qr">
+          <div> Scan to see magic <span className="sparkle">✨</span></div>
+          <img src="/images/gizzard_yaytso_art_QR.png" alt="QR code for AR" style={{ width: 200, height: 200 }} />
+        </div>}
       </div>
       <div className="product-content-section">
+        <div className="product-title-price-desktop">
+          <h2>{title}</h2>
+          <ProductPrice
+            price={selectedVariant?.price}
+            compareAtPrice={selectedVariant?.compareAtPrice}
+          />
+        </div>
         <div className="product-main">
           <br />
           <ProductForm
@@ -134,7 +142,7 @@ export default function Product() {
             <strong>Description</strong>
           </p> */}
           <br />
-          <div style={{marginTop: '24px'}} dangerouslySetInnerHTML={{ __html: descriptionHtml }} />
+          <div style={{ marginTop: '24px' }} dangerouslySetInnerHTML={{ __html: descriptionHtml }} />
           <br />
         </div>
       </div>

@@ -47,7 +47,9 @@ export function CartLineItem({ layout, line }) {
         </Link>
         <ProductPrice price={line?.cost?.totalAmount} />
         <ul>
-          {selectedOptions.map((option) => (
+          {selectedOptions
+            .filter(option => option.value !== 'Default Title')
+            .map((option) => (
             <li key={option.name}>
               <small>
                 {option.name}: {option.value}

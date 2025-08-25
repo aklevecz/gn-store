@@ -108,7 +108,7 @@ export default function Product() {
   return (
     <div className="product">
       <div className="product-title-price">
-        <h1>{title}</h1>
+        <h2>{title}</h2>
         <ProductPrice
           price={selectedVariant?.price}
           compareAtPrice={selectedVariant?.compareAtPrice}
@@ -116,6 +116,10 @@ export default function Product() {
       </div>
       <div className="product-image-section">
         <ProductImage image={selectedVariant?.image} />
+        <div className="product-image-section-qr">
+          <div> Scan to see magic ✨</div>
+          <img src="/images/gizzard_yaytso_art_QR.png" alt="QR code for AR"  style={{width: 200, height: 200}}/>
+        </div>
       </div>
       <div className="product-content-section">
         <div className="product-main">
@@ -126,11 +130,11 @@ export default function Product() {
           />
           <br />
           <br />
-          <p>
+          {/* <p>
             <strong>Description</strong>
-          </p>
+          </p> */}
           <br />
-          <div dangerouslySetInnerHTML={{ __html: descriptionHtml }} />
+          <div style={{marginTop: '24px'}} dangerouslySetInnerHTML={{ __html: descriptionHtml }} />
           <br />
         </div>
       </div>

@@ -3,6 +3,7 @@ import {Suspense} from 'react';
 import {Image} from '@shopify/hydrogen';
 import {ProductItem} from '~/components/ProductItem';
 import { WelcomeHero } from '~/components/WelcomeHero';
+import { BackgroundGenerator } from '~/components/BackgroundGenerator';
 
 /**
  * @type {MetaFunction}
@@ -65,6 +66,7 @@ export default function Homepage() {
   const data = useLoaderData();
   return (
     <div className="home">
+      <BackgroundGenerator />
       {/* <FeaturedCollection collection={data.featuredCollection} /> */}
       <WelcomeHero />
       <RecommendedProducts products={data.recommendedProducts} />

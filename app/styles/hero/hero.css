@@ -1,7 +1,13 @@
 .welcome-hero {
     margin: 16px auto;
     position: relative;
+    width: 100%;
+}
+
+.hero-image-container {
+    position: relative;
     max-width: 500px;
+    margin: auto;
 }
 
 #welcome-hero-text {

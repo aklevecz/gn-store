@@ -1,10 +1,19 @@
 
 
+import { GrowingVines } from './GrowingVines';
+
 export function WelcomeHero() {
     return (
         <div className="welcome-hero">
+            {/* <GrowingVines 
+                vineCount={4} 
+                animationDuration="6s"
+                startDelay={1000}
+            /> */}
+            <div className='hero-image-container'>
             <WelcomeHeroText />
             <img src="/images/hifive-color.svg" alt="Good Neighbor Records" />
+            </div>
         </div>
     );
 }

@@ -1,0 +1,139 @@
+mcp-client {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+
+  .mcp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    flex-wrap: wrap;
+  }
+
+  .header-buttons {
+    display: flex;
+    gap: 10px;
+  }
+
+  .connection-status {
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  .connected {
+    color: green;
+  }
+
+  .disconnected {
+    color: red;
+  }
+
+  .server-info {
+    background: #f8f9fa;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    border-left: 4px solid #28a745;
+  }
+
+  .info-section {
+    margin-bottom: 8px;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .info-section:last-child {
+    margin-bottom: 0;
+  }
+
+  .chat-messages {
+    height: 400px;
+    overflow-y: auto;
+    border: 1px solid #dee2e6;
+    padding: 15px;
+    margin-bottom: 15px;
+    background: #ffffff;
+    border-radius: 6px;
+  }
+
+  .message {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+
+  .message.user {
+    background: #e3f2fd;
+    border-left: 3px solid #2196f3;
+  }
+
+  .message.assistant {
+    background: #f3e5f5;
+    border-left: 3px solid #9c27b0;
+  }
+
+  .message.system {
+    background: #fff3e0;
+    border-left: 3px solid #ff9800;
+    font-style: italic;
+  }
+
+  .message pre {
+    white-space: pre-wrap;
+    margin: 8px 0 0 0;
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .chat-input {
+    display: flex;
+    gap: 10px;
+  }
+
+  .chat-input input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+
+  .chat-input input:focus {
+    outline: none;
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+
+  .chat-input button, .header-buttons button {
+    padding: 12px 20px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .chat-input button:hover, .header-buttons button:hover {
+    background: #0056b3;
+  }
+
+  .chat-input button:disabled, .header-buttons button:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+  }
+
+  .header-buttons button {
+    font-size: 12px;
+    padding: 8px 16px;
+  }

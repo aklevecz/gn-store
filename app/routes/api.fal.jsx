@@ -1,5 +1,6 @@
 import { data as json } from '@shopify/remix-oxygen';
-import { kontextMax, fluxUltra, configureFal } from '~/lib/fal-server';
+import { kontextMax, fluxUltra, configureFal, uploadFile } from '~/lib/fal-server';
+import { fal } from "@fal-ai/client";
 
 /**
  * API route for proxying fal.ai requests
@@ -36,6 +37,21 @@ export async function action({ request, context }) {
       
       case 'flux-ultra':
         result = await fluxUltra(params);
+        break;
+      
+      case 'upload':
+        // Handle file upload - server fetches the file from URL
+        const { fileUrl } = params;
+        if (!fileUrl) {
+          return json({ error: 'File URL required for upload' }, { status: 400 });
+        }
+        
+        // Fetch the file from the provided URL
+        const fileResponse = await fetch(`http://localhost:3000${fileUrl}`);
+        const fileBlob = await fileResponse.blob();
+        
+        const uploadedUrl = await uploadFile(fileBlob);
+        result = { file_url: uploadedUrl };
         break;
       
       default:

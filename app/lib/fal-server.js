@@ -210,6 +210,25 @@ export async function fluxUltra({
 }
 
 /**
+ * Upload a file to fal.ai storage using the SDK
+ * @param {File|Blob} file - File or Blob to upload
+ * @returns {Promise<string>} The uploaded file URL
+ */
+export async function uploadFile(file) {
+  const { fal } = await import("@fal-ai/client");
+  
+  if (!apiKey) {
+    throw new Error("FAL_API_KEY not configured. Call configureFal() first.");
+  }
+
+  fal.config({ credentials: apiKey });
+  
+  const url = await fal.storage.upload(file);
+  console.log('Upload result:', url);
+  return url;
+}
+
+/**
  * Upload a file URL for use with fal.ai
  * Note: For server-side file uploads, you'll need to upload to your own CDN first
  * @param {string} fileUrl - URL of the file to use

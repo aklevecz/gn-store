@@ -5,7 +5,7 @@
 
 /**
  * Call a fal.ai model through our server proxy
- * @param {string} model - Model identifier ('kontext-max' or 'flux-ultra')
+ * @param {string} model - Model identifier ('kontext-max', 'flux-ultra', or 'upload')
  * @param {Object} params - Model-specific parameters
  * @returns {Promise<Object>} Model results
  */
@@ -28,6 +28,15 @@ async function callFalModel(model, params) {
   }
 
   return response.json();
+}
+
+/**
+ * Upload file to fal storage by URL (server fetches the file)
+ * @param {string} fileUrl - URL of file to upload
+ * @returns {Promise<string>} Uploaded file URL
+ */
+export async function uploadFileByUrl(fileUrl) {
+  return callFalModel('upload', { fileUrl });
 }
 
 /**

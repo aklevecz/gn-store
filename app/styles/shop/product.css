@@ -174,7 +174,7 @@
   padding: 24px 0;
 }
 
-/* Desktop Grid Layout */
+/* Desktop Grid Layout - iPad and larger screens */
 @media (min-width: 768px) {
   .product {
     display: grid !important;
@@ -182,7 +182,7 @@
     gap: 4rem !important;
     align-items: start !important;
     max-width: 1200px !important;
-    margin: 0 auto !important;
+    margin: 18px auto !important;
     padding: 2rem !important;
   }
   
@@ -204,12 +204,29 @@
   }
 }
 
-/* Mobile Layout */
+/* Mobile Layout only */
 @media (max-width: 767px) {
+  .product {
+    display: block !important;
+    grid-template-columns: none !important;
+    gap: 0 !important;
+    padding: 24px 0 !important;
+  }
+  
   .product-title-price-desktop {
     display: none;
   }
   
+  .product-image-section {
+    grid-column: unset;
+  }
+  
+  .product-content-section {
+    grid-column: unset;
+  }
+}
+
+@media (max-width: 767px) {
   .product-image-section-qr {
     display: none;
   }

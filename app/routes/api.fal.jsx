@@ -46,11 +46,26 @@ export async function action({ request, context }) {
           return json({ error: 'File URL required for upload' }, { status: 400 });
         }
         
-        // Fetch the file from the provided URL
-        const fileResponse = await fetch(`http://localhost:3000${fileUrl}`);
-        const fileBlob = await fileResponse.blob();
+        // Determine the base URL based on environment
+        const origin = request.headers.get('origin');
+        const baseUrl = origin || 'http://localhost:3000';
+        const fullUrl = fileUrl.startsWith('http') ? fileUrl : `${baseUrl}${fileUrl}`;
         
-        const uploadedUrl = await uploadFile(fileBlob);
+        // Fetch the file from the provided URL
+        const fileResponse = await fetch(fullUrl);
+        const arrayBuffer = await fileResponse.arrayBuffer();
+        
+        // Get the file extension from the URL
+        const fileName = fileUrl.split('/').pop();
+        const fileExtension = fileName.split('.').pop();
+        const mimeType = fileExtension === 'png' ? 'image/png' : 
+                        fileExtension === 'svg' ? 'image/svg+xml' : 
+                        'application/octet-stream';
+        
+        // Create a proper File object with the correct MIME type
+        const file = new File([arrayBuffer], fileName, { type: mimeType });
+        
+        const uploadedUrl = await uploadFile(file);
         result = { file_url: uploadedUrl };
         break;
       

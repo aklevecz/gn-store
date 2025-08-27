@@ -12,7 +12,6 @@ export async function action({ request, context }) {
   console.log('API route for proxying fal.ai requests');
   // Get the API key from environment variables
   const apiKey = context.env.FAL_API_KEY;
-  console.log('API key', apiKey);
   if (!apiKey) {
     return json(
       { error: 'FAL_API_KEY not configured in environment' },
@@ -46,9 +45,9 @@ export async function action({ request, context }) {
           return json({ error: 'File URL required for upload' }, { status: 400 });
         }
         
-        // Determine the base URL based on environment
-        const origin = request.headers.get('origin');
-        const baseUrl = origin || 'http://localhost:3000';
+        // Determine the base URL based on the request URL
+        const requestUrl = new URL(request.url);
+        const baseUrl = `${requestUrl.protocol}//${requestUrl.host}`;
         const fullUrl = fileUrl.startsWith('http') ? fileUrl : `${baseUrl}${fileUrl}`;
         
         // Fetch the file from the provided URL
@@ -88,6 +87,6 @@ export async function action({ request, context }) {
 }
 
 // Optionally handle GET requests for health check
-export async function loader() {
+export async function loader({ request, context }) {
   return json({ status: 'ok', service: 'fal-proxy' });
 }

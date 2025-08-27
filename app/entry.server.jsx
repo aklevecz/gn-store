@@ -22,7 +22,12 @@ export default async function handleRequest(
       checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
     },
-    imgSrc: ['cdn.shopify.com', 'fal.media', 'localhost:3000'],
+    imgSrc: [
+      'cdn.shopify.com', 
+      'fal.media', 
+      'localhost:3000',
+      '*.myshopify.dev'
+    ],
     connectSrc: ['gn-mcp.raptorz.workers.dev'],
   });
 

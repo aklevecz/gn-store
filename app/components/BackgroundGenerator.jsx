@@ -92,10 +92,13 @@ export function BackgroundGenerator() {
       console.log('Generating new background for:', randomStyleImage);
       
       // Upload to fal storage via server
-      const uploadResult = await uploadFileByUrl(randomStyleImage);
-      console.log('Upload result:', uploadResult);
-      const uploadedUrl = uploadResult.file_url;
-      
+      // const uploadResult = await uploadFileByUrl(randomStyleImage);
+      // console.log('Upload result:', uploadResult);
+      // const uploadedUrl = uploadResult.file_url;
+ 
+      // uploaded url is the url of the site + image url
+      const uploadedUrl = `${window.location.origin}${randomStyleImage}`;
+      console.log('uploadedUrl', uploadedUrl);
       const result = await kontextMax({
         prompt: "in the style of the given image, create a background of beautiful forest with mystical trees and giant blooming flowers",
         imageUrl: uploadedUrl,
@@ -192,16 +195,16 @@ export function BackgroundGenerator() {
       
       // Try to find a cached background
       let foundCachedBackground = false;
-      for (const styleImage of styleImages) {
-        const cachedBackground = backgroundImageCache.get(styleImage);
-        if (cachedBackground) {
-          console.log('Found cached background on init:', styleImage);
-          setBackground(cachedBackground.imageUrl);
-          applyBackgroundImage(cachedBackground.imageUrl);
-          foundCachedBackground = true;
-          break;
-        }
-      }
+      // for (const styleImage of styleImages) {
+      //   const cachedBackground = backgroundImageCache.get(styleImage);
+      //   if (cachedBackground) {
+      //     console.log('Found cached background on init:', styleImage);
+      //     setBackground(cachedBackground.imageUrl);
+      //     applyBackgroundImage(cachedBackground.imageUrl);
+      //     foundCachedBackground = true;
+      //     break;
+      //   }
+      // }
       
       // If no cached background found, generate a new one
       if (!foundCachedBackground) {

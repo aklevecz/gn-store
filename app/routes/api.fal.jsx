@@ -38,6 +38,30 @@ export async function action({ request, context }) {
         result = await fluxUltra(params);
         break;
       
+      case 'upload-blob':
+        // Handle blob upload from client
+        const { blobData, fileName: blobFileName } = params;
+        if (!blobData) {
+          return json({ error: 'Blob data required for upload' }, { status: 400 });
+        }
+        
+        // Convert base64 to blob
+        const blobResponse = await fetch(blobData);
+        const blob = await blobResponse.blob();
+        
+        // Get file extension and mime type
+        const blobExtension = blobFileName?.split('.').pop() || 'png';
+        const blobMimeType = blobExtension === 'png' ? 'image/png' : 
+                            blobExtension === 'svg' ? 'image/svg+xml' : 
+                            'application/octet-stream';
+        
+        // Create proper File object
+        const blobFile = new File([blob], blobFileName || 'image.png', { type: blobMimeType });
+        
+        const blobUploadUrl = await uploadFile(blobFile);
+        result = { file_url: blobUploadUrl };
+        break;
+      
       case 'upload':
         // Handle file upload - server fetches the file from URL
         const { fileUrl } = params;

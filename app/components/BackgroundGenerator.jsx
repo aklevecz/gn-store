@@ -91,14 +91,37 @@ export function BackgroundGenerator() {
       
       console.log('Generating new background for:', randomStyleImage);
       
-      // Upload to fal storage via server
-      // const uploadResult = await uploadFileByUrl(randomStyleImage);
-      // console.log('Upload result:', uploadResult);
-      // const uploadedUrl = uploadResult.file_url;
- 
-      // uploaded url is the url of the site + image url
-      const uploadedUrl = `${window.location.origin}${randomStyleImage}`;
-      console.log('uploadedUrl', uploadedUrl);
+      // Fetch the image as blob on client
+      const response = await fetch(randomStyleImage);
+      const blob = await response.blob();
+      
+      // Convert blob to base64 for JSON transport
+      const base64 = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.readAsDataURL(blob);
+      });
+      
+      // Send to server for upload to fal
+      const uploadResponse = await fetch('/api/fal', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'upload-blob',
+          blobData: base64,
+          fileName: randomStyleImage.split('/').pop()
+        }),
+      });
+      
+      if (!uploadResponse.ok) {
+        throw new Error('Failed to upload to fal');
+      }
+      
+      const uploadResult = await uploadResponse.json();
+      const uploadedUrl = uploadResult.file_url;
+      console.log('Uploaded to fal:', uploadedUrl);
       const result = await kontextMax({
         prompt: "in the style of the given image, create a background of beautiful forest with mystical trees and giant blooming flowers",
         imageUrl: uploadedUrl,

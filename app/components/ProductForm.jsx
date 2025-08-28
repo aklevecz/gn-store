@@ -9,7 +9,7 @@ import { useToast } from './Toast';
  *   selectedVariant: ProductFragment['selectedOrFirstAvailableVariant'];
  * }}
  */
-export function ProductForm({productOptions, selectedVariant}) {
+export function ProductForm({productOptions, selectedVariant, productTitle}) {
   const navigate = useNavigate();
   const {open} = useAside();
   const toast = useToast();
@@ -100,8 +100,9 @@ export function ProductForm({productOptions, selectedVariant}) {
       <AddToCartButton
         disabled={!selectedVariant || !selectedVariant.availableForSale}
         onClick={() => {
+          console.log('productOptions', productOptions);
           // open('cart');
-          toast.show('Please add to cart');
+          toast.show(`Sick! you just added ${productTitle} to your bag!`);
         }}
         lines={
           selectedVariant

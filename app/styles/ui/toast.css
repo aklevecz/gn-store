@@ -16,8 +16,7 @@
   .toast-container {
     top: 120px;
     right: 1rem;
-    left: 1rem;
-    max-width: none;
+    max-width: 400px;
   }
 }
 
@@ -28,7 +27,7 @@
   background: rgba(255, 255, 255, 0.98);
   border: 2px solid var(--black-wax);
   border-radius: 2rem;
-  padding: 1.2rem 1.8rem;
+  padding: 1.2rem 3rem;
   box-shadow: 
     0 10px 25px rgba(0, 0, 0, 0.15),
     0 4px 10px rgba(0, 0, 0, 0.1);
@@ -106,7 +105,7 @@
 /* Mobile adjustments */
 @media (max-width: 768px) {
   .toast-item {
-    padding: 0.8rem 1.2rem;
+    padding: 1rem 2rem;
     border-radius: 1.5rem;
   }
   

@@ -3,7 +3,7 @@
 /* Cart Aside Override */
 aside {
   background: var(--off-white);
-  padding-top: 130px;
+  /* padding-top: 130px; */
   /* border-left: 4px solid var(--black-wax); */
 }
 

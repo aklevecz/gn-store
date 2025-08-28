@@ -37,7 +37,7 @@ export function Header({ header, isLoggedIn, cart, publicStoreDomain }) {
     <header className={`header ${scrolled ? 'header-scrolled' : ''}`}>
       <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
         {/* <strong>{shop.name}</strong> */}
-        <img style={{ width: 140, height: 'auto' }} src="/images/header-stacked.png" alt="Good Neighbor Records" />
+        <img style={{ width: 140, height: 'auto', paddingTop: '10px' }} src="/images/header-stacked.png" alt="Good Neighbor Records" />
       </NavLink>
       <HeaderMenu
         menu={menu}

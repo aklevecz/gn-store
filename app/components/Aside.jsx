@@ -1,4 +1,4 @@
-import {createContext, useContext, useEffect, useState} from 'react';
+import {createContext, useContext, useEffect, useState, useRef} from 'react';
 
 /**
  * A side bar component with Overlay
@@ -19,10 +19,15 @@ export function Aside({children, heading, type}) {
   const {type: activeType, close} = useAside();
   const expanded = type === activeType;
 
+  const asideRef = useRef(null);
+
   useEffect(() => {
     const abortController = new AbortController();
 
     if (expanded) {
+      const headerHeight = document.querySelector('.header').offsetHeight;
+      console.log(headerHeight);
+      asideRef.current.style.paddingTop = `${headerHeight}px`;
       document.addEventListener(
         'keydown',
         function handler(event) {
@@ -43,13 +48,14 @@ export function Aside({children, heading, type}) {
       role="dialog"
     >
       <button className="close-outside" onClick={close} />
-      <aside>
-        <header>
+      <aside ref={asideRef}>
+        {/* COMMENT OUT HEADER FOR NOW-- MIGHT NOT BE NEEDED OR WE NEED TO RESIZE MORE INTELLIGENTLY BASED ON THE HEADER HEIGHT */}
+        {/* <header>
           <h3>{heading}</h3>
           <button className="close reset" onClick={close} aria-label="Close">
             &times;
           </button>
-        </header>
+        </header> */}
         <main>{children}</main>
       </aside>
     </div>

@@ -3,7 +3,7 @@
 .header {
   background: var(--white-label);
   border-bottom: 2px solid var(--black-wax);
-  height: auto;
+  /* height: auto; */
   padding: 2rem;
   position: sticky;
   top: 0;
@@ -22,4 +22,3 @@
 .header a:hover {
   color: var(--neon-plum);
 }
-

@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import { Await, NavLink, useAsyncValue } from 'react-router';
 import { useAnalytics, useOptimisticCart } from '@shopify/hydrogen';
 import { useAside } from '~/components/Aside';
+import { SearchIcon, CartIcon, HamburgerIcon, CatalogIcon } from '~/components/Icons';
 
 /**
  * @param {HeaderProps}
@@ -33,6 +34,26 @@ export function Header({ header, isLoggedIn, cart, publicStoreDomain }) {
  *   publicStoreDomain: HeaderProps['publicStoreDomain'];
  * }}
  */
+/**
+ * Maps menu item titles to their corresponding icons
+ * @param {string} title - The menu item title
+ * @returns {React.ReactNode|null} - The icon component or null
+ */
+function getMenuItemIcon(title) {
+  const iconMap = {
+    'catalog': <CatalogIcon />,
+    'catalogue': <CatalogIcon />, // Alternative spelling
+    'collections': <CatalogIcon />,
+    // Add more icon mappings here as needed
+    // 'blog': <BlogIcon width={24} height={24} />,
+    // 'about': <InfoIcon width={24} height={24} />,
+    // 'shop': <ShopIcon width={24} height={24} />,
+  };
+  
+  const lowerTitle = title?.toLowerCase() || '';
+  return iconMap[lowerTitle] || null;
+}
+
 export function HeaderMenu({
   menu,
   primaryDomainUrl,
@@ -54,7 +75,10 @@ export function HeaderMenu({
             }}
             style={activeLinkStyle({ isActive: false, isPending: false })}
           >
-            Search
+          <div 
+          style={{display: 'flex', alignItems: 'center', gap: '12px'}}
+          className="header-menu-item"
+          > <SearchIcon /> Search</div>
           </button>
         </>
       )}
@@ -67,6 +91,7 @@ export function HeaderMenu({
             item.url.includes(primaryDomainUrl)
             ? new URL(item.url).pathname
             : item.url;
+        const icon = getMenuItemIcon(item.title);
         return (
           <NavLink
             className="header-menu-item"
@@ -77,14 +102,22 @@ export function HeaderMenu({
             style={activeLinkStyle}
             to={url}
           >
-            {item.title}
+            {icon ? (
+              <div style={{display: 'flex', alignItems: 'center', gap: '12px'}}>
+                {icon}
+                {item.title}
+              </div>
+            ) : (
+              item.title
+            )}
           </NavLink>
         );
       })}
       {viewport === 'mobile' && (
-        <div style={{ padding: '24px' }}>
-          <img src="/images/infatuation-color.svg" alt="Infatuation Color" style={{ width: "100%", height: 'auto' }} />
-          <img src="/images/header-stacked.png" alt="Good Neighbor Records" style={{ width: "100%", height: 'auto' }} />
+
+        <div className="mobile-menu-footer" style={{marginTop: 'auto', padding: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '24px' }}>
+          <img src="/images/infatuation-color.svg" alt="Infatuation Color" style={{ width: "50%", height: 'auto' }} />
+          <img src="/images/header-stacked.png" alt="Good Neighbor Records" style={{ width: "50%", height: 'auto' }} />
         </div>
       )}
     </nav>
@@ -127,8 +160,7 @@ function HeaderMenuMobileToggle() {
         }
       }}
     >
-      {/* <h3>☰</h3> */}
-      <svg class="hamburger" aria-hidden="true" focusable="false" viewBox="0 0 24 24" role="img" width="36px" height="36px" fill="none"><path stroke="currentColor" strokeWidth="2.0" d="M21 5.25H3M21 12H3m18 6.75H3"></path></svg>
+      <HamburgerIcon />
     </button>
   );
 }
@@ -137,7 +169,7 @@ function SearchToggle() {
   const { open } = useAside();
   return (
     <button style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} className="reset" onClick={() => open('search')}>
-      <svg className="search-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" role="img" width="48px" height="48px" fill="none"><path stroke="currentColor" strokeWidth="2" d="M13.962 16.296a6.716 6.716 0 01-3.462.954 6.728 6.728 0 01-4.773-1.977A6.728 6.728 0 013.75 10.5c0-1.864.755-3.551 1.977-4.773A6.728 6.728 0 0110.5 3.75c1.864 0 3.551.755 4.773 1.977A6.728 6.728 0 0117.25 10.5a6.726 6.726 0 01-.921 3.407c-.517.882-.434 1.988.289 2.711l3.853 3.853" strokeLinecap="round" /></svg>
+      <SearchIcon />
     </button>
   );
 }
@@ -168,7 +200,7 @@ function CartBadge({ count }) {
         });
       }}
     >
-      <svg className="cart-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" role="img" width="48px" height="48px" fill="none"><path stroke="currentColor" strokeWidth="2.0" d="M8.25 8.25V6a2.25 2.25 0 012.25-2.25h3a2.25 2.25 0 110 4.5H3.75v8.25a3.75 3.75 0 003.75 3.75h9a3.75 3.75 0 003.75-3.75V8.25H17.5"></path></svg>
+      <CartIcon />
       <span className="cart-quantity">{count === null ? <span>&nbsp;</span> : count}</span>
     </a>
   );

@@ -42,7 +42,7 @@ export function CartLineItem({ layout, line }) {
           }}
         >
           <p>
-            <strong>{product.title}</strong>
+            <strong className="cart-line-item-title">{product.title}</strong>
           </p>
         </Link>
         <ProductPrice price={line?.cost?.totalAmount} />

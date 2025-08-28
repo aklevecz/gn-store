@@ -139,3 +139,9 @@ aside input:focus {
   right: -12px;
   padding-top: .5px;
 }
+
+.cart-line-item-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--black-wax);
+}

@@ -1,6 +1,7 @@
 import {Link, useNavigate} from 'react-router';
 import {AddToCartButton} from './AddToCartButton';
 import {useAside} from './Aside';
+import { useToast } from './Toast';
 
 /**
  * @param {{
@@ -11,6 +12,7 @@ import {useAside} from './Aside';
 export function ProductForm({productOptions, selectedVariant}) {
   const navigate = useNavigate();
   const {open} = useAside();
+  const toast = useToast();
   return (
     <div className="product-form">
       {productOptions.map((option) => {
@@ -99,6 +101,7 @@ export function ProductForm({productOptions, selectedVariant}) {
         disabled={!selectedVariant || !selectedVariant.availableForSale}
         onClick={() => {
           // open('cart');
+          toast.show('Please add to cart');
         }}
         lines={
           selectedVariant

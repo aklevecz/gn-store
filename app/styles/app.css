@@ -543,3 +543,10 @@ button.reset:hover:not(:has(> *)) {
 .account-logout {
   display: inline-block;
 }
+
+/*
+* --------------------------------------------------
+* components/Toast
+* --------------------------------------------------
+*/
+/* Toast styles are imported via separate CSS file */

@@ -1,0 +1,173 @@
+/* Good Neighbor Music - Toast Notification Styles */
+
+.toast-container {
+  position: fixed;
+  top: 140px;
+  right: 2rem;
+  z-index: 1000;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 400px;
+}
+
+@media (max-width: 768px) {
+  .toast-container {
+    top: 120px;
+    right: 1rem;
+    left: 1rem;
+    max-width: none;
+  }
+}
+
+.toast-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(255, 255, 255, 0.98);
+  border: 2px solid var(--black-wax);
+  border-radius: 2rem;
+  padding: 1.2rem 1.8rem;
+  box-shadow: 
+    0 10px 25px rgba(0, 0, 0, 0.15),
+    0 4px 10px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  pointer-events: auto;
+  
+  /* Initial hidden state */
+  transform: translateX(100%) scale(0.8);
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.toast-item.toast-visible {
+  transform: translateX(0) scale(1);
+  opacity: 1;
+}
+
+.toast-item.toast-exiting {
+  transform: translateX(100%) scale(0.9);
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+}
+
+.toast-item:hover {
+  transform: translateX(-5px) scale(1.02);
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.2),
+    0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.toast-character {
+  flex-shrink: 0;
+  position: relative;
+}
+
+.toast-character img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  animation: toastCharacterBounce 0.6s ease-out;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15));
+}
+
+@keyframes toastCharacterBounce {
+  0% {
+    transform: scale(0) rotate(-180deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.2) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.toast-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.toast-content p {
+  margin: 0;
+  font-family: 'ITC Avant Garde Pro', sans-serif;
+  font-size: 1.8rem;
+  line-height: 1.4;
+  color: var(--black-wax);
+  font-weight: 500;
+  word-wrap: break-word;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .toast-item {
+    padding: 0.8rem 1.2rem;
+    border-radius: 1.5rem;
+  }
+  
+  .toast-character img {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .toast-content p {
+    font-size: 1.6rem;
+  }
+}
+
+/* Special hover animation for character */
+.toast-item:hover .toast-character img {
+  animation: toastCharacterWiggle 0.5s ease-in-out;
+}
+
+@keyframes toastCharacterWiggle {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-5deg);
+  }
+  75% {
+    transform: rotate(5deg);
+  }
+}
+
+/* Pulse animation for character on entrance */
+.toast-visible .toast-character img {
+  animation: toastCharacterBounce 0.6s ease-out, toastCharacterPulse 2s ease-in-out 1s infinite;
+}
+
+@keyframes toastCharacterPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* Toast stacking - newer toasts appear on top */
+.toast-item:nth-last-child(2) {
+  transform: translateX(0) scale(0.98);
+  opacity: 0.9;
+  z-index: -1;
+}
+
+.toast-item:nth-last-child(3) {
+  transform: translateX(0) scale(0.96);
+  opacity: 0.8;
+  z-index: -2;
+}
+
+.toast-visible:nth-last-child(2) {
+  transform: translateX(0) scale(0.98);
+}
+
+.toast-visible:nth-last-child(3) {
+  transform: translateX(0) scale(0.96);
+}

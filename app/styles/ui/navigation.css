@@ -56,6 +56,18 @@
   text-decoration: none;
 }
 
+.header-menu-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  flex-wrap: wrap;
+  gap: 0rem;
+
+  @media (min-width: 768px) {
+    gap: 3rem;
+  }
+}
+
 .header-ctas button:hover,
 .header button[type="button"]:hover {
   color: var(--neon-plum);
@@ -136,7 +148,7 @@ aside main {
   background: none;
   cursor: pointer;
   /* width: 100%; */
-  flex: 0 1 40%;
+  flex: 0 1 50%;
   display: block;
   line-height: 1.8rem;
   min-height: 3.8rem;

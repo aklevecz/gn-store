@@ -91,7 +91,7 @@ export function HeaderMenu({
 
   return (
     <nav className={className} role="navigation">
-      <div style={{display: 'flex', alignItems:'center', justifyContent: 'start', flexWrap: 'wrap', gap: '1rem'}}>
+      <div className="header-menu-wrapper">
       {viewport === 'mobile' && (
         <>
           <button

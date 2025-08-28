@@ -66,7 +66,32 @@ function SearchAside() {
   return (
     <Aside type="search" heading="SEARCH">
       <div className="predictive-search">
-        <br />
+        <div style={{ 
+          textAlign: 'center', 
+          padding: '16px 0',
+          borderBottom: '1px solid #eee',
+          marginBottom: '16px'
+        }}>
+          <img 
+            src="/images/juggle-color.svg" 
+            alt="Good Neighbor character juggling records" 
+            style={{ 
+              width: '120px', 
+              height: '120px', 
+              marginBottom: '12px',
+              animation: 'pulse 2s ease-in-out infinite'
+            }} 
+          />
+          <p style={{ 
+            margin: '8px 0', 
+            fontSize: '14px', 
+            fontStyle: 'italic',
+            color: '#666',
+            lineHeight: '1.3'
+          }}>
+            🎵 Looking for that perfect vinyl? Let our magical record juggler help you find sonic treasures! 🎪
+          </p>
+        </div>
         <SearchFormPredictive>
           {({fetchResults, goToSearch, inputRef}) => (
             <>

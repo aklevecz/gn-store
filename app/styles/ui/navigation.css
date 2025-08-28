@@ -21,7 +21,7 @@
 
 /* Search Override */
 .predictive-search-form {
-  /* background: var(--white-label); */
+  /* background:type="search" var(--white-label); */
   padding: 2rem;
   border-bottom: 2px solid var(--black-wax);
 }
@@ -75,7 +75,6 @@ aside[aria-modal] {
 }
 
 aside header {
-  border-bottom: 3px solid var(--black-wax);
   background: var(--yellow-sunburst);
   padding: 2rem;
   min-height: auto;
@@ -83,8 +82,7 @@ aside header {
 }
 
 aside header h3 {
-  font-family: 'ITC Avant Garde Pro', sans-serif;
-  font-size: 2.4rem;
+  font-size: 2.5rem;
   font-weight: 700;
   color: var(--black-wax);
   margin: 0;

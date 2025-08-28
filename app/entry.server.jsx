@@ -26,7 +26,8 @@ export default async function handleRequest(
       'cdn.shopify.com', 
       'fal.media', 
       'localhost:3000',
-      '*.myshopify.dev'
+      '*.myshopify.dev',
+      "192.168.1.2:3000"
     ],
     connectSrc: ['gn-mcp.raptorz.workers.dev'],
   });

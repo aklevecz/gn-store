@@ -3,7 +3,8 @@
 /* Cart Aside Override */
 aside {
   background: var(--off-white);
-  border-left: 4px solid var(--black-wax);
+  padding-top: 130px;
+  /* border-left: 4px solid var(--black-wax); */
 }
 
 aside header {
@@ -12,7 +13,6 @@ aside header {
 }
 
 aside header h3 {
-  font-family: 'ITC Avant Garde Pro', sans-serif;
   font-size: 2.4rem;
   color: var(--black-wax);
 }
@@ -70,7 +70,7 @@ aside button:hover {
 
 .checkout-button:hover {
   transform: scale(1.02);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
 /* Cart Inputs */
@@ -125,17 +125,17 @@ aside input:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 1.4rem;
   /* font-weight: 700; */
   font-family: 'Doyle', sans-serif;
   background: var(--neon-plum);
   position: absolute;
-  top: -8px;
+  top: -14px;
   color: var(--white-label);
-  width: 16px;
-  height: 16px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   text-align: center;
-  right: -10px;
+  right: -12px;
   padding-top: .5px;
 }

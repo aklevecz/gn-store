@@ -9,7 +9,10 @@ import { BackgroundGenerator } from '~/components/BackgroundGenerator';
  * @type {MetaFunction}
  */
 export const meta = () => {
-  return [{title: 'Hydrogen | Home'}];
+  return [
+    {title: 'Good Neighbor Music | Vinyl Records & Music Merchandise'},
+    {name: 'description', content: 'Discover rare vinyl records, exclusive music merchandise, and sonic treasures at Good Neighbor Music. Your neighborhood record shop for music lovers.'}
+  ];
 };
 
 /**

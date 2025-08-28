@@ -23,9 +23,9 @@
 
 .products-section--merch {
   /* background-color: var(--off-white); */
-  padding: 4rem 2rem;
+  padding: 0rem 2rem;
   border-radius: 2rem;
-  margin: 4rem 2rem;
+  margin: 0rem 2rem;
 }
 
 /* Mobile styles for product sections */

@@ -2,7 +2,7 @@ import { Suspense, useState, useEffect } from 'react';
 import { Await, NavLink, useAsyncValue } from 'react-router';
 import { useAnalytics, useOptimisticCart } from '@shopify/hydrogen';
 import { useAside } from '~/components/Aside';
-import { SearchIcon, CartIcon, HamburgerIcon, CatalogIcon } from '~/components/Icons';
+import { SearchIcon, CartIcon, HamburgerIcon, CatalogIcon, RecordIcon, ApparelIcon } from '~/components/Icons';
 
 /**
  * Custom hook to detect scroll position
@@ -65,6 +65,8 @@ export function Header({ header, isLoggedIn, cart, publicStoreDomain }) {
  */
 function getMenuItemIcon(title) {
   const iconMap = {
+    'records': <RecordIcon />,
+    'merch': <ApparelIcon />,
     'catalog': <CatalogIcon />,
     'catalogue': <CatalogIcon />, // Alternative spelling
     'collections': <CatalogIcon />,
@@ -89,7 +91,7 @@ export function HeaderMenu({
 
   return (
     <nav className={className} role="navigation">
-      <div style={{display: 'flex', alignItems:'center', justifyContent: 'space-between'}}>
+      <div style={{display: 'flex', alignItems:'center', justifyContent: 'start', flexWrap: 'wrap', gap: '1rem'}}>
       {viewport === 'mobile' && (
         <>
           <button
@@ -261,9 +263,18 @@ const FALLBACK_HEADER_MENU = {
       id: 'gid://shopify/MenuItem/461609500728',
       resourceId: null,
       tags: [],
-      title: 'Collections',
+      title: 'Records',
       type: 'HTTP',
-      url: '/collections',
+      url: '/collections/records',
+      items: [],
+    },
+    {
+      id: 'gid://shopify/MenuItem/461609500729',
+      resourceId: null,
+      tags: [],
+      title: 'Merch & Apparel',
+      type: 'HTTP',
+      url: '/collections/merch-apparel',
       items: [],
     },
     {

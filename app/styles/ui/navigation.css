@@ -136,7 +136,7 @@ aside main {
   background: none;
   cursor: pointer;
   /* width: 100%; */
-  flex: 1 0;
+  flex: 0 1 40%;
   display: block;
   line-height: 1.8rem;
   min-height: 3.8rem;

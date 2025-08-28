@@ -7,7 +7,10 @@ import {ProductItem} from '~/components/ProductItem';
  * @type {MetaFunction<typeof loader>}
  */
 export const meta = () => {
-  return [{title: `Hydrogen | Products`}];
+  return [
+    {title: 'All Products | Good Neighbor Music'},
+    {name: 'description', content: 'Browse our complete catalog of vinyl records and music merchandise at Good Neighbor Music.'}
+  ];
 };
 
 /**

@@ -72,10 +72,12 @@ export function ProductForm({productOptions, selectedVariant, productTitle}) {
                       }`}
                       key={option.name + name}
                       style={{
-                        border: selected
-                          ? '1px solid black'
-                          : '1px solid transparent',
+                        // border: selected
+                        //   ? '1px solid black'
+                        //   : '1px solid transparent',
                         opacity: available ? 1 : 0.3,
+                        color: selected ? 'var(--neon-plum)' : 'var(--black-wax)',
+                        backgroundColor: selected ? 'var(--yellow-sunburst)' : 'var(--white-label)',
                       }}
                       disabled={!exists}
                       onClick={() => {

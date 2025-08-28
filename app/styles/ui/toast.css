@@ -15,8 +15,11 @@
 @media (max-width: 768px) {
   .toast-container {
     top: 120px;
-    right: 1rem;
-    max-width: 400px;
+    left: 50%;
+    transform: translateX(-50%);
+    right: unset;
+    width: 90%;
+    max-width: none;
   }
 }
 
@@ -56,7 +59,7 @@
   transform: translateX(-5px) scale(1.02);
   box-shadow: 
     0 15px 35px rgba(0, 0, 0, 0.2),
-    0 6px 15px rgba(0, 0, 0, 0.15);
+    0 6px 15px rgb:a(0, 0, 0, 0.15);
 }
 
 .toast-character {

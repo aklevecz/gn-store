@@ -24,6 +24,7 @@ export default async function handleRequest(
     },
     imgSrc: [
       'cdn.shopify.com', 
+      'v3.fal.media',
       'fal.media', 
       'localhost:3000',
       '*.myshopify.dev',

@@ -29,6 +29,7 @@ import footerStyles from '~/styles/layout/footer.css?url';
 import responsiveStyles from '~/styles/layout/responsive.css?url';
 import heroStyles from '~/styles/hero/hero.css?url';
 import toastStyles from '~/styles/ui/toast.css?url';
+import iconsStyles from '~/styles/ui/icons.css?url';
 
 import {PageLayout} from './components/PageLayout';
 
@@ -184,6 +185,7 @@ export function Layout({children}) {
         <link rel="stylesheet" href={responsiveStyles}></link>
         <link rel="stylesheet" href={heroStyles}></link>
         <link rel="stylesheet" href={toastStyles}></link>
+        <link rel="stylesheet" href={iconsStyles}></link>
         <Meta />
         <Links />
       </head>

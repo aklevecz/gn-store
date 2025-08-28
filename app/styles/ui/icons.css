@@ -1,0 +1,10 @@
+.icon-text-wrapper {
+  display: flex;
+  align-items: center;
+  font-family: 'Avant Garde', sans-serif;
+  font-weight: 700;
+    flex-direction: column;
+
+  @media (min-width: 768px) {
+  }
+}

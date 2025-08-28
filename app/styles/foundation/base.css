@@ -36,11 +36,6 @@ body {
   line-height: 1.5;
   color: var(--black-wax);
   background-color: var(--white-label);
-  background-image: url('/images/main-bg.jpg');
-  background-position: 50%;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
 }
 
 /* Typography Scale */
@@ -107,11 +102,6 @@ h2 {
 
 /* Layout Containers */
 .central-container {
-  background-image: url('/images/main-bg.jpg');
-  background-position: 50%;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
   padding: 0 6rem;
 }
 

@@ -66,7 +66,6 @@ export default function Homepage() {
   const data = useLoaderData();
   return (
     <div className="home">
-      <BackgroundGenerator />
       {/* <FeaturedCollection collection={data.featuredCollection} /> */}
       <WelcomeHero />
       <RecommendedProducts products={data.recommendedProducts} />

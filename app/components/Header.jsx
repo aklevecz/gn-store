@@ -1,16 +1,40 @@
-import { Suspense } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { Await, NavLink, useAsyncValue } from 'react-router';
 import { useAnalytics, useOptimisticCart } from '@shopify/hydrogen';
 import { useAside } from '~/components/Aside';
 import { SearchIcon, CartIcon, HamburgerIcon, CatalogIcon } from '~/components/Icons';
 
 /**
+ * Custom hook to detect scroll position
+ */
+function useScrollPosition() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 20;
+      setScrolled(isScrolled);
+    };
+
+    // Check initial scroll position
+    handleScroll();
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return scrolled;
+}
+
+/**
  * @param {HeaderProps}
  */
 export function Header({ header, isLoggedIn, cart, publicStoreDomain }) {
   const { shop, menu } = header;
+  const scrolled = useScrollPosition();
+
   return (
-    <header className="header">
+    <header className={`header ${scrolled ? 'header-scrolled' : ''}`}>
       <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
         {/* <strong>{shop.name}</strong> */}
         <img style={{ width: 140, height: 'auto' }} src="/images/header-stacked.png" alt="Good Neighbor Records" />
@@ -49,7 +73,7 @@ function getMenuItemIcon(title) {
     // 'about': <InfoIcon width={24} height={24} />,
     // 'shop': <ShopIcon width={24} height={24} />,
   };
-  
+
   const lowerTitle = title?.toLowerCase() || '';
   return iconMap[lowerTitle] || null;
 }
@@ -65,20 +89,24 @@ export function HeaderMenu({
 
   return (
     <nav className={className} role="navigation">
+      <div style={{display: 'flex', alignItems:'center', justifyContent: 'space-between'}}>
       {viewport === 'mobile' && (
         <>
           <button
-            className="header-menu-item reset"
+            className="header-menu-item"
             onClick={() => {
               close();
               open('search');
             }}
             style={activeLinkStyle({ isActive: false, isPending: false })}
           >
-          <div 
-          style={{display: 'flex', alignItems: 'center', gap: '12px'}}
-          className="header-menu-item"
-          > <SearchIcon /> Search</div>
+            <div
+              className="header-menu-item"
+              style={{width: '100%'}}
+            >
+              <div className="icon-text-wrapper">
+                <SearchIcon /> Search</div>
+            </div>
           </button>
         </>
       )}
@@ -103,7 +131,7 @@ export function HeaderMenu({
             to={url}
           >
             {icon ? (
-              <div style={{display: 'flex', alignItems: 'center', gap: '12px'}}>
+              <div className="icon-text-wrapper">
                 {icon}
                 {item.title}
               </div>
@@ -113,9 +141,10 @@ export function HeaderMenu({
           </NavLink>
         );
       })}
+      </div>
       {viewport === 'mobile' && (
 
-        <div className="mobile-menu-footer" style={{marginTop: 'auto', padding: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '24px' }}>
+        <div className="mobile-menu-footer" style={{ marginTop: 'auto', padding: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '24px' }}>
           <img src="/images/infatuation-color.svg" alt="Infatuation Color" style={{ width: "50%", height: 'auto' }} />
           <img src="/images/header-stacked.png" alt="Good Neighbor Records" style={{ width: "50%", height: 'auto' }} />
         </div>

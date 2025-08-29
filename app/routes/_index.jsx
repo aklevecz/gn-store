@@ -69,17 +69,12 @@ export default function Homepage() {
   /** @type {LoaderReturnData} */
   const data = useLoaderData();
 
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
   return (
     <div className="home">
       {/* <FeaturedCollection collection={data.featuredCollection} /> */}
       <WelcomeHero />
       <RecommendedProducts products={data.recommendedProducts} />
-      {isClient && <AgentChat />}
+      <AgentChat />
     </div>
   );
 }

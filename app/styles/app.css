@@ -606,3 +606,10 @@ button.reset:hover:not(:has(> *)) {
 * --------------------------------------------------
 */
 /* Toast styles are imported via separate CSS file */
+
+/*
+* --------------------------------------------------
+* components/Agent
+* --------------------------------------------------
+*/
+/* Agent styles are imported via separate CSS file */

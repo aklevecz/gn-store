@@ -1,5 +1,6 @@
 import { useAgent } from 'agents/react';
 import { useEffect, useReducer, useState } from 'react';
+import { TicTacToeBoard } from './TicTacToeBoard';
 
 // Streaming frame prefix constants
 const FRAME_TEXT = '0';
@@ -154,6 +155,8 @@ export function AgentChat() {
   const [state, dispatch] = useReducer(chatReducer, initialState);
   const [inputValue, setInputValue] = useState("");
   const [sessionId] = useState(() => Math.random().toString(36).substring(2, 8)); // Consistent session ID
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [currentGame, setCurrentGame] = useState(null); // Track current TicTacToe game state
   
   const agent = useAgent({
     agent: "chat",
@@ -166,6 +169,7 @@ export function AgentChat() {
       
       if (done && body === "") {
         dispatch({ type: 'STREAM_COMPLETE', id });
+        setIsProcessing(false);
         return;
       }
 
@@ -250,6 +254,8 @@ export function AgentChat() {
     const id = sessionId; // Use consistent session ID
     const agentUrl = agent._url.replace("ws://", "http://").replace("wss://", "https://");
     
+    setIsProcessing(true);
+    
     // Build conversation history from current messages
     const conversationHistory = state.messages
       .filter(msg => msg.role === 'user' || msg.role === 'assistant')
@@ -295,6 +301,38 @@ export function AgentChat() {
     }
   };
 
+  const handleTicTacToeMove = (row, col) => {
+    // Send move as chat message that explicitly calls the tool with correct parameters
+    const moveMessage = `I want to make my TicTacToe move. Please call the makeTicTacToeMove tool with row: ${row} and col: ${col}`;
+    sendChatMessage(moveMessage);
+  };
+
+  // Function to update current game state from tool results
+  const updateGameState = (toolName, toolResult) => {
+    if ((toolName === 'startTicTacToe' || toolName === 'makeTicTacToeMove') && toolResult?.board) {
+      setCurrentGame({
+        board: toolResult.board,
+        message: toolResult.message,
+        toolName: toolName,
+        timestamp: Date.now()
+      });
+    } else if (toolName === 'clearTicTacToeBoard') {
+      setCurrentGame(null);
+    }
+  };
+
+  // Watch for completed messages with TicTacToe tools and update game state
+  useEffect(() => {
+    const latestMessage = state.messages[state.messages.length - 1];
+    if (latestMessage?.role === 'assistant' && latestMessage?.status === 'complete' && latestMessage?.tools) {
+      latestMessage.tools.forEach(tool => {
+        if (tool.toolName && tool.result) {
+          updateGameState(tool.toolName, tool.result);
+        }
+      });
+    }
+  }, [state.messages]);
+
   return (
     <div className="agent-chat" style={{ padding: '20px', fontFamily: 'monospace' }}>
       <h3>Agent Chat Test</h3>
@@ -313,10 +351,35 @@ export function AgentChat() {
         <button onClick={() => sendChatMessage("Please get the local time for New York")} style={{ marginRight: '10px' }}>
           Get Time
         </button>
+        <button onClick={() => sendChatMessage("Please call the clearTicTacToeBoard tool")} style={{ marginRight: '10px' }}>
+          Clear Game
+        </button>
         <button onClick={() => dispatch({ type: 'ADD_SYSTEM', content: 'Messages cleared' })} style={{ marginRight: '10px' }}>
           Clear Messages
         </button>
       </div>
+
+      {/* Persistent TicTacToe Board */}
+      {currentGame && (
+        <div style={{ marginBottom: '20px', padding: '20px', border: '2px solid var(--neon-plum, #9e80ff)', borderRadius: '8px', backgroundColor: '#f9fafb' }}>
+          <h4>Current TicTacToe Game</h4>
+          {currentGame.message && (
+            <div style={{ marginBottom: '15px', fontWeight: 'bold', color: '#333' }}>
+              {currentGame.message}
+            </div>
+          )}
+          <TicTacToeBoard 
+            boardString={currentGame.board} 
+            onCellClick={handleTicTacToeMove}
+            disabled={isProcessing}
+          />
+          {isProcessing && (
+            <div style={{ marginTop: '10px', fontSize: '14px', color: '#666', textAlign: 'center' }}>
+              Agent is thinking...
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Messages Display */}
       <div style={{ marginBottom: '20px' }}>
@@ -362,9 +425,29 @@ export function AgentChat() {
                         <div key={i} style={{ marginTop: '5px', fontSize: '12px' }}>
                           <strong>{tool.toolName}</strong>
                           {tool.result && (
-                            <pre style={{ margin: '3px 0', fontSize: '11px', maxHeight: '100px', overflow: 'auto' }}>
-                              {JSON.stringify(tool.result, null, 2)}
-                            </pre>
+                            <>
+                              {(tool.toolName === 'startTicTacToe' || tool.toolName === 'makeTicTacToeMove') && tool.result.board ? (
+                                <div style={{ marginTop: '10px' }}>
+                                  {tool.result.message && (
+                                    <div style={{ marginBottom: '10px' }}>{tool.result.message}</div>
+                                  )}
+                                  <TicTacToeBoard 
+                                    boardString={tool.result.board} 
+                                    onCellClick={handleTicTacToeMove}
+                                    disabled={isProcessing}
+                                  />
+                                  {isProcessing && (
+                                    <div style={{ marginTop: '8px', fontSize: '12px', color: '#666' }}>
+                                      Agent is thinking...
+                                    </div>
+                                  )}
+                                </div>
+                              ) : (
+                                <pre style={{ margin: '3px 0', fontSize: '11px', maxHeight: '100px', overflow: 'auto' }}>
+                                  {JSON.stringify(tool.result, null, 2)}
+                                </pre>
+                              )}
+                            </>
                           )}
                         </div>
                       ))}

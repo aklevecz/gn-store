@@ -1,0 +1,143 @@
+/* TicTacToe Board Styles */
+
+.tictactoe-container {
+  display: inline-block;
+  padding: 10px;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.tictactoe-board {
+  display: inline-block;
+  background: white;
+  border: 2px solid var(--neon-plum, #9e80ff);
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.tictactoe-row {
+  display: flex;
+}
+
+.tictactoe-cell {
+  width: 60px;
+  height: 60px;
+  border: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: bold;
+  position: relative;
+  background: white;
+  transition: background-color 0.2s ease;
+}
+
+/* Remove borders to create grid effect */
+.tictactoe-row:first-child .tictactoe-cell {
+  border-top: none;
+}
+
+.tictactoe-row:last-child .tictactoe-cell {
+  border-bottom: none;
+}
+
+.tictactoe-cell:first-child {
+  border-left: none;
+}
+
+.tictactoe-cell:last-child {
+  border-right: none;
+}
+
+/* Cell content styling */
+.cell-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* X styling */
+.cell-x .cell-content {
+  color: var(--neon-plum, #9e80ff);
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+}
+
+/* O styling */
+.cell-o .cell-content {
+  color: var(--aqua-blue, #59a0c4);
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+/* Empty cell */
+.cell-empty {
+  cursor: default;
+}
+
+.cell-empty .cell-content {
+  color: transparent;
+}
+
+/* Interactive empty cells */
+.cell-clickable {
+  cursor: pointer;
+}
+
+.cell-clickable:hover {
+  background-color: var(--light-purple, #e6dfff);
+  opacity: 0.8;
+}
+
+.cell-clickable:active {
+  transform: scale(0.95);
+}
+
+/* Disabled board state */
+.board-disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.board-disabled .cell-clickable {
+  cursor: not-allowed;
+}
+
+/* Animation for new pieces */
+@keyframes pieceAppear {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.cell-x .cell-content,
+.cell-o .cell-content {
+  animation: pieceAppear 0.3s ease-out;
+}
+
+/* Mobile responsive */
+@media (max-width: 640px) {
+  .tictactoe-cell {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+  }
+  
+  .cell-x .cell-content {
+    font-size: 30px;
+  }
+  
+  .cell-o .cell-content {
+    font-size: 26px;
+  }
+}

@@ -31,6 +31,7 @@ import heroStyles from '~/styles/hero/hero.css?url';
 import toastStyles from '~/styles/ui/toast.css?url';
 import iconsStyles from '~/styles/ui/icons.css?url';
 import agentStyles from '~/styles/agent.css?url';
+import tictactoeStyles from '~/styles/tictactoe.css?url';
 
 import {PageLayout} from './components/PageLayout';
 
@@ -188,6 +189,7 @@ export function Layout({children}) {
         <link rel="stylesheet" href={toastStyles}></link>
         <link rel="stylesheet" href={iconsStyles}></link>
         <link rel="stylesheet" href={agentStyles}></link>
+        <link rel="stylesheet" href={tictactoeStyles}></link>
         <Meta />
         <Links />
       </head>

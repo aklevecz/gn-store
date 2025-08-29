@@ -26,7 +26,6 @@ export function Aside({children, heading, type}) {
 
     if (expanded) {
       const headerHeight = document.querySelector('.header').offsetHeight;
-      console.log(headerHeight);
       asideRef.current.style.paddingTop = `${headerHeight}px`;
       document.addEventListener(
         'keydown',

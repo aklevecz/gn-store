@@ -10,7 +10,6 @@
  * @returns {Promise<Object>} Model results
  */
 async function callFalModel(model, params) {
-  console.log('Calling fal model', model, params);
   const response = await fetch('/api/fal', {
     method: 'POST',
     headers: {

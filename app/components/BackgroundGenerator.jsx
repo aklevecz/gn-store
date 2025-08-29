@@ -129,7 +129,6 @@ export function BackgroundGenerator() {
         numImages: 1
       });
       
-      console.log('kontext result', result);
       if (result.images && result.images.length > 0) {
         const generatedImageUrl = result.images[0].url;
         setBackground(generatedImageUrl);

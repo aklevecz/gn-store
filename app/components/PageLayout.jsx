@@ -126,8 +126,8 @@ function SearchAside() {
         <SearchResultsPredictive>
           {({ items, total, term, state, closeSearch }) => {
             const { articles, collections, pages, products, queries } = items;
-
-            if (state === 'idle') {
+            
+            if (state === 'idle' && products.length === 0) {
               return <SearchCta />;
             }
 

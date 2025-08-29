@@ -1,17 +1,18 @@
-import {Await, useLoaderData, Link} from 'react-router';
-import {Suspense} from 'react';
-import {Image} from '@shopify/hydrogen';
-import {ProductItem} from '~/components/ProductItem';
+import { Await, useLoaderData, Link } from 'react-router';
+import { Suspense, useEffect, useState } from 'react';
+import { Image } from '@shopify/hydrogen';
+import { ProductItem } from '~/components/ProductItem';
 import { WelcomeHero } from '~/components/WelcomeHero';
 import { BackgroundGenerator } from '~/components/BackgroundGenerator';
+import { AgentChat } from '~/components/AgentChat';
 
 /**
  * @type {MetaFunction}
  */
 export const meta = () => {
   return [
-    {title: 'Good Neighbor Music | Vinyl Records & Music Merchandise'},
-    {name: 'description', content: 'Discover rare vinyl records, exclusive music merchandise, and sonic treasures at Good Neighbor Music. Your neighborhood record shop for music lovers.'}
+    { title: 'Good Neighbor Music | Vinyl Records & Music Merchandise' },
+    { name: 'description', content: 'Discover rare vinyl records, exclusive music merchandise, and sonic treasures at Good Neighbor Music. Your neighborhood record shop for music lovers.' }
   ];
 };
 
@@ -25,7 +26,7 @@ export async function loader(args) {
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
 
-  return {...deferredData, ...criticalData};
+  return { ...deferredData, ...criticalData };
 }
 
 /**
@@ -33,8 +34,8 @@ export async function loader(args) {
  * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
  * @param {LoaderFunctionArgs}
  */
-async function loadCriticalData({context}) {
-  const [{collections}] = await Promise.all([
+async function loadCriticalData({ context }) {
+  const [{ collections }] = await Promise.all([
     context.storefront.query(FEATURED_COLLECTION_QUERY),
     // Add other queries here, so that they are loaded in parallel
   ]);
@@ -50,7 +51,7 @@ async function loadCriticalData({context}) {
  * Make sure to not throw any errors here, as it will cause the page to 500.
  * @param {LoaderFunctionArgs}
  */
-function loadDeferredData({context}) {
+function loadDeferredData({ context }) {
   const recommendedProducts = context.storefront
     .query(RECOMMENDED_PRODUCTS_QUERY)
     .catch((error) => {
@@ -67,11 +68,18 @@ function loadDeferredData({context}) {
 export default function Homepage() {
   /** @type {LoaderReturnData} */
   const data = useLoaderData();
+
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   return (
     <div className="home">
       {/* <FeaturedCollection collection={data.featuredCollection} /> */}
       <WelcomeHero />
       <RecommendedProducts products={data.recommendedProducts} />
+      {isClient && <AgentChat />}
     </div>
   );
 }
@@ -81,7 +89,7 @@ export default function Homepage() {
  *   collection: FeaturedCollectionFragment;
  * }}
  */
-function FeaturedCollection({collection}) {
+function FeaturedCollection({ collection }) {
   if (!collection) return null;
   const image = collection?.image;
   return (
@@ -104,7 +112,7 @@ function FeaturedCollection({collection}) {
  *   products: Promise<RecommendedProductsQuery | null>;
  * }}
  */
-function RecommendedProducts({products}) {
+function RecommendedProducts({ products }) {
   return (
     <div className="recommended-products">
       <h2>Records & Merch</h2>
@@ -114,8 +122,8 @@ function RecommendedProducts({products}) {
             <div className="recommended-products-grid">
               {response
                 ? response.products.nodes.map((product) => (
-                    <ProductItem key={product.id} product={product} />
-                  ))
+                  <ProductItem key={product.id} product={product} />
+                ))
                 : null}
             </div>
           )}

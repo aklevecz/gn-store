@@ -13,6 +13,8 @@
   },
   "prettier": "@shopify/prettier-config",
   "dependencies": {
+    "@ai-sdk/openai": "^2.0.23",
+    "@ai-sdk/react": "^2.0.28",
     "@fal-ai/client": "^1.6.2",
     "@shopify/hydrogen": "2025.5.0",
     "@shopify/remix-oxygen": "^3.0.0",

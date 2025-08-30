@@ -1,7 +1,8 @@
-import { useAgent } from './AgentProvider';
+import { useAgentCompanion } from './AgentProvider';
 import { AgentSelector } from './AgentSelector';
 import { AgentStatus } from './AgentStatus';
 import { AgentInventory } from './AgentInventory';
+import { AgentChatTab } from './AgentChatTab';
 import { useEffect, useState } from 'react';
 
 export function Agent() {
@@ -12,10 +13,9 @@ export function Agent() {
     mood,
     stats,
     isInitialized 
-  } = useAgent();
+  } = useAgentCompanion();
   
-  const [showStatus, setShowStatus] = useState(false);
-  const [showInventory, setShowInventory] = useState(false);
+  const [activeTab, setActiveTab] = useState('status');
 
   // Don't render on server or before initialization
   if (!isInitialized || typeof window === 'undefined') {
@@ -92,27 +92,28 @@ export function Agent() {
 
               <div className="agent-actions">
                 <button 
-                  className="agent-action-btn"
-                  onClick={() => {
-                    setShowStatus(!showStatus);
-                    setShowInventory(false);
-                  }}
+                  className={`agent-action-btn ${activeTab === 'status' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('status')}
                 >
                   Stats
                 </button>
                 <button 
-                  className="agent-action-btn"
-                  onClick={() => {
-                    setShowInventory(!showInventory);
-                    setShowStatus(false);
-                  }}
+                  className={`agent-action-btn ${activeTab === 'feed' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('feed')}
                 >
                   Feed
                 </button>
+                <button 
+                  className={`agent-action-btn ${activeTab === 'chat' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('chat')}
+                >
+                  Chat
+                </button>
               </div>
 
-              {showStatus && <AgentStatus />}
-              {showInventory && <AgentInventory />}
+              {activeTab === 'status' && <AgentStatus />}
+              {activeTab === 'feed' && <AgentInventory />}
+              {activeTab === 'chat' && <AgentChatTab />}
             </div>
           </div>
         )}

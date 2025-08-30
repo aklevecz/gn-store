@@ -1,7 +1,7 @@
-import { useAgent } from './AgentProvider';
+import { useAgentCompanion } from './AgentProvider';
 
 export function AgentStatus() {
-  const { stats, selectedCharacter, insights } = useAgent();
+  const { stats, selectedCharacter, insights } = useAgentCompanion();
 
   const getStatLabel = (value) => {
     if (value >= 80) return 'Excellent';

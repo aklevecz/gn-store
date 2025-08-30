@@ -1,7 +1,7 @@
-import { CHARACTERS, useAgent } from './AgentProvider';
+import { CHARACTERS, useAgentCompanion } from './AgentProvider';
 
 export function AgentSelector() {
-  const { selectCharacter } = useAgent();
+  const { selectCharacter } = useAgentCompanion();
 
   return (
     <div className="agent-selector">

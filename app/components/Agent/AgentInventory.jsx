@@ -1,8 +1,8 @@
-import { ITEMS, useAgent } from './AgentProvider';
+import { ITEMS, useAgentCompanion } from './AgentProvider';
 import { useState } from 'react';
 
 export function AgentInventory() {
-  const { feedItem, selectedCharacter, stats } = useAgent();
+  const { feedItem, selectedCharacter, stats } = useAgentCompanion();
   const [selectedTab, setSelectedTab] = useState('all');
   const [feedingItem, setFeedingItem] = useState(null);
 

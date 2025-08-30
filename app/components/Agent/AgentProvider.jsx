@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useCallback, useReducer } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, useReducer, useRef } from 'react';
 import { getAgentData, saveAgentData } from '~/lib/agent-storage';
 import { useAgent } from 'agents/react';
 
@@ -485,6 +485,47 @@ export function AgentProvider({ children }) {
     dispatchChat({ type: 'CLEAR_MESSAGES' });
     setCurrentGame(null);
   }, []);
+
+  // Auto-sync character stats to server
+  const syncStatsToServer = useCallback((newStats, character) => {
+    if (!character) return;
+    
+    const syncMessage = `Please sync my character stats: ${character.name} (${character.id}) with happiness: ${newStats.happiness}, energy: ${newStats.energy}, intelligence: ${newStats.intelligence}`;
+    console.log('🔄 Auto-syncing stats to server:', syncMessage);
+    sendChatMessage(syncMessage);
+  }, [sendChatMessage]);
+
+  // Auto-sync stats to server when they change (debounced)
+  // Use a ref to prevent syncing on initial load and track last sync
+  const lastSyncStatsRef = useRef(null);
+  const hasSyncedInitialStatsRef = useRef(false);
+  
+  useEffect(() => {
+    if (!selectedCharacter || !isInitialized) return;
+    
+    // Don't sync on initial load
+    if (!hasSyncedInitialStatsRef.current) {
+      hasSyncedInitialStatsRef.current = true;
+      lastSyncStatsRef.current = { ...stats };
+      return;
+    }
+    
+    // Don't sync if stats haven't actually changed
+    const lastStats = lastSyncStatsRef.current;
+    if (lastStats && 
+        lastStats.happiness === stats.happiness && 
+        lastStats.energy === stats.energy && 
+        lastStats.intelligence === stats.intelligence) {
+      return;
+    }
+    
+    const timeoutId = setTimeout(() => {
+      syncStatsToServer(stats, selectedCharacter);
+      lastSyncStatsRef.current = { ...stats };
+    }, 2000); // 2 second debounce
+    
+    return () => clearTimeout(timeoutId);
+  }, [stats, selectedCharacter, isInitialized, syncStatsToServer]);
 
   const mood = selectedCharacter ? getMood(stats) : 'neutral';
 

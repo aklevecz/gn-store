@@ -102,7 +102,7 @@ export function Agent() {
                   className={`agent-action-btn ${activeTab === 'feed' ? 'active' : ''}`}
                   onClick={() => setActiveTab('feed')}
                 >
-                  Feed
+                  Treat
                 </button>
                 <button 
                   className={`agent-action-btn ${activeTab === 'game' ? 'active' : ''}`}

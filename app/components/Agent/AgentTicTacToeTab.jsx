@@ -1,6 +1,7 @@
 import { useAgentCompanion } from './AgentProvider';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { TicTacToeBoard } from '../TicTacToeBoard';
+import { parseBoardString } from '~/lib/tictactoe-parser';
 
 export function AgentTicTacToeTab() {
   const {
@@ -10,13 +11,48 @@ export function AgentTicTacToeTab() {
     isProcessing,
     selectedCharacter
   } = useAgentCompanion();
+  
+  // Local optimistic board state
+  const [optimisticBoard, setOptimisticBoard] = useState(null);
+  
+  // Update optimistic board when server game updates
+  useEffect(() => {
+    if (currentGame?.board) {
+      setOptimisticBoard(null); // Clear optimistic state when server updates
+    }
+  }, [currentGame]);
 
   const startNewGame = () => {
+    setOptimisticBoard(null);
     sendChatMessage("Please start a new TicTacToe game");
   };
 
   const clearGame = () => {
+    setOptimisticBoard(null);
     sendChatMessage("Please call the clearTicTacToeBoard tool");
+  };
+  
+  const handleOptimisticMove = (row, col) => {
+    if (!currentGame?.board || isProcessing) return;
+    
+    // Parse the current board
+    const board = parseBoardString(currentGame.board);
+    
+    // Check if cell is empty
+    if (board[row][col] !== '') return;
+    
+    // Create optimistic board with the user's X
+    board[row][col] = 'X';
+    
+    // Convert back to board string format
+    const optimisticBoardString = board.map((row, i) => 
+      `${i} | ${row.map(cell => cell || ' ').join(' | ')} |`
+    ).join('\n');
+    
+    setOptimisticBoard(optimisticBoardString);
+    
+    // Send the actual move to the server
+    handleTicTacToeMove(row, col);
   };
 
   return (
@@ -58,37 +94,37 @@ export function AgentTicTacToeTab() {
           </div>
         ) : (
           <div className="active-game">
-            <TicTacToeBoard 
-              boardString={currentGame.board}
-              onCellClick={handleTicTacToeMove}
-              disabled={isProcessing}
-            />
+            <div className={optimisticBoard ? 'optimistic-board' : ''}>
+              <TicTacToeBoard 
+                boardString={optimisticBoard || currentGame.board}
+                onCellClick={handleOptimisticMove}
+                disabled={isProcessing}
+              />
+            </div>
             
-            {currentGame?.message && (
-              <div className="game-feedback">
-                <div className="feedback-avatar">
-                  <img 
-                    src={selectedCharacter?.moods.happy}
-                    alt={selectedCharacter?.name}
-                    style={{ width: 32, height: 'auto' }}
-                  />
-                </div>
-                <div className="feedback-message">
-                  {currentGame.message}
-                </div>
+            <div className="game-feedback">
+              <div className="feedback-avatar">
+                <img 
+                  src={selectedCharacter?.moods.happy}
+                  alt={selectedCharacter?.name}
+                  style={{ width: 32, height: 'auto' }}
+                />
               </div>
-            )}
-            
-            {isProcessing && (
-              <div className="game-thinking">
-                <div className="thinking-indicator">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </div>
-                <p>{selectedCharacter?.name} is thinking...</p>
+              <div className="feedback-message">
+                {isProcessing ? (
+                  <div className="thinking-inline">
+                    <span>{selectedCharacter?.name} is thinking</span>
+                    <span className="thinking-dots">
+                      <span>.</span>
+                      <span>.</span>
+                      <span>.</span>
+                    </span>
+                  </div>
+                ) : (
+                  currentGame?.message || 'Make your move!'
+                )}
               </div>
-            )}
+            </div>
           </div>
         )}
       </div>

@@ -16,7 +16,7 @@ export const CHARACTERS = {
     moods: {
       happy: '/characters/groovy-thumbsup.png',
       neutral: '/characters/groovy-stand.png',
-      sad: '/characters/groovy-stand.png',
+      sad: '/characters/groovy-sad.png',
       excited: '/characters/groovy-jump.png',
     }
   },
@@ -28,7 +28,7 @@ export const CHARACTERS = {
     moods: {
       happy: '/characters/globby-thumbsup.png',
       neutral: '/characters/globby-thumbsup.png',
-      sad: '/characters/globby-thumbsup.png',
+      sad: '/characters/globby-sad.png',
       excited: '/characters/globby-jump.png',
     }
   }

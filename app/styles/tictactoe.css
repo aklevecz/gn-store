@@ -10,7 +10,7 @@
 .tictactoe-board {
   display: inline-block;
   background: white;
-  border: 2px solid var(--neon-plum, #9e80ff);
+  border: 2px solid black;
   border-radius: 8px;
   padding: 8px;
 }
@@ -22,7 +22,7 @@
 .tictactoe-cell {
   width: 60px;
   height: 60px;
-  border: 1px solid #e5e7eb;
+  border: 2px solid black;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -59,20 +59,21 @@
   height: 100%;
 }
 
-/* X styling */
-.cell-x .cell-content {
-  color: var(--neon-plum, #9e80ff);
-  font-family: system-ui, -apple-system, sans-serif;
-  font-size: 36px;
-  font-weight: 700;
+/* SVG icon styling */
+.cell-icon {
+  width: 36px;
+  height: 36px;
+  display: block;
 }
 
-/* O styling */
-.cell-o .cell-content {
-  color: var(--aqua-blue, #59a0c4);
-  font-family: system-ui, -apple-system, sans-serif;
-  font-size: 32px;
-  font-weight: 700;
+/* X icon styling - purple */
+.x-icon {
+  filter: invert(36%) sepia(84%) saturate(2290%) hue-rotate(250deg) brightness(95%) contrast(101%);
+}
+
+/* O icon styling - black */
+.o-icon {
+  /* No filter needed - keep SVG's original black color */
 }
 
 /* Empty cell */
@@ -120,8 +121,7 @@
   }
 }
 
-.cell-x .cell-content,
-.cell-o .cell-content {
+.cell-icon {
   animation: pieceAppear 0.3s ease-out;
 }
 
@@ -130,14 +130,10 @@
   .tictactoe-cell {
     width: 50px;
     height: 50px;
-    font-size: 24px;
   }
   
-  .cell-x .cell-content {
-    font-size: 30px;
-  }
-  
-  .cell-o .cell-content {
-    font-size: 26px;
+  .cell-icon {
+    width: 28px;
+    height: 28px;
   }
 }

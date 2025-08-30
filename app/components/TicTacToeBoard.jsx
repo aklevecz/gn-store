@@ -26,7 +26,21 @@ export function TicTacToeBoard({ boardString, onCellClick, disabled = false }) {
                   onClick={() => handleCellClick(rowIndex, colIndex)}
                 >
                   <span className="cell-content">
-                    {cell}
+                    {cell === 'X' ? (
+                      <img 
+                        src="/icons/x-icon.svg" 
+                        alt="X" 
+                        className="cell-icon x-icon"
+                      />
+                    ) : cell === 'O' ? (
+                      <img 
+                        src="/icons/o-icon.svg" 
+                        alt="O" 
+                        className="cell-icon o-icon"
+                      />
+                    ) : (
+                      ''
+                    )}
                   </span>
                 </div>
               );

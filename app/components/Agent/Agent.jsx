@@ -3,6 +3,7 @@ import { AgentSelector } from './AgentSelector';
 import { AgentStatus } from './AgentStatus';
 import { AgentInventory } from './AgentInventory';
 import { AgentChatTab } from './AgentChatTab';
+import { AgentTicTacToeTab } from './AgentTicTacToeTab';
 import { useEffect, useState } from 'react';
 
 export function Agent() {
@@ -104,6 +105,12 @@ export function Agent() {
                   Feed
                 </button>
                 <button 
+                  className={`agent-action-btn ${activeTab === 'game' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('game')}
+                >
+                  Game
+                </button>
+                <button 
                   className={`agent-action-btn ${activeTab === 'chat' ? 'active' : ''}`}
                   onClick={() => setActiveTab('chat')}
                 >
@@ -113,6 +120,7 @@ export function Agent() {
 
               {activeTab === 'status' && <AgentStatus />}
               {activeTab === 'feed' && <AgentInventory />}
+              {activeTab === 'game' && <AgentTicTacToeTab />}
               {activeTab === 'chat' && <AgentChatTab />}
             </div>
           </div>

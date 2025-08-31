@@ -39,7 +39,7 @@ export const ITEMS = {
   VINYL_RECORD: { id: 'vinyl', name: 'Vinyl Record', effect: { happiness: 15 }, type: 'music' },
   CONCERT_TICKET: { id: 'ticket', name: 'Concert Ticket', effect: { happiness: 25 }, type: 'music' },
   MUSIC_NOTE: { id: 'note', name: 'Music Note', effect: { happiness: 5 }, type: 'music' },
-  
+
   // Eco items
   SOLAR_POWER: { id: 'solar', name: 'Solar Power', effect: { energy: 20 }, type: 'eco' },
   RECYCLED_MATERIALS: { id: 'recycled', name: 'Recycled Materials', effect: { intelligence: 10 }, type: 'eco' },
@@ -198,6 +198,9 @@ function chatReducer(state, action) {
     case 'CLEAR_MESSAGES': {
       return initialChatState;
     }
+    case 'SET_MESSAGES': {
+      return { ...state, messages: action.messages };
+    }
     default:
       return state;
   }
@@ -223,17 +226,91 @@ export function AgentProvider({ children }) {
   const [lastInteraction, setLastInteraction] = useState(Date.now());
   const [insights, setInsights] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
-  
+
   // Chat state management with reducer (from AgentChat.jsx)
   const [chatState, dispatchChat] = useReducer(chatReducer, initialChatState);
-  const [sessionId] = useState(() => Math.random().toString(36).substring(2, 8));
+  const [sessionId] = useState(() => {
+    const id = Math.random().toString(36).substring(2, 8);
+    console.log('🆔 AgentProvider: Created session ID:', id);
+    return id;
+  });
   const [isProcessing, setIsProcessing] = useState(false);
   const [currentGame, setCurrentGame] = useState(null);
-  // Initialize agent connection
+  // Create unique instance name for this user session
+  const [instanceName] = useState(() => {
+    if (typeof window === 'undefined') return 'default';
+    
+    const storageKey = 'gn-friend-user-session';
+    let userSession = localStorage.getItem(storageKey);
+    
+    if (!userSession) {
+      userSession = `user-${Math.random().toString(36).substring(2, 8)}`;
+      localStorage.setItem(storageKey, userSession);
+      console.log('🆔 Generated new user session:', userSession);
+    } else {
+      console.log('🆔 Using existing user session:', userSession);
+    }
+    
+    return userSession;
+  });
+
+  // Initialize agent connection with unique instance name
   const agent = useAgent({
     agent: AGENT_NAME,
-    host: HOST
+    host: HOST,
+    name: instanceName  // This creates separate DO instances per user
   });
+
+  // Debug: Log the agent URL to understand routing
+  useEffect(() => {
+    if (agent._url) {
+      console.log('🔗 AgentProvider: Agent URL:', agent._url);
+    }
+  }, [agent._url]);
+
+  // Fetch initial messages on mount to restore conversation history
+  useEffect(() => {
+    const fetchInitialMessages = async () => {
+      try {
+        console.log('💬 AgentProvider: Fetching initial messages for session:', sessionId);
+        const agentUrl = agent._url.replace("ws://", "http://").replace("wss://", "https://");
+        const getMessagesUrl = new URL(agentUrl);
+        getMessagesUrl.pathname += "/get-messages";
+
+        console.log('🔗 AgentProvider: Fetching from URL:', getMessagesUrl.toString());
+
+        const response = await fetch(getMessagesUrl.toString());
+        if (response.ok) {
+          const initialMessages = await response.json();
+          console.log('📥 AgentProvider: Retrieved', initialMessages?.length || 0, 'messages');
+
+          if (initialMessages && initialMessages.length > 0) {
+            // Convert server messages to our format
+            const convertedMessages = initialMessages.map((msg, index) => ({
+              id: msg.id || `restored-${index}`,
+              role: msg.role,
+              status: 'complete',
+              content: msg.content,
+              tools: msg.toolInvocations || [],
+              usage: msg.usage
+            }));
+
+            console.log('✅ AgentProvider: Restoring', convertedMessages.length, 'messages to chat state');
+            // Initialize state with fetched messages
+            dispatchChat({ type: 'SET_MESSAGES', messages: convertedMessages });
+          }
+        } else {
+          console.log('❌ AgentProvider: Failed to fetch messages, status:', response.status);
+        }
+      } catch (error) {
+        console.log('🚫 AgentProvider: Error fetching initial messages:', error);
+      }
+    };
+
+    if (agent._url) {
+      fetchInitialMessages();
+    }
+  }, [agent, sessionId]);
 
   // Load saved data on mount
   useEffect(() => {
@@ -265,7 +342,7 @@ export function AgentProvider({ children }) {
   useEffect(() => {
     const handleStreamingResponse = (data) => {
       const { id, body, done } = data;
-      
+
       if (done && body === "") {
         dispatchChat({ type: 'STREAM_COMPLETE', id });
         setIsProcessing(false);
@@ -276,7 +353,7 @@ export function AgentProvider({ children }) {
         const colonIndex = body.indexOf(':');
         const prefix = body.substring(0, colonIndex);
         const content = body.substring(colonIndex + 1).replace(/\n$/, '');
-        
+
         if (!content && prefix !== FRAME_META) return;
 
         switch (prefix) {
@@ -293,14 +370,14 @@ export function AgentProvider({ children }) {
             try {
               const toolCall = JSON.parse(content);
               dispatchChat({ type: 'TOOL_START', id, toolCall });
-            } catch (e) {}
+            } catch (e) { }
             break;
           }
           case FRAME_TOOL_RESULT: {
             try {
               const toolResult = JSON.parse(content);
               dispatchChat({ type: 'TOOL_RESULT', id, toolResult });
-            } catch (e) {}
+            } catch (e) { }
             break;
           }
           case FRAME_USAGE_E:
@@ -308,7 +385,7 @@ export function AgentProvider({ children }) {
             try {
               const usage = JSON.parse(content);
               dispatchChat({ type: 'USAGE', id, usage });
-            } catch (e) {}
+            } catch (e) { }
             break;
           }
           case FRAME_META: {
@@ -323,7 +400,7 @@ export function AgentProvider({ children }) {
     const handleMessage = (event) => {
       try {
         const data = JSON.parse(event.data);
-        
+
         if (data.type === "cf_agent_use_chat_response") {
           handleStreamingResponse(data);
         } else {
@@ -355,7 +432,7 @@ export function AgentProvider({ children }) {
       const now = Date.now();
       const timeSinceInteraction = now - lastInteraction;
       const hoursElapsed = timeSinceInteraction / (1000 * 60 * 60);
-      
+
       if (hoursElapsed > 1) {
         setStats(prev => ({
           happiness: clampStat(prev.happiness - 2),
@@ -403,7 +480,7 @@ export function AgentProvider({ children }) {
     });
 
     setLastInteraction(Date.now());
-    
+
     // Add to inventory history
     setInventory(prev => [...prev, { item: item.id, timestamp: Date.now() }]);
   }, []);
@@ -423,9 +500,10 @@ export function AgentProvider({ children }) {
   const sendChatMessage = useCallback((content) => {
     const id = sessionId;
     const agentUrl = agent._url.replace("ws://", "http://").replace("wss://", "https://");
-    
+
+    console.log('💌 AgentProvider: Sending message with session ID:', sessionId);
     setIsProcessing(true);
-    
+
     // Build conversation history from current messages
     const conversationHistory = chatState.messages
       .filter(msg => msg.role === 'user' || msg.role === 'assistant')
@@ -435,7 +513,9 @@ export function AgentProvider({ children }) {
         content: msg.content,
         createdAt: msg.createdAt || new Date().toISOString()
       }));
-    
+
+    console.log('📜 AgentProvider: Including', conversationHistory.length, 'previous messages in context');
+
     // Add the new user message
     const newUserMessage = {
       id: Math.random().toString(36).substring(2, 8),
@@ -443,7 +523,7 @@ export function AgentProvider({ children }) {
       content: content,
       createdAt: new Date().toISOString()
     };
-    
+
     const message = {
       id,
       type: "cf_agent_use_chat_request",
@@ -458,7 +538,7 @@ export function AgentProvider({ children }) {
         })
       }
     };
-    
+
     agent.send(JSON.stringify(message));
     dispatchChat({ type: 'ADD_USER_MESSAGE', id, content });
   }, [agent, sessionId, chatState.messages]);
@@ -489,7 +569,7 @@ export function AgentProvider({ children }) {
   // Auto-sync character stats to server
   const syncStatsToServer = useCallback((newStats, character) => {
     if (!character) return;
-    
+
     const syncMessage = `Please sync my character stats: ${character.name} (${character.id}) with happiness: ${newStats.happiness}, energy: ${newStats.energy}, intelligence: ${newStats.intelligence}`;
     console.log('🔄 Auto-syncing stats to server:', syncMessage);
     sendChatMessage(syncMessage);
@@ -499,31 +579,31 @@ export function AgentProvider({ children }) {
   // Use a ref to prevent syncing on initial load and track last sync
   const lastSyncStatsRef = useRef(null);
   const hasSyncedInitialStatsRef = useRef(false);
-  
+
   useEffect(() => {
     if (!selectedCharacter || !isInitialized) return;
-    
+
     // Don't sync on initial load
     if (!hasSyncedInitialStatsRef.current) {
       hasSyncedInitialStatsRef.current = true;
       lastSyncStatsRef.current = { ...stats };
       return;
     }
-    
+
     // Don't sync if stats haven't actually changed
     const lastStats = lastSyncStatsRef.current;
-    if (lastStats && 
-        lastStats.happiness === stats.happiness && 
-        lastStats.energy === stats.energy && 
-        lastStats.intelligence === stats.intelligence) {
+    if (lastStats &&
+      lastStats.happiness === stats.happiness &&
+      lastStats.energy === stats.energy &&
+      lastStats.intelligence === stats.intelligence) {
       return;
     }
-    
+
     const timeoutId = setTimeout(() => {
       syncStatsToServer(stats, selectedCharacter);
       lastSyncStatsRef.current = { ...stats };
     }, 2000); // 2 second debounce
-    
+
     return () => clearTimeout(timeoutId);
   }, [stats, selectedCharacter, isInitialized, syncStatsToServer]);
 
@@ -538,18 +618,18 @@ export function AgentProvider({ children }) {
     mood,
     isVisible,
     isInitialized,
-    
+
     // Chat state
     chatMessages: chatState.messages,
     isProcessing,
     currentGame,
-    
+
     // Actions
     selectCharacter,
     feedItem,
     addInsight,
     toggleVisibility,
-    
+
     // Chat actions
     sendChatMessage,
     handleTicTacToeMove,

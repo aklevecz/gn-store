@@ -57,7 +57,10 @@ export default function DebugAgent() {
       // Fetch available tools from the actual agent server
       const fetchTools = async () => {
         try {
-          const response = await fetch(`${url}/api/debug/tools`);
+          const toolsUrl = new URL(url);
+          toolsUrl.pathname += '/api/debug/tools';
+          
+          const response = await fetch(toolsUrl.toString());
           if (response.ok) {
             const data = await response.json();
             setAvailableTools(data.tools || []);
@@ -89,11 +92,11 @@ export default function DebugAgent() {
       return;
     }
     try {
-      // Extract base URL from agent URL
-      const urlObj = new URL(agentUrl);
-      const baseUrl = `${urlObj.protocol}//${urlObj.host}`;
+      // Construct URL properly - add path before query params
+      const url = new URL(agentUrl);
+      url.pathname += '/api/sync-stats';
       
-      const response = await fetch(`${baseUrl}/api/sync-stats`, {
+      const response = await fetch(url.toString(), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -136,7 +139,10 @@ export default function DebugAgent() {
 
   const getAgentState = async () => {
     try {
-      const response = await fetch(`${agentUrl}/api/debug/state?agentId=${sessionId}`);
+      const url = new URL(agentUrl);
+      url.pathname += '/api/debug/state';
+      
+      const response = await fetch(url.toString());
       const state = await response.json();
       setToolTestResult({
         timestamp: new Date().toISOString(),
@@ -239,6 +245,8 @@ export default function DebugAgent() {
       {/* Character State Inspector */}
       <div style={{ border: '1px solid #ccc', padding: '10px', marginBottom: '20px' }}>
         <h2>🎮 Character State</h2>
+        
+        <h3>Frontend State (AgentProvider)</h3>
         <div>Character: {selectedCharacter.name} ({selectedCharacter.id})</div>
         <div>Current Stats:</div>
         <ul>
@@ -247,6 +255,25 @@ export default function DebugAgent() {
           <li>Intelligence: {stats.intelligence}/100</li>
         </ul>
         <div>Calculated Mood: {mood}</div>
+        
+        <h3>Server State</h3>
+        {toolTestResult && toolTestResult.state ? (
+          <div>
+            <div>Character: {toolTestResult.state.character?.name} ({toolTestResult.state.character?.id})</div>
+            <div>Server Stats:</div>
+            <ul>
+              <li>Happiness: {toolTestResult.state.character?.stats?.happiness}/100</li>
+              <li>Energy: {toolTestResult.state.character?.stats?.energy}/100</li>
+              <li>Intelligence: {toolTestResult.state.character?.stats?.intelligence}/100</li>
+            </ul>
+            <div>Server Mood: {toolTestResult.state.character?.mood}</div>
+            <div style={{ fontSize: '12px', color: '#666' }}>
+              Last Sync: {toolTestResult.state.character?.lastSync ? new Date(toolTestResult.state.character.lastSync).toLocaleTimeString() : 'Never'}
+            </div>
+          </div>
+        ) : (
+          <div style={{ color: '#999' }}>Click "Get Server State" to see server state</div>
+        )}
         
         <button onClick={getAgentState} style={{ marginTop: '10px' }}>
           Get Server State

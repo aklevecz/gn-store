@@ -83,6 +83,45 @@ const mergeStreamingText = (previousText, incomingText) => {
   return prev + next;
 };
 
+// Ensure message IDs are unique and derive the maximum numeric sequence
+function normalizeMessages(messages) {
+  const seenIds = new Set();
+  return (messages || []).map((message, index) => {
+    let id = message?.id;
+    if (!id) {
+      const role = message?.role || 'message';
+      id = `${role}:${index + 1}`;
+    }
+    if (seenIds.has(id)) {
+      let counter = 1;
+      let uniqueId = `${id}#${counter}`;
+      while (seenIds.has(uniqueId)) {
+        counter += 1;
+        uniqueId = `${id}#${counter}`;
+      }
+      id = uniqueId;
+    }
+    seenIds.add(id);
+    return { ...message, id };
+  });
+}
+
+function getMaxSeqFromMessages(messages) {
+  let maxSeq = 0;
+  for (const m of messages || []) {
+    if (m && typeof m.id === 'string') {
+      const match = m.id.match(/^(?:user|assistant|system|error):(\d+)/);
+      if (match) {
+        const n = parseInt(match[1], 10);
+        if (!Number.isNaN(n) && n > maxSeq) {
+          maxSeq = n;
+        }
+      }
+    }
+  }
+  return maxSeq;
+}
+
 // Chat reducer from AgentChat.jsx
 const initialChatState = {
   messages: [],
@@ -199,7 +238,22 @@ function chatReducer(state, action) {
       return initialChatState;
     }
     case 'SET_MESSAGES': {
-      return { ...state, messages: action.messages };
+      // NOTE: Restored/initial messages from the server have, at times, come back with
+      // duplicate or non-sequential IDs (e.g., repeated `user:4`, `assistant:7`). This caused:
+      // 1) React key collisions in the chat list, resulting in duplicated/omitted DOM nodes
+      // 2) Server-side issues where message identity/ordering became ambiguous
+      //
+      // As a stopgap, we normalize all incoming messages to ensure unique IDs and we advance
+      // the local `seq` to at least the highest numeric suffix we see. This keeps React keys
+      // stable and prevents ID clashes when we append new `user:`/`assistant:` messages.
+      //
+      // Longer term: we should switch to a robust, server-assigned unique ID scheme (e.g. UUIDs)
+      // and avoid overloading IDs with role-based prefixes for sequencing. The server should also
+      // guarantee consistent ordering and uniqueness so the client can trust message identity
+      // without client-side repairs.
+      const normalized = normalizeMessages(action.messages);
+      const maxSeq = getMaxSeqFromMessages(normalized);
+      return { ...state, messages: normalized, seq: Math.max(state.seq, maxSeq), streams: new Map() };
     }
     default:
       return state;
@@ -261,12 +315,67 @@ export function AgentProvider({ children }) {
     name: instanceName  // This creates separate DO instances per user
   });
 
+  // Server state fetching for periodic sync
+  const fetchServerState = useCallback(async () => {
+    if (!agent?._url) return null;
+    
+    try {
+      const url = new URL(agent._url.replace("ws://", "http://").replace("wss://", "https://"));
+      url.pathname += '/api/debug/state';
+      
+      const response = await fetch(url.toString());
+      if (!response.ok) return null;
+      
+      const serverState = await response.json();
+      return serverState.character;
+    } catch (error) {
+      console.error('Failed to fetch server state:', error);
+      return null;
+    }
+  }, [agent]);
+
   // Debug: Log the agent URL to understand routing
   useEffect(() => {
     if (agent._url) {
       console.log('🔗 AgentProvider: Agent URL:', agent._url);
     }
   }, [agent._url]);
+
+  // Initial server state fetch on agent connection
+  useEffect(() => {
+    const fetchInitialServerState = async () => {
+      if (!agent?._url || !selectedCharacter) return;
+      
+      console.log('🔄 Fetching initial server state...');
+      const serverCharacter = await fetchServerState();
+      if (!serverCharacter) return;
+      
+      const serverLastSync = serverCharacter.lastSync || 0;
+      const localLastSync = selectedCharacter.lastSync || 0;
+      
+      if (serverLastSync > localLastSync) {
+        console.log('🔄 Found newer server state on connection, syncing...');
+        
+        // Update character if it changed
+        if (serverCharacter.id !== selectedCharacter.id) {
+          const newCharacter = CHARACTERS[serverCharacter.id];
+          if (newCharacter) {
+            setSelectedCharacter({ ...newCharacter, lastSync: serverLastSync });
+          }
+        } else {
+          setSelectedCharacter(prev => ({ ...prev, lastSync: serverLastSync }));
+        }
+        
+        // Update stats
+        setStats(serverCharacter.stats);
+        setLastInteraction(serverLastSync);
+      }
+    };
+    
+    if (agent._url && selectedCharacter && isInitialized) {
+      fetchInitialServerState();
+    }
+  }, [agent._url, selectedCharacter, isInitialized, fetchServerState]);
 
   // Fetch initial messages on mount to restore conversation history
   useEffect(() => {
@@ -285,9 +394,9 @@ export function AgentProvider({ children }) {
           console.log('📥 AgentProvider: Retrieved', initialMessages?.length || 0, 'messages');
 
           if (initialMessages && initialMessages.length > 0) {
-            // Convert server messages to our format
-            const convertedMessages = initialMessages.map((msg, index) => ({
-              id: msg.id || `restored-${index}`,
+            // Convert server messages to our format; IDs will be normalized in reducer
+            const convertedMessages = initialMessages.map((msg) => ({
+              id: msg.id,
               role: msg.role,
               status: 'complete',
               content: msg.content,
@@ -337,6 +446,40 @@ export function AgentProvider({ children }) {
       });
     }
   }, [selectedCharacter, stats, inventory, lastInteraction, insights, isInitialized]);
+
+  // Periodic sync with server state
+  useEffect(() => {
+    if (!agent?._url || !isInitialized || !selectedCharacter) return;
+    
+    const interval = setInterval(async () => {
+      const serverCharacter = await fetchServerState();
+      if (!serverCharacter) return;
+      
+      // Only update if server state is newer than our local state
+      const serverLastSync = serverCharacter.lastSync || 0;
+      const localLastSync = selectedCharacter.lastSync || lastInteraction || 0;
+      
+      if (serverLastSync > localLastSync) {
+        console.log('🔄 Syncing with newer server state');
+        
+        // Update character if it changed
+        if (serverCharacter.id !== selectedCharacter.id) {
+          const newCharacter = CHARACTERS[serverCharacter.id];
+          if (newCharacter) {
+            setSelectedCharacter({ ...newCharacter, lastSync: serverLastSync });
+          }
+        } else {
+          setSelectedCharacter(prev => ({ ...prev, lastSync: serverLastSync }));
+        }
+        
+        // Update stats
+        setStats(serverCharacter.stats);
+        setLastInteraction(serverLastSync);
+      }
+    }, 10000); // Every 10 seconds
+    
+    return () => clearInterval(interval);
+  }, [agent, isInitialized, selectedCharacter, lastInteraction, fetchServerState]);
 
   // Agent message handling (from AgentChat.jsx)
   useEffect(() => {
@@ -460,16 +603,19 @@ export function AgentProvider({ children }) {
   const selectCharacter = useCallback((characterId) => {
     const character = CHARACTERS[characterId];
     if (character) {
-      setSelectedCharacter(character);
+      const now = Date.now();
+      setSelectedCharacter({ ...character, lastSync: now });
       setStats(DEFAULT_STATS);
       setInventory([]);
-      setLastInteraction(Date.now());
+      setLastInteraction(now);
     }
   }, []);
 
   const feedItem = useCallback((itemId) => {
     const item = Object.values(ITEMS).find(i => i.id === itemId);
     if (!item) return;
+
+    const now = Date.now();
 
     setStats(prev => {
       const newStats = { ...prev };
@@ -479,10 +625,12 @@ export function AgentProvider({ children }) {
       return newStats;
     });
 
-    setLastInteraction(Date.now());
+    // Update lastSync to mark this as a local change
+    setSelectedCharacter(prev => prev ? { ...prev, lastSync: now } : prev);
+    setLastInteraction(now);
 
     // Add to inventory history
-    setInventory(prev => [...prev, { item: item.id, timestamp: Date.now() }]);
+    setInventory(prev => [...prev, { item: item.id, timestamp: now }]);
   }, []);
 
   const addInsight = useCallback((insight) => {
@@ -498,10 +646,10 @@ export function AgentProvider({ children }) {
 
   // Chat functions (from AgentChat.jsx)
   const sendChatMessage = useCallback((content) => {
-    const id = sessionId;
+    const messageId = Math.random().toString(36).substring(2, 8);
     const agentUrl = agent._url.replace("ws://", "http://").replace("wss://", "https://");
 
-    console.log('💌 AgentProvider: Sending message with session ID:', sessionId);
+    console.log('💌 AgentProvider: Sending message with ID:', messageId, 'for session:', sessionId);
     setIsProcessing(true);
 
     // Build conversation history from current messages
@@ -525,7 +673,7 @@ export function AgentProvider({ children }) {
     };
 
     const message = {
-      id,
+      id: messageId,  // Use unique message ID instead of session ID
       type: "cf_agent_use_chat_request",
       url: agentUrl,
       init: {
@@ -540,7 +688,7 @@ export function AgentProvider({ children }) {
     };
 
     agent.send(JSON.stringify(message));
-    dispatchChat({ type: 'ADD_USER_MESSAGE', id, content });
+    dispatchChat({ type: 'ADD_USER_MESSAGE', id: messageId, content });
   }, [agent, sessionId, chatState.messages]);
 
   const handleTicTacToeMove = useCallback((row, col) => {

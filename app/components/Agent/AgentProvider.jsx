@@ -634,6 +634,10 @@ export function AgentProvider({ children }) {
     sendChatMessage,
     handleTicTacToeMove,
     clearMessages,
+
+    // Agent connection
+    agent,
+    sessionId,
   };
 
   return (

@@ -1,14 +1,11 @@
 import { useAgentCompanion } from './AgentProvider';
 import { useState, useRef, useEffect } from 'react';
-import { TicTacToeBoard } from '../TicTacToeBoard';
 
 export function AgentChatTab() {
   const {
     chatMessages,
     isProcessing,
-    currentGame,
     sendChatMessage,
-    handleTicTacToeMove,
     clearMessages,
     selectedCharacter
   } = useAgentCompanion();
@@ -74,19 +71,6 @@ export function AgentChatTab() {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Persistent TicTacToe Board */}
-      {currentGame?.board && (
-        <div className="current-game">
-          <div className="game-status">
-            <strong>{currentGame.message}</strong>
-          </div>
-          <TicTacToeBoard 
-            boardString={currentGame.board}
-            onCellClick={handleTicTacToeMove}
-            disabled={isProcessing}
-          />
-        </div>
-      )}
 
       <form onSubmit={handleChatSubmit} className="chat-input-form">
         <input

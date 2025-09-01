@@ -292,11 +292,6 @@ export function AgentProvider({ children }) {
 
   // Chat state management with reducer (from AgentChat.jsx)
   const [chatState, dispatchChat] = useReducer(chatReducer, initialChatState);
-  const [sessionId] = useState(() => {
-    const id = Math.random().toString(36).substring(2, 8);
-    console.log('🆔 AgentProvider: Created session ID:', id);
-    return id;
-  });
   const [isProcessing, setIsProcessing] = useState(false);
   const [currentGame, setCurrentGame] = useState(null);
   // Create unique instance name for this user session
@@ -395,7 +390,7 @@ export function AgentProvider({ children }) {
   useEffect(() => {
     const fetchInitialMessages = async () => {
       try {
-        console.log('💬 AgentProvider: Fetching initial messages for session:', sessionId);
+        console.log('💬 AgentProvider: Fetching initial messages');
         const agentUrl = agent._url.replace("ws://", "http://").replace("wss://", "https://");
         const getMessagesUrl = new URL(agentUrl);
         getMessagesUrl.pathname += "/get-messages";
@@ -433,7 +428,7 @@ export function AgentProvider({ children }) {
     if (agent._url) {
       fetchInitialMessages();
     }
-  }, [agent, sessionId]);
+  }, [agent]);
 
   // Load saved data on mount
   useEffect(() => {
@@ -702,7 +697,7 @@ export function AgentProvider({ children }) {
     const messageId = Math.random().toString(36).substring(2, 8);
     const agentUrl = agent._url.replace("ws://", "http://").replace("wss://", "https://");
 
-    console.log('💌 AgentProvider: Sending message with ID:', messageId, 'for session:', sessionId);
+    console.log('💌 AgentProvider: Sending message with ID:', messageId);
     setIsProcessing(true);
 
     // Build conversation history from current messages
@@ -742,7 +737,7 @@ export function AgentProvider({ children }) {
 
     agent.send(JSON.stringify(message));
     dispatchChat({ type: 'ADD_USER_MESSAGE', id: messageId, content });
-  }, [agent, sessionId, chatState.messages]);
+  }, [agent, chatState.messages]);
 
   const handleTicTacToeMove = useCallback((row, col) => {
     const moveMessage = `I want to make my TicTacToe move. Please call the makeTicTacToeMove tool with row: ${row} and col: ${col}`;
@@ -840,7 +835,6 @@ export function AgentProvider({ children }) {
 
     // Agent connection
     agent,
-    sessionId,
   };
 
   return (

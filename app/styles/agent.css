@@ -489,6 +489,9 @@
   .agent-selector-options {
     grid-template-columns: 1fr;
   }
+  .agent-chat-tab {
+    height: 320px;
+  }
 }
 /* Agent Chat Tab */
 .agent-chat-tab {
@@ -496,7 +499,7 @@
   border-top: 1px solid #e5e7eb;
   display: flex;
   flex-direction: column;
-  height: 300px;
+  height: 360px;
 }
 
 .chat-header {

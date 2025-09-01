@@ -70,20 +70,22 @@ const FRAME_USAGE_E = 'e';
 const FRAME_USAGE_D = 'd';
 const FRAME_META = 'f';
 
-// Merge incoming streaming text intelligently to avoid duplicate concatenation
+// Merge incoming streaming text - handles delta streaming
+// where each chunk is a small piece of new text to append
 const mergeStreamingText = (previousText, incomingText) => {
   const prev = previousText || "";
   const next = incomingText || "";
+  
   if (!prev) return next;
   if (!next) return prev;
-  if (next.startsWith(prev)) return next;
-  if (prev.endsWith(next)) return prev;
-  const maxOverlap = Math.min(prev.length, next.length);
-  for (let overlap = maxOverlap; overlap > 0; overlap--) {
-    if (prev.slice(-overlap) === next.slice(0, overlap)) {
-      return prev + next.slice(overlap);
-    }
+  
+  // Check if it's cumulative (incoming contains all previous text)
+  if (next.startsWith(prev) && next.length > prev.length) {
+    return next;
   }
+  
+  // Otherwise it's delta streaming - just append
+  // This handles character-by-character or small chunk streaming
   return prev + next;
 };
 
@@ -151,16 +153,34 @@ function chatReducer(state, action) {
     }
     case 'STREAM_TEXT': {
       const { id, text } = action;
-      const newStreams = new Map(state.streams);
-      const stream = newStreams.get(id) || { content: '', tools: [], usage: null, messageKey: null };
+      
+      // Get existing stream from state
+      const existingStream = state.streams.get(id);
+      
+      // Create a NEW stream object (don't mutate existing)
+      const stream = existingStream 
+        ? { ...existingStream }  // Copy existing stream
+        : { content: '', tools: [], usage: null, messageKey: null };  // New stream
+      
+      // Assign message key if this is a new stream
       let seq = state.seq;
       if (!stream.messageKey) {
         seq += 1;
         stream.messageKey = `assistant:${seq}`;
       }
+      
+      // Update content (on the new object, not mutating)
       stream.content = mergeStreamingText(stream.content, text);
+      
+      // Create new Map for streams
+      const newStreams = new Map(state.streams);
       newStreams.set(id, stream);
-      const withoutThisStream = state.messages.filter(m => !(m.role === 'assistant' && m.status === 'streaming' && m.id === stream.messageKey));
+      
+      // Update messages array
+      const withoutThisStream = state.messages.filter(
+        m => !(m.role === 'assistant' && m.status === 'streaming' && m.id === stream.messageKey)
+      );
+      
       const streamingMessage = {
         id: stream.messageKey,
         role: 'assistant',
@@ -168,7 +188,13 @@ function chatReducer(state, action) {
         content: stream.content,
         tools: stream.tools,
       };
-      return { ...state, seq, streams: newStreams, messages: [...withoutThisStream, streamingMessage] };
+      
+      return { 
+        ...state, 
+        seq, 
+        streams: newStreams, 
+        messages: [...withoutThisStream, streamingMessage] 
+      };
     }
     case 'TOOL_START': {
       const { id, toolCall } = action;
@@ -507,8 +533,10 @@ export function AgentProvider({ children }) {
           case FRAME_TEXT: {
             try {
               const text = JSON.parse(content);
+              console.log('🔵 STREAM_TEXT (parsed):', { id, text: text.substring(0, 50) });
               dispatchChat({ type: 'STREAM_TEXT', id, text });
             } catch (e) {
+              console.log('🔵 STREAM_TEXT (raw):', { id, text: content.substring(0, 50) });
               dispatchChat({ type: 'STREAM_TEXT', id, text: content });
             }
             break;

@@ -1,5 +1,5 @@
 import { Suspense, useState, useEffect } from 'react';
-import { Await, NavLink, useAsyncValue } from 'react-router';
+import { Await, NavLink, useAsyncValue, useRouteLoaderData } from 'react-router';
 import { useAnalytics, useOptimisticCart } from '@shopify/hydrogen';
 import { useAside } from '~/components/Aside';
 import { SearchIcon, CartIcon, HamburgerIcon, CatalogIcon, RecordIcon, ApparelIcon } from '~/components/Icons';
@@ -159,17 +159,25 @@ export function HeaderMenu({
  * @param {Pick<HeaderProps, 'isLoggedIn' | 'cart'>}
  */
 function HeaderCtas({ isLoggedIn, cart }) {
+  const rootData = useRouteLoaderData('root');
+  const workosUser = rootData?.workosUser;
+  
   return (
     <nav className="header-ctas" role="navigation">
       <HeaderMenuMobileToggle />
       <div className="header-ctas-desktop">
-        {/* <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
-          <Suspense fallback="Sign in">
-            <Await resolve={isLoggedIn} errorElement="Sign in">
-              {(isLoggedIn) => (isLoggedIn ? 'Account' : 'Sign in')}
-            </Await>
-          </Suspense>
-        </NavLink> */}
+        {workosUser ? (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span>{workosUser.email}</span>
+            <NavLink prefetch="intent" to="/auth/logout" style={activeLinkStyle}>
+              Logout
+            </NavLink>
+          </div>
+        ) : (
+          <NavLink prefetch="intent" to="/auth/login" style={activeLinkStyle}>
+            Sign in
+          </NavLink>
+        )}
         <SearchToggle />
       </div>
       <CartToggle cart={cart} />

@@ -18,6 +18,7 @@
     "@fal-ai/client": "^1.6.2",
     "@shopify/hydrogen": "2025.5.0",
     "@shopify/remix-oxygen": "^3.0.0",
+    "@workos-inc/node": "^7.69.1",
     "agents": "^0.0.113",
     "graphql": "^16.10.0",
     "graphql-tag": "^2.12.6",

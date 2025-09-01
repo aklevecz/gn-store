@@ -323,10 +323,15 @@ export function AgentProvider({ children }) {
       const url = new URL(agent._url.replace("ws://", "http://").replace("wss://", "https://"));
       url.pathname += '/api/debug/state';
       
+      console.log('🔍 Fetching debug state from:', url.toString());
       const response = await fetch(url.toString());
-      if (!response.ok) return null;
+      if (!response.ok) {
+        console.log('❌ Debug state fetch failed with status:', response.status);
+        return null;
+      }
       
       const serverState = await response.json();
+      console.log('📊 Debug state response:', serverState);
       return serverState.character;
     } catch (error) {
       console.error('Failed to fetch server state:', error);
@@ -544,9 +549,16 @@ export function AgentProvider({ children }) {
       try {
         const data = JSON.parse(event.data);
 
+        // Known WebSocket message types:
+        // - "cf_agent_use_chat_response": Streaming chat responses from agent
+        // - "cf_agent_mcp_servers": MCP (Model Context Protocol) server status/updates (filtered from chat)
+        // - "cf_agent_state": Agent state updates/heartbeat (filtered from chat)
+        // - Other types: Connection status, errors, etc. (shown as system messages)
+        
         if (data.type === "cf_agent_use_chat_response") {
           handleStreamingResponse(data);
-        } else {
+        } else if (data.type !== "cf_agent_mcp_servers" && data.type !== "cf_agent_state") {
+          // Filter out internal agent messages from chat display
           dispatchChat({ type: 'ADD_SYSTEM', content: data.type });
         }
       } catch (e) {
@@ -723,37 +735,38 @@ export function AgentProvider({ children }) {
     sendChatMessage(syncMessage);
   }, [sendChatMessage]);
 
-  // Auto-sync stats to server when they change (debounced)
+  // DISABLED: Auto-sync stats to server when they change (chat-based)
   // Use a ref to prevent syncing on initial load and track last sync
   const lastSyncStatsRef = useRef(null);
   const hasSyncedInitialStatsRef = useRef(false);
 
-  useEffect(() => {
-    if (!selectedCharacter || !isInitialized) return;
+  // DISABLED: Chat-based auto-sync to reduce chat noise (HTTP sync still works)
+  // useEffect(() => {
+  //   if (!selectedCharacter || !isInitialized) return;
 
-    // Don't sync on initial load
-    if (!hasSyncedInitialStatsRef.current) {
-      hasSyncedInitialStatsRef.current = true;
-      lastSyncStatsRef.current = { ...stats };
-      return;
-    }
+  //   // Don't sync on initial load
+  //   if (!hasSyncedInitialStatsRef.current) {
+  //     hasSyncedInitialStatsRef.current = true;
+  //     lastSyncStatsRef.current = { ...stats };
+  //     return;
+  //   }
 
-    // Don't sync if stats haven't actually changed
-    const lastStats = lastSyncStatsRef.current;
-    if (lastStats &&
-      lastStats.happiness === stats.happiness &&
-      lastStats.energy === stats.energy &&
-      lastStats.intelligence === stats.intelligence) {
-      return;
-    }
+  //   // Don't sync if stats haven't actually changed
+  //   const lastStats = lastSyncStatsRef.current;
+  //   if (lastStats &&
+  //     lastStats.happiness === stats.happiness &&
+  //     lastStats.energy === stats.energy &&
+  //     lastStats.intelligence === stats.intelligence) {
+  //     return;
+  //   }
 
-    const timeoutId = setTimeout(() => {
-      syncStatsToServer(stats, selectedCharacter);
-      lastSyncStatsRef.current = { ...stats };
-    }, 2000); // 2 second debounce
+  //   const timeoutId = setTimeout(() => {
+  //     syncStatsToServer(stats, selectedCharacter);
+  //     lastSyncStatsRef.current = { ...stats };
+  //   }, 2000); // 2 second debounce
 
-    return () => clearTimeout(timeoutId);
-  }, [stats, selectedCharacter, isInitialized, syncStatsToServer]);
+  //   return () => clearTimeout(timeoutId);
+  // }, [stats, selectedCharacter, isInitialized, syncStatsToServer]);
 
   const mood = selectedCharacter ? getMood(stats) : 'neutral';
 

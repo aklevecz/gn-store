@@ -1,4 +1,5 @@
-import { CHARACTERS, useAgentCompanion } from './AgentProvider';
+import { CHARACTERS } from './constants';
+import { useAgentCompanion } from './AgentProvider';
 
 export function AgentSelector() {
   const { selectCharacter } = useAgentCompanion();

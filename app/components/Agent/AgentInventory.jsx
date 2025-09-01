@@ -1,4 +1,5 @@
-import { ITEMS, useAgentCompanion } from './AgentProvider';
+import { ITEMS } from './constants';
+import { useAgentCompanion } from './AgentProvider';
 import { useState } from 'react';
 
 export function AgentInventory() {

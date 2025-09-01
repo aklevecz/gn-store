@@ -1,7 +1,8 @@
 import { data } from '@shopify/remix-oxygen';
 import { useLoaderData } from 'react-router';
 import { useState, useEffect } from 'react';
-import { useAgentCompanion, ITEMS } from '~/components/Agent/AgentProvider';
+import { useAgentCompanion } from '~/components/Agent/AgentProvider';
+import { ITEMS } from '~/components/Agent/constants';
 
 /**
  * Debug route for testing agent functionality

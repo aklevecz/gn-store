@@ -1,5 +1,6 @@
 import { MCPClient } from '~/lib/mcp-client';
 
+// THIS IS OLD AND SHOULD PROBBALY BE DITCHED IN FAVOR OF NEW CHAT AGENT INFRA
 export async function loader() {
   try {
     const client = new MCPClient('https://gn-mcp.raptorz.workers.dev', {

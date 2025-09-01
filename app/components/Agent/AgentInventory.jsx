@@ -24,18 +24,21 @@ export function AgentInventory() {
   };
 
   const getItemIcon = (itemId) => {
-    const icons = {
-      vinyl: '💿',
-      ticket: '🎫',
-      note: '🎵',
-      solar: '☀️',
-      recycled: '♻️',
-      organic: '🥗',
-      seeds: '🌱',
-      water: '💧',
-      compost: '🪴',
+    // All icons are now images
+    const iconPaths = {
+      coffee: '/icons/coffee-icon.png',
+      // Future items (currently commented out in ITEMS)
+      vinyl: '/icons/vinyl-icon.png',
+      ticket: '/icons/ticket-icon.png',
+      note: '/icons/note-icon.png',
+      solar: '/icons/solar-icon.png',
+      recycled: '/icons/recycled-icon.png',
+      organic: '/icons/organic-icon.png',
+      seeds: '/icons/seeds-icon.png',
+      water: '/icons/water-icon.png',
+      compost: '/icons/compost-icon.png',
     };
-    return icons[itemId] || '📦';
+    return iconPaths[itemId] || '/icons/default-icon.png';
   };
 
   return (
@@ -69,9 +72,14 @@ export function AgentInventory() {
             onClick={() => handleFeedItem(item.id)}
             disabled={feedingItem !== null}
           >
-            <span className="item-icon">{getItemIcon(item.id)}</span>
+            <span className="item-icon">
+              <img 
+                src={getItemIcon(item.id)} 
+                alt={item.name} 
+              />
+            </span>
             <span className="item-name">{item.name}</span>
-            <div className="item-effects">
+            {/* <div className="item-effects">
               {Object.entries(item.effect).map(([stat, value]) => (
                 <span key={stat} className="effect">
                   {stat === 'happiness' && '😊'}
@@ -80,18 +88,18 @@ export function AgentInventory() {
                   +{value}
                 </span>
               ))}
-            </div>
+            </div> */}
           </button>
         ))}
       </div>
 
-      <div className="inventory-tip">
+      {/* <div className="inventory-tip">
         {selectedCharacter.id === 'groovy' ? (
           <p>🎵 Groovy loves music items but eco items work too!</p>
         ) : (
           <p>🌍 Globby prefers eco items but enjoys music too!</p>
         )}
-      </div>
+      </div> */}
     </div>
   );
 }

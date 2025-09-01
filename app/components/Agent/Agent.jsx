@@ -13,7 +13,8 @@ export function Agent() {
     toggleVisibility,
     mood,
     stats,
-    isInitialized 
+    isInitialized,
+    playingAnimation 
   } = useAgentCompanion();
   
   const [activeTab, setActiveTab] = useState('status');
@@ -68,11 +69,21 @@ export function Agent() {
             <div className="agent-body">
               <div className="agent-character" data-character={selectedCharacter.id} data-mood={mood}>
                 <div className="agent-character-image">
-                  <img 
-                    src={selectedCharacter.moods[mood]}
-                    alt={`${selectedCharacter.name} feeling ${mood}`}
-                    style={{width:150, height:"auto"}}
-                  />
+                  {playingAnimation === 'coffee' ? (
+                    <video 
+                      src={`/animations/${selectedCharacter.id}_coffee.mp4`}
+                      autoPlay
+                      muted
+                      style={{width:'auto', height:250}}
+                      onEnded={() => {/* Animation will be cleared by timeout in feedItem */}}
+                    />
+                  ) : (
+                    <img 
+                      src={selectedCharacter.moods[mood]}
+                      alt={`${selectedCharacter.name} feeling ${mood}`}
+                      style={{width:150, height:"auto"}}
+                    />
+                  )}
                 </div>
               </div>
 

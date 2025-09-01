@@ -430,6 +430,11 @@
   margin-bottom: 4px;
 }
 
+.item-icon img {
+  width: 100px;
+  height: 100px;
+}
+
 .item-name {
   font-size: 10px;
   text-align: center;

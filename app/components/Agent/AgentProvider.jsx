@@ -35,18 +35,22 @@ export const CHARACTERS = {
 };
 
 export const ITEMS = {
-  // Music items
-  VINYL_RECORD: { id: 'vinyl', name: 'Vinyl Record', effect: { happiness: 15 }, type: 'music' },
-  CONCERT_TICKET: { id: 'ticket', name: 'Concert Ticket', effect: { happiness: 25 }, type: 'music' },
-  MUSIC_NOTE: { id: 'note', name: 'Music Note', effect: { happiness: 5 }, type: 'music' },
+  // Active item
+  COFFEE: { id: 'coffee', name: 'Coffee', effect: { energy: 20, happiness: 10, intelligence: 5 }, type: 'beverage' },
 
-  // Eco items
-  SOLAR_POWER: { id: 'solar', name: 'Solar Power', effect: { energy: 20 }, type: 'eco' },
-  RECYCLED_MATERIALS: { id: 'recycled', name: 'Recycled Materials', effect: { intelligence: 10 }, type: 'eco' },
-  ORGANIC_SNACK: { id: 'organic', name: 'Organic Snack', effect: { energy: 10, happiness: 5 }, type: 'eco' },
-  PLANT_SEEDS: { id: 'seeds', name: 'Plant Seeds', effect: { happiness: 10, intelligence: 5 }, type: 'eco' },
-  WATER_BOTTLE: { id: 'water', name: 'Reusable Water Bottle', effect: { energy: 15 }, type: 'eco' },
-  COMPOST: { id: 'compost', name: 'Compost', effect: { intelligence: 15 }, type: 'eco' },
+  // Preserved items (commented out for now)
+  // // Music items
+  // VINYL_RECORD: { id: 'vinyl', name: 'Vinyl Record', effect: { happiness: 15 }, type: 'music' },
+  // CONCERT_TICKET: { id: 'ticket', name: 'Concert Ticket', effect: { happiness: 25 }, type: 'music' },
+  // MUSIC_NOTE: { id: 'note', name: 'Music Note', effect: { happiness: 5 }, type: 'music' },
+
+  // // Eco items
+  // SOLAR_POWER: { id: 'solar', name: 'Solar Power', effect: { energy: 20 }, type: 'eco' },
+  // RECYCLED_MATERIALS: { id: 'recycled', name: 'Recycled Materials', effect: { intelligence: 10 }, type: 'eco' },
+  // ORGANIC_SNACK: { id: 'organic', name: 'Organic Snack', effect: { energy: 10, happiness: 5 }, type: 'eco' },
+  // PLANT_SEEDS: { id: 'seeds', name: 'Plant Seeds', effect: { happiness: 10, intelligence: 5 }, type: 'eco' },
+  // WATER_BOTTLE: { id: 'water', name: 'Reusable Water Bottle', effect: { energy: 15 }, type: 'eco' },
+  // COMPOST: { id: 'compost', name: 'Compost', effect: { intelligence: 15 }, type: 'eco' },
 };
 
 const DEFAULT_STATS = {
@@ -83,6 +87,7 @@ const mergeStreamingText = (previousText, incomingText) => {
   return prev + next;
 };
 
+// WE NEED TO IMPROVE THIS
 // Ensure message IDs are unique and derive the maximum numeric sequence
 function normalizeMessages(messages) {
   const seenIds = new Set();
@@ -106,6 +111,7 @@ function normalizeMessages(messages) {
   });
 }
 
+// Shouldn't need this either
 function getMaxSeqFromMessages(messages) {
   let maxSeq = 0;
   for (const m of messages || []) {
@@ -129,9 +135,11 @@ const initialChatState = {
   seq: 0,
 };
 
+// I don't completely understand what is going on in most of the cases in this reducer
 function chatReducer(state, action) {
   switch (action.type) {
     case 'ADD_USER_MESSAGE': {
+      // Id should come from server maybe?
       const nextSeq = state.seq + 1;
       const userMessage = {
         id: `user:${nextSeq}`,
@@ -280,6 +288,7 @@ export function AgentProvider({ children }) {
   const [lastInteraction, setLastInteraction] = useState(Date.now());
   const [insights, setInsights] = useState([]);
   const [isVisible, setIsVisible] = useState(false);
+  const [playingAnimation, setPlayingAnimation] = useState(null); // Track which animation is playing
 
   // Chat state management with reducer (from AgentChat.jsx)
   const [chatState, dispatchChat] = useReducer(chatReducer, initialChatState);
@@ -460,27 +469,22 @@ export function AgentProvider({ children }) {
       const serverCharacter = await fetchServerState();
       if (!serverCharacter) return;
       
-      // Only update if server state is newer than our local state
-      const serverLastSync = serverCharacter.lastSync || 0;
-      const localLastSync = selectedCharacter.lastSync || lastInteraction || 0;
+      // Server is always the source of truth - sync unconditionally
+      console.log('🔄 Syncing from server (server is source of truth)');
       
-      if (serverLastSync > localLastSync) {
-        console.log('🔄 Syncing with newer server state');
-        
-        // Update character if it changed
-        if (serverCharacter.id !== selectedCharacter.id) {
-          const newCharacter = CHARACTERS[serverCharacter.id];
-          if (newCharacter) {
-            setSelectedCharacter({ ...newCharacter, lastSync: serverLastSync });
-          }
-        } else {
-          setSelectedCharacter(prev => ({ ...prev, lastSync: serverLastSync }));
+      // Update character if it changed
+      if (serverCharacter.id !== selectedCharacter.id) {
+        const newCharacter = CHARACTERS[serverCharacter.id];
+        if (newCharacter) {
+          setSelectedCharacter({ ...newCharacter, lastSync: serverCharacter.lastSync || Date.now() });
         }
-        
-        // Update stats
-        setStats(serverCharacter.stats);
-        setLastInteraction(serverLastSync);
+      } else {
+        setSelectedCharacter(prev => ({ ...prev, lastSync: serverCharacter.lastSync || Date.now() }));
       }
+      
+      // Always update stats from server
+      setStats(serverCharacter.stats);
+      setLastInteraction(serverCharacter.lastSync || Date.now());
     }, 10000); // Every 10 seconds
     
     return () => clearInterval(interval);
@@ -627,15 +631,52 @@ export function AgentProvider({ children }) {
     const item = Object.values(ITEMS).find(i => i.id === itemId);
     if (!item) return;
 
+    // Play coffee animation if coffee is being fed
+    if (itemId === 'coffee' && selectedCharacter) {
+      setPlayingAnimation('coffee');
+      
+      // Clear animation after 3 seconds (adjust based on your video length)
+      setTimeout(() => {
+        setPlayingAnimation(null);
+      }, 6000);
+    }
+
     const now = Date.now();
 
-    setStats(prev => {
-      const newStats = { ...prev };
-      Object.entries(item.effect).forEach(([stat, value]) => {
-        newStats[stat] = clampStat(prev[stat] + value);
-      });
-      return newStats;
+    // Calculate new stats immediately
+    const currentStats = stats;
+    const newStats = { ...currentStats };
+    Object.entries(item.effect).forEach(([stat, value]) => {
+      newStats[stat] = clampStat(currentStats[stat] + value);
     });
+
+    // Update local state
+    setStats(newStats);
+
+    // Send stats to server immediately (no timeout)
+    if (agent?._url) {
+      const syncStats = async () => {
+        try {
+          const url = new URL(agent._url.replace("ws://", "http://").replace("wss://", "https://"));
+          url.pathname += '/api/sync-stats';
+          
+          const response = await fetch(url.toString(), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              characterId: selectedCharacter.id,
+              characterName: selectedCharacter.name,
+              stats: newStats
+            })
+          });
+          
+          console.log('📤 Stats synced to server:', newStats, 'Response:', response.status);
+        } catch (error) {
+          console.error('❌ Failed to sync stats to server:', error);
+        }
+      };
+      syncStats();
+    }
 
     // Update lastSync to mark this as a local change
     setSelectedCharacter(prev => prev ? { ...prev, lastSync: now } : prev);
@@ -643,7 +684,7 @@ export function AgentProvider({ children }) {
 
     // Add to inventory history
     setInventory(prev => [...prev, { item: item.id, timestamp: now }]);
-  }, []);
+  }, [selectedCharacter, agent]);
 
   const addInsight = useCallback((insight) => {
     setInsights(prev => [
@@ -779,6 +820,7 @@ export function AgentProvider({ children }) {
     mood,
     isVisible,
     isInitialized,
+    playingAnimation,
 
     // Chat state
     chatMessages: chatState.messages,

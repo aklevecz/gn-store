@@ -31,6 +31,7 @@ export const CHARACTERS = {
 export const ITEMS = {
   // Active item
   COFFEE: { id: 'coffee', name: 'Coffee', effect: { energy: 20, happiness: 10, intelligence: 5 }, type: 'beverage' },
+  MUSIC_TREAT: { id: 'music', name: 'Music', effect: { happiness: 30 }, type: 'music' },
 };
 
 export const DEFAULT_STATS = {

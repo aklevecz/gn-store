@@ -8,9 +8,10 @@ export function AgentInventory() {
   const [feedingItem, setFeedingItem] = useState(null);
 
   const handleFeedItem = (itemId) => {
+    console.log('handleFeedItem', itemId);
     setFeedingItem(itemId);
     feedItem(itemId);
-    
+
     // Show feeding animation
     setTimeout(() => {
       setFeedingItem(null);
@@ -28,6 +29,7 @@ export function AgentInventory() {
     // All icons are now images
     const iconPaths = {
       coffee: '/icons/coffee-icon.png',
+      music: '/icons/music-icon.png',
       // Future items (currently commented out in ITEMS)
       vinyl: '/icons/vinyl-icon.png',
       ticket: '/icons/ticket-icon.png',
@@ -45,19 +47,19 @@ export function AgentInventory() {
   return (
     <div className="agent-inventory">
       <div className="inventory-tabs">
-        <button 
+        <button
           className={`tab ${selectedTab === 'all' ? 'active' : ''}`}
           onClick={() => setSelectedTab('all')}
         >
           All Items
         </button>
-        <button 
+        <button
           className={`tab ${selectedTab === 'music' ? 'active' : ''}`}
           onClick={() => setSelectedTab('music')}
         >
           Music
         </button>
-        <button 
+        <button
           className={`tab ${selectedTab === 'eco' ? 'active' : ''}`}
           onClick={() => setSelectedTab('eco')}
         >
@@ -74,9 +76,9 @@ export function AgentInventory() {
             disabled={feedingItem !== null}
           >
             <span className="item-icon">
-              <img 
-                src={getItemIcon(item.id)} 
-                alt={item.name} 
+              <img
+                src={getItemIcon(item.id)}
+                alt={item.name}
               />
             </span>
             <span className="item-name">{item.name}</span>

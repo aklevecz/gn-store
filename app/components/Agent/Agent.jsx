@@ -69,9 +69,9 @@ export function Agent() {
             <div className="agent-body">
               <div className="agent-character" data-character={selectedCharacter.id} data-mood={mood}>
                 <div className="agent-character-image">
-                  {playingAnimation === 'coffee' ? (
+                  {playingAnimation ? (
                     <video 
-                      src={`/animations/${selectedCharacter.id}_coffee.mp4`}
+                      src={`/animations/${selectedCharacter.id}_${playingAnimation}.mp4`}
                       autoPlay
                       muted
                       style={{width:'auto', height:250}}

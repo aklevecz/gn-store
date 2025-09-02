@@ -21,11 +21,22 @@ export function useCharacterState({ agent }) {
   }, []);
 
   const feedItem = useCallback(async (itemId) => {
+    console.log('feedItem called with itemId:', itemId);
     const item = Object.values(ITEMS).find(i => i.id === itemId);
+    console.log('Found item:', item);
     if (!item || !selectedCharacter) return;
 
-    if (itemId === 'coffee') {
-      setPlayingAnimation('coffee');
+    // Map item IDs to animation names
+    const animationMap = {
+      'coffee': 'coffee',
+      'music': 'music'
+    };
+
+    const animationName = animationMap[itemId];
+    console.log('Animation name for', itemId, ':', animationName);
+    if (animationName) {
+      console.log('Setting animation to:', animationName);
+      setPlayingAnimation(animationName);
       setTimeout(() => setPlayingAnimation(null), 6000);
     }
 

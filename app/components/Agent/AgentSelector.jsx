@@ -19,7 +19,7 @@ export function AgentSelector() {
           >
             <div className="agent-selector-image">
               <img 
-                src={`/characters/${character.id}-thumbsup.png`}
+                src={`/characters/${character.id}-jump.png`}
                 alt={character.name}
                 width="100"
                 height="100"

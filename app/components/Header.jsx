@@ -1,8 +1,9 @@
 import { Suspense, useState, useEffect } from 'react';
-import { Await, NavLink, useAsyncValue, useRouteLoaderData } from 'react-router';
+import { Await, NavLink, useAsyncValue } from 'react-router';
 import { useAnalytics, useOptimisticCart } from '@shopify/hydrogen';
 import { useAside } from '~/components/Aside';
 import { SearchIcon, CartIcon, HamburgerIcon, CatalogIcon, RecordIcon, ApparelIcon } from '~/components/Icons';
+import { useUser, useAuth } from '~/hooks/useUser';
 
 /**
  * Custom hook to detect scroll position
@@ -159,19 +160,27 @@ export function HeaderMenu({
  * @param {Pick<HeaderProps, 'isLoggedIn' | 'cart'>}
  */
 function HeaderCtas({ isLoggedIn, cart }) {
-  const rootData = useRouteLoaderData('root');
-  const workosUser = rootData?.workosUser;
+  const { user, displayName } = useUser();
+  const { logout } = useAuth();
   
   return (
     <nav className="header-ctas" role="navigation">
       <HeaderMenuMobileToggle />
       <div className="header-ctas-desktop">
-        {workosUser ? (
+        {user ? (
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <span>{workosUser.email}</span>
-            <NavLink prefetch="intent" to="/auth/logout" style={activeLinkStyle}>
+            <span>{displayName || user.email}</span>
+            <button 
+              onClick={logout}
+              style={{ 
+                background: 'none', 
+                border: 'none', 
+                cursor: 'pointer',
+                textDecoration: 'underline'
+              }}
+            >
               Logout
-            </NavLink>
+            </button>
           </div>
         ) : (
           <NavLink prefetch="intent" to="/auth/login" style={activeLinkStyle}>

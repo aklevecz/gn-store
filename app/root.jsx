@@ -35,6 +35,7 @@ import agentStyles from '~/styles/agent.css?url';
 import tictactoeStyles from '~/styles/tictactoe.css?url';
 
 import {PageLayout} from './components/PageLayout';
+import {UserProvider} from '~/contexts/UserContext';
 
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
@@ -205,7 +206,9 @@ export function Layout({children}) {
             shop={data.shop}
             consent={data.consent}
           >
-            <PageLayout {...data}>{children}</PageLayout>
+            <UserProvider initialUser={data.workosUser}>
+              <PageLayout {...data}>{children}</PageLayout>
+            </UserProvider>
           </Analytics.Provider>
         ) : (
           children

@@ -79,6 +79,7 @@ export function useCharacterState({ agent }) {
   }, []);
 
   // Decay stats over time
+  // Revisit this to tune it - or it should be server side as well?
   useEffect(() => {
     if (!selectedCharacter) return;
     const decayInterval = setInterval(() => {

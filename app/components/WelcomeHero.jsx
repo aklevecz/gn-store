@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { GrowingVines } from './GrowingVines';
 import { vinylFactCache } from '~/lib/cache';
 
+// FACTS SHOULD BE FETCHED FROM NEW AGENT
 export function WelcomeHero() {
     const [vinylFact, setVinylFact] = useState('');
     const [isLoading, setIsLoading] = useState(true);

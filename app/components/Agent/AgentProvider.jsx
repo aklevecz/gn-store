@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, useCallback, useReducer, useRef } from 'react';
 import { getAgentData, saveAgentData } from '~/lib/agent-storage';
 import { useAgent } from 'agents/react';
-import { HOST, AGENT_NAME, CHARACTERS, DEFAULT_STATS } from './constants';
+import { AGENT_HOST, AGENT_NAME, CHARACTERS, DEFAULT_STATS } from './constants';
 import { chatReducer, initialChatState } from './chatReducer';
 import { useAgentStreaming } from './useAgentStreaming';
 import { useAgentServerSync } from './useAgentServerSync';
@@ -40,7 +40,7 @@ export function AgentProvider({ children }) {
   // Initialize agent connection with unique instance name
   const agent = useAgent({
     agent: AGENT_NAME,
-    host: HOST,
+    host: AGENT_HOST,
     name: instanceName  // This creates separate DO instances per user
   });
 

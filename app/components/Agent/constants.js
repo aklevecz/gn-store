@@ -1,4 +1,4 @@
-export const AGENT_HOST = "localhost:5174";
+export const AGENT_HOST = "localhost:5173";
 export const AGENT_NAME = "chat";
 
 export const CHARACTERS = {

@@ -35,8 +35,6 @@ export async function createAppLoadContext(request, env, executionContext) {
     },
   });
 
-  console.log('hydrogenContext', hydrogenContext)
-
   return {
     ...hydrogenContext,
     // declare additional Remix loader context

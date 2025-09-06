@@ -1,7 +1,7 @@
-import { parseBoardString } from '~/lib/tictactoe-parser';
+import { normalizeBoard } from '~/lib/tictactoe-parser';
 
-export function TicTacToeBoard({ boardString, onCellClick, disabled = false }) {
-  const board = parseBoardString(boardString);
+export function TicTacToeBoard({ board: boardData, onCellClick, disabled = false }) {
+  const board = normalizeBoard(boardData);
   
   const handleCellClick = (rowIndex, colIndex) => {
     // Only allow clicks on empty cells when not disabled

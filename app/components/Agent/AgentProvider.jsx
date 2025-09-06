@@ -193,15 +193,32 @@ export function AgentProvider({ children }) {
   }, [sendChatMessage]);
 
   const updateGameStateFromTool = useCallback((toolName, toolResult) => {
-    if ((toolName === 'startTicTacToe' || toolName === 'makeTicTacToeMove') && toolResult?.board) {
-      setCurrentGame({
-        board: toolResult.board,
-        message: toolResult.message,
-        toolName: toolName,
-        timestamp: Date.now()
-      });
+    // Handle new TicTacToeResponse structure
+    if (toolName === 'startTicTacToe' || toolName === 'makeTicTacToeMove' || toolName === 'showTicTacToeBoard') {
+      if (toolResult?.success && toolResult?.board) {
+        setCurrentGame({
+          board: toolResult.board,           // Raw 3x3 array
+          message: toolResult.message,
+          currentPlayer: toolResult.currentPlayer,
+          winner: toolResult.winner,
+          gameActive: toolResult.gameActive,
+          lastMove: toolResult.move,         // Last move coordinates
+          action: toolResult.action,         // What action was performed
+          toolName: toolName,
+          timestamp: Date.now()
+        });
+      } else if (toolResult?.success === false) {
+        // Handle error cases - clear game if no active game
+        if (toolResult.error === 'NO_ACTIVE_GAME') {
+          setCurrentGame(null);
+        }
+        // For other errors (NOT_YOUR_TURN, CELL_OCCUPIED), keep current game state
+        console.warn('TicTacToe tool error:', toolResult.error, toolResult.message);
+      }
     } else if (toolName === 'clearTicTacToeBoard') {
-      setCurrentGame(null);
+      if (toolResult?.success) {
+        setCurrentGame(null);
+      }
     }
   }, []);
 

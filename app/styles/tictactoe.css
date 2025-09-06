@@ -125,6 +125,64 @@
   animation: pieceAppear 0.3s ease-out;
 }
 
+/* Game Status Bar Styles */
+.game-status-bar {
+  margin: 15px 0;
+  padding: 10px;
+  background: #f3f4f6;
+  border-radius: 6px;
+  border-left: 4px solid var(--purple, #8b5cf6);
+}
+
+.game-status-info {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 14px;
+  color: #374151;
+}
+
+.game-status-info span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.current-player {
+  color: #059669;
+}
+
+.winner-status {
+  color: #dc2626;
+}
+
+.last-move {
+  color: #6b7280;
+  font-family: monospace;
+}
+
+/* Error State Styles */
+.game-error {
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 6px;
+  background: #fef2f2;
+  border-left: 4px solid #ef4444;
+  color: #991b1b;
+  font-size: 14px;
+}
+
+.game-error-title {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+/* Optimistic Board Styling */
+.optimistic-board {
+  opacity: 0.8;
+  filter: brightness(1.1);
+}
+
 /* Mobile responsive */
 @media (max-width: 640px) {
   .tictactoe-cell {
@@ -135,5 +193,10 @@
   .cell-icon {
     width: 28px;
     height: 28px;
+  }
+
+  .game-status-info {
+    flex-direction: column;
+    gap: 8px;
   }
 }

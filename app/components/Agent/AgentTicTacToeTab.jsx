@@ -1,7 +1,7 @@
 import { useAgentCompanion } from './AgentProvider';
 import { useState, useEffect } from 'react';
 import { TicTacToeBoard } from '../TicTacToeBoard';
-import { parseBoardString } from '~/lib/tictactoe-parser';
+import { normalizeBoard } from '~/lib/tictactoe-parser';
 
 export function AgentTicTacToeTab() {
   const {
@@ -35,21 +35,20 @@ export function AgentTicTacToeTab() {
   const handleOptimisticMove = (row, col) => {
     if (!currentGame?.board || isProcessing) return;
     
-    // Parse the current board
-    const board = parseBoardString(currentGame.board);
+    // Normalize the current board (raw array format)
+    const board = normalizeBoard(currentGame.board);
     
     // Check if cell is empty
     if (board[row][col] !== '') return;
     
-    // Create optimistic board with the user's X
-    board[row][col] = 'X';
+    // Create optimistic board with the user's X (keep as raw array)
+    const optimisticBoardArray = board.map((boardRow, rIndex) => 
+      boardRow.map((cell, cIndex) => 
+        rIndex === row && cIndex === col ? 'X' : cell
+      )
+    );
     
-    // Convert back to board string format
-    const optimisticBoardString = board.map((row, i) => 
-      `${i} | ${row.map(cell => cell || ' ').join(' | ')} |`
-    ).join('\n');
-    
-    setOptimisticBoard(optimisticBoardString);
+    setOptimisticBoard(optimisticBoardArray);
     
     // Send the actual move to the server
     handleTicTacToeMove(row, col);
@@ -96,12 +95,33 @@ export function AgentTicTacToeTab() {
           <div className="active-game">
             <div className={optimisticBoard ? 'optimistic-board' : ''}>
               <TicTacToeBoard 
-                boardString={optimisticBoard || currentGame.board}
+                board={optimisticBoard || currentGame.board}
                 onCellClick={handleOptimisticMove}
                 disabled={isProcessing}
               />
             </div>
             
+            {/* Game Status Info */}
+            {/* {currentGame && (
+              <div className="game-status-bar">
+                <div className="game-status-info">
+                  <span className="current-player">
+                    Current Turn: <strong>{currentGame.currentPlayer || 'X'}</strong>
+                  </span>
+                  {currentGame.winner && (
+                    <span className="winner-status">
+                      Winner: <strong>{currentGame.winner}</strong>
+                    </span>
+                  )}
+                  {currentGame.lastMove && (
+                    <span className="last-move">
+                      Last Move: [{currentGame.lastMove.row}, {currentGame.lastMove.col}]
+                    </span>
+                  )}
+                </div>
+              </div>
+            )} */}
+
             <div className="game-feedback">
               <div className="feedback-avatar">
                 <img 

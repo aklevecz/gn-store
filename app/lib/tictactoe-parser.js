@@ -1,9 +1,46 @@
 /**
+ * Convert raw board array from server to UI-ready format
+ * @param {Array<Array<string|null>>} boardArray - Raw board from server like [['X', null, 'O'], [null, 'X', null], ['O', null, null]]
+ * @returns {Array<Array<string>>} - UI-ready board state [['X', '', 'O'], ['', 'X', ''], ['O', '', '']]
+ */
+export function normalizeBoard(boardArray) {
+  if (!boardArray || !Array.isArray(boardArray)) return [['', '', ''], ['', '', ''], ['', '', '']];
+  
+  try {
+    // Convert null values to empty strings for UI rendering
+    const board = boardArray.map(row => {
+      if (!Array.isArray(row)) return ['', '', ''];
+      return row.map(cell => cell === null ? '' : (cell || ''));
+    });
+    
+    // Ensure we have exactly 3x3
+    while (board.length < 3) {
+      board.push(['', '', '']);
+    }
+    
+    board.forEach(row => {
+      while (row.length < 3) {
+        row.push('');
+      }
+    });
+    
+    return board;
+  } catch (error) {
+    console.error('Error normalizing board array:', error);
+    return [['', '', ''], ['', '', ''], ['', '', '']];
+  }
+}
+
+/**
+ * DEPRECATED: Legacy function for backwards compatibility
  * Parse TicTacToe board string from agent response into 2D array
  * @param {string} boardString - Board string like "0 | X |   |   |\n1 |   | O |   |\n2 |   |   |   |\n    0   1   2"
  * @returns {Array<Array<string>>} - 2D array of board state [['X', '', ''], ['', 'O', ''], ['', '', '']]
+ * @deprecated Use normalizeBoard for new raw array format
  */
 export function parseBoardString(boardString) {
+  console.warn('parseBoardString is deprecated - use normalizeBoard for raw array format');
+  
   if (!boardString) return [['', '', ''], ['', '', ''], ['', '', '']];
   
   try {

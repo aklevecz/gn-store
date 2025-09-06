@@ -9,7 +9,7 @@ import {
   ScrollRestoration,
   useRouteLoaderData,
 } from 'react-router';
-import favicon from '~/assets/favicon.svg';
+import favicon from '~/assets/favicon.png';
 import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
 import {getWorkOSUser} from '~/lib/workos';
 import resetStyles from '~/styles/reset.css?url';
@@ -33,6 +33,7 @@ import toastStyles from '~/styles/ui/toast.css?url';
 import iconsStyles from '~/styles/ui/icons.css?url';
 import agentStyles from '~/styles/agent.css?url';
 import tictactoeStyles from '~/styles/tictactoe.css?url';
+import profileStyles from '~/styles/profile.css?url';
 
 import {PageLayout} from './components/PageLayout';
 import {UserProvider} from '~/contexts/UserContext';
@@ -76,7 +77,7 @@ export function links() {
       rel: 'preconnect',
       href: 'https://shop.app',
     },
-    {rel: 'icon', type: 'image/svg+xml', href: favicon},
+    {rel: 'icon', type: 'image/png', href: favicon},
   ];
 }
 
@@ -196,6 +197,7 @@ export function Layout({children}) {
         <link rel="stylesheet" href={iconsStyles}></link>
         <link rel="stylesheet" href={agentStyles}></link>
         <link rel="stylesheet" href={tictactoeStyles}></link>
+        <link rel="stylesheet" href={profileStyles}></link>
         <Meta />
         <Links />
       </head>

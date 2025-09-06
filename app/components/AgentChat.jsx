@@ -1,6 +1,7 @@
 import { useAgent } from 'agents/react';
 import { useEffect, useReducer, useState } from 'react';
 import { TicTacToeBoard } from './TicTacToeBoard';
+import { AGENT_HOST } from './Agent/constants';
 
 // Streaming frame prefix constants
 const FRAME_TEXT = '0';
@@ -34,6 +35,7 @@ const initialState = {
   seq: 0,
 };
 
+// Replacement for the useAgentChat because Hydrogen is not compatiable with React 19 currently
 function chatReducer(state, action) {
   switch (action.type) {
     case 'ADD_USER_MESSAGE': {
@@ -151,6 +153,8 @@ function chatReducer(state, action) {
   }
 }
 
+
+
 export function AgentChat() {
   const [state, dispatch] = useReducer(chatReducer, initialState);
   const [inputValue, setInputValue] = useState("");
@@ -160,7 +164,7 @@ export function AgentChat() {
   
   const agent = useAgent({
     agent: "chat",
-    host: "localhost:5174"
+    host: AGENT_HOST
   });
 
   useEffect(() => {

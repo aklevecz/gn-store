@@ -5,7 +5,6 @@ import { ProductItem } from '~/components/ProductItem';
 import { WelcomeHero } from '~/components/WelcomeHero';
 import { BackgroundGenerator } from '~/components/BackgroundGenerator';
 // import { AgentChat } from '~/components/AgentChat';
-import { Agent } from '~/components/Agent/Agent';
 
 /**
  * @type {MetaFunction}
@@ -75,7 +74,6 @@ export default function Homepage() {
       {/* <FeaturedCollection collection={data.featuredCollection} /> */}
       <WelcomeHero />
       <RecommendedProducts products={data.recommendedProducts} />
-      <Agent />
     </div>
   );
 }

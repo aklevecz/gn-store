@@ -1,53 +1,25 @@
-/* Good Neighbor Music - Button Styles */
-
-.button {
-  background-color: var(--black-wax);
-  color: var(--white);
-  border-radius: 4.8rem;
-  padding: 1.6rem 3.4rem;
-  font-family: 'ITC Avant Garde Pro', sans-serif;
-  font-size: 1.6rem;
-  line-height: 100%;
+.pill-button {
+  display: flex;
+  padding: 19.636px 39.273px;
+  height: 54.2727px;
+  justify-content: center;
+  align-items: center;
+  gap: 8.182px;
+  border-radius: 29.455px;
+  background: #141412;
+  color: white;
   border: none;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all 0.2s ease;
-  box-shadow: 0 0 transparent;
-  text-decoration: none;
-  display: inline-block;
 }
 
-.button:hover {
-  transform: scale(1.15);
-  box-shadow: 0 0 0 0 rgba(0,0,0,0.1);
-}
-
-/* Button text positioning fix */
-.button span {
-  display: inline-block;
-  transform: translateY(0.15rem);
-}
-
-/* Color Variants */
-.button--blue { background-color: var(--aqua-blue); }
-.button--purple { background-color: var(--neon-plum); }
-.button--green { background-color: var(--sage-green); }
-.button--pink { background-color: #ff8082; }
-.button--bright-pink { background-color: #ff80bf; }
-.button--orange { background-color: var(--orange); }
-.button--yellow { 
-  background-color: var(--yellow-sunburst);
-  color: var(--black-wax);
-}
-
-/* Large CTA Buttons */
-.button--large {
-  width: 100%;
-  padding: 2.8rem;
-  font-size: 3.2rem;
-  margin-top: 3.2rem;
-}
-
-.button--large:hover {
-  transform: scale(1.05);
+.pill-button__text {
+  color: #FFF;
+  text-align: center;
+  leading-trim: both;
+  text-edge: cap;
+  font-family: "ITC Avant Garde Gothic Pro";
+  font-size: 19.636px;
+  font-style: normal;
+  font-weight: 700;
+  /* 195.958% */
+  letter-spacing: -0.578px;
 }

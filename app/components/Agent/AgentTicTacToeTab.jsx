@@ -24,12 +24,12 @@ export function AgentTicTacToeTab() {
 
   const startNewGame = () => {
     setOptimisticBoard(null);
-    sendChatMessage("Please start a new TicTacToe game");
+    sendChatMessage("Please start a new TicTacToe game", { isToolCall: true });
   };
 
   const clearGame = () => {
     setOptimisticBoard(null);
-    sendChatMessage("Please call the clearTicTacToeBoard tool");
+    sendChatMessage("Please call the clearTicTacToeBoard tool", { isToolCall: true });
   };
   
   const handleOptimisticMove = (row, col) => {

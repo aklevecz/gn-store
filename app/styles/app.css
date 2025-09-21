@@ -31,7 +31,7 @@ img {
 * components/Aside
 * --------------------------------------------------
 */
-@media (max-width: 45em) {
+@media (max-width: 48em) {
   html:has(.overlay.expanded) {
     overflow: hidden;
   }
@@ -188,7 +188,7 @@ button.reset:hover:not(:has(> *)) {
 }
 
 /* Mobile header setup and transitions */
-@media (max-width: 768px) {
+@media (max-width: 48em) {
   .header {
     height: 130px;
     transition: height 0.3s ease, box-shadow 0.3s ease;
@@ -202,14 +202,10 @@ button.reset:hover:not(:has(> *)) {
 
 .header-menu-mobile-toggle {
   display: flex;
-
-  @media (min-width: 48em) {
-    display: none;
-  }
 }
 
 /* Mobile header shrink on scroll */
-@media (max-width: 768px) {
+@media (max-width: 48em) {
   .header-scrolled {
     height: 70px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -237,7 +233,7 @@ button.reset:hover:not(:has(> *)) {
   display: none;
   grid-gap: 1rem;
 
-  @media (min-width: 45em) {
+  @media (min-width: 48em) {
     display: flex;
     grid-gap: 1rem;
     gap: 1rem;

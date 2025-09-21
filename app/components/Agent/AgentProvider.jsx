@@ -141,24 +141,49 @@ export function AgentProvider({ children }) {
   }, []);
 
   // Chat functions (from AgentChat.jsx)
-  const sendChatMessage = useCallback((content) => {
+  const sendChatMessage = useCallback((content, options = {}) => {
     const messageId = Math.random().toString(36).substring(2, 8);
     const agentUrl = agent._url.replace("ws://", "http://").replace("wss://", "https://");
 
     console.log('💌 AgentProvider: Sending message with ID:', messageId);
     setIsProcessing(true);
 
-    // Build conversation history from current messages
-    const conversationHistory = chatState.messages
-      .filter(msg => msg.role === 'user' || msg.role === 'assistant')
-      .map(msg => ({
-        id: msg.id,
-        role: msg.role,
-        content: msg.content,
-        createdAt: msg.createdAt || new Date().toISOString()
-      }));
+    // Detect if this is a tool call (TicTacToe, character sync, etc.)
+    const isToolCall = options.isToolCall || 
+    // these should come from an array instead of being harcoded
+      content.includes('makeTicTacToeMove') || 
+      content.includes('startTicTacToe') || 
+      content.includes('clearTicTacToeBoard') ||
+      content.includes('showTicTacToeBoard') ||
+      content.includes('sync my character stats');
 
-    console.log('📜 AgentProvider: Including', conversationHistory.length, 'previous messages in context');
+    // Build conversation history - truncate for tool calls
+    let conversationHistory;
+    if (isToolCall) {
+      // For tool calls, only send the last few messages for context
+      conversationHistory = chatState.messages
+        .filter(msg => msg.role === 'user' || msg.role === 'assistant')
+        .slice(-3) // Only last 3 messages
+        .map(msg => ({
+          id: msg.id,
+          role: msg.role,
+          content: msg.content,
+          createdAt: msg.createdAt || new Date().toISOString()
+        }));
+      console.log('🎯 AgentProvider: Tool call detected - using minimal context:', conversationHistory.length, 'messages');
+    } else {
+      // For regular chat, send more context but still limit
+      conversationHistory = chatState.messages
+        .filter(msg => msg.role === 'user' || msg.role === 'assistant')
+        .slice(-10) // Only last 10 messages for regular chat
+        .map(msg => ({
+          id: msg.id,
+          role: msg.role,
+          content: msg.content,
+          createdAt: msg.createdAt || new Date().toISOString()
+        }));
+      console.log('📜 AgentProvider: Regular chat - including', conversationHistory.length, 'messages in context');
+    }
 
     // Add the new user message
     const newUserMessage = {
@@ -189,7 +214,7 @@ export function AgentProvider({ children }) {
 
   const handleTicTacToeMove = useCallback((row, col) => {
     const moveMessage = `I want to make my TicTacToe move. Please call the makeTicTacToeMove tool with row: ${row} and col: ${col}`;
-    sendChatMessage(moveMessage);
+    sendChatMessage(moveMessage, { isToolCall: true });
   }, [sendChatMessage]);
 
   const updateGameStateFromTool = useCallback((toolName, toolResult) => {

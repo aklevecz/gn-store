@@ -42,7 +42,7 @@
 }
 
 /* Search button in nav - match other nav links */
-.header-ctas button,
+/* .header-ctas button,
 .header button[type="button"] {
   background-color: transparent;
   color: var(--black-wax);
@@ -54,7 +54,7 @@
   cursor: pointer;
   transition: color 0.2s ease;
   text-decoration: none;
-}
+} */
 
 .header-menu-wrapper {
   display: flex;

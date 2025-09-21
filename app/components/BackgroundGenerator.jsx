@@ -221,8 +221,8 @@ export function BackgroundGenerator() {
         const cachedBackground = backgroundImageCache.get(styleImage);
         if (cachedBackground) {
           console.log('Found cached background on init:', styleImage);
-          setBackground(cachedBackground.imageUrl);
-          applyBackgroundImage(cachedBackground.imageUrl);
+          // setBackground(cachedBackground.imageUrl);
+          // applyBackgroundImage(cachedBackground.imageUrl);
           foundCachedBackground = true;
           break;
         }
@@ -230,7 +230,7 @@ export function BackgroundGenerator() {
       
       // If no cached background found, generate a new one
       if (!foundCachedBackground) {
-        handleGenerateStyleBackground();
+        // handleGenerateStyleBackground();
       }
     }
   }, []);

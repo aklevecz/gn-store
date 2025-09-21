@@ -1,4 +1,5 @@
 export const AGENT_HOST = "localhost:5173";
+export const ENV_PROTOCOL = process.env.NODE_ENV === 'development' ? 'http' : 'https';
 export const AGENT_NAME = "chat";
 
 export const CHARACTERS = {

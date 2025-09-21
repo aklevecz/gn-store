@@ -4,6 +4,7 @@ import { useAnalytics, useOptimisticCart } from '@shopify/hydrogen';
 import { useAside } from '~/components/Aside';
 import { SearchIcon, CartIcon, HamburgerIcon, CatalogIcon, RecordIcon, ApparelIcon } from '~/components/Icons';
 import { useUser, useAuth } from '~/hooks/useUser';
+import PillButton from './Buttons/PillButton';
 
 /**
  * Custom hook to detect scroll position
@@ -27,6 +28,7 @@ function useScrollPosition() {
   return scrolled;
 }
 
+
 /**
  * @param {HeaderProps}
  */
@@ -38,14 +40,15 @@ export function Header({ header, isLoggedIn, cart, publicStoreDomain }) {
     <header className={`header ${scrolled ? 'header-scrolled' : ''}`}>
       <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
         {/* <strong>{shop.name}</strong> */}
-        <img style={{ width: 140, height: 'auto', paddingTop: '10px' }} src="/images/header-stacked.png" alt="Good Neighbor Records" />
+        <img style={{ width: 140, height: 'auto', paddingTop: '10px' }} src="/images/stacked-no-r-tag.png" alt="Good Neighbor Records" />
       </NavLink>
-      <HeaderMenu
+      {/* NOTE: THIS IS WHERE THE RECORD AND MERCH LINKS WERE */}
+      {/* <HeaderMenu
         menu={menu}
         viewport="desktop"
         primaryDomainUrl={header.shop.primaryDomain.url}
         publicStoreDomain={publicStoreDomain}
-      />
+      /> */}
       <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
     </header>
   );
@@ -93,57 +96,57 @@ export function HeaderMenu({
   return (
     <nav className={className} role="navigation">
       <div className="header-menu-wrapper">
-      {viewport === 'mobile' && (
-        <>
-          <button
-            className="header-menu-item"
-            onClick={() => {
-              close();
-              open('search');
-            }}
-            style={activeLinkStyle({ isActive: false, isPending: false })}
-          >
-            <div
+        {viewport === 'mobile' && (
+          <>
+            <button
               className="header-menu-item"
-              style={{width: '100%'}}
+              onClick={() => {
+                close();
+                open('search');
+              }}
+              style={activeLinkStyle({ isActive: false, isPending: false })}
             >
-              <div className="icon-text-wrapper">
-                <SearchIcon /> Search</div>
-            </div>
-          </button>
-        </>
-      )}
-      {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
-        if (!item.url) return null;
-        // if the url is internal, we strip the domain
-        const url =
-          item.url.includes('myshopify.com') ||
-            item.url.includes(publicStoreDomain) ||
-            item.url.includes(primaryDomainUrl)
-            ? new URL(item.url).pathname
-            : item.url;
-        const icon = getMenuItemIcon(item.title);
-        return (
-          <NavLink
-            className="header-menu-item"
-            end
-            key={item.id}
-            onClick={close}
-            prefetch="intent"
-            style={activeLinkStyle}
-            to={url}
-          >
-            {icon ? (
-              <div className="icon-text-wrapper">
-                {icon}
-                {item.title}
+              <div
+                className="header-menu-item"
+                style={{ width: '100%' }}
+              >
+                <div className="icon-text-wrapper">
+                  <SearchIcon /> Search</div>
               </div>
-            ) : (
-              item.title
-            )}
-          </NavLink>
-        );
-      })}
+            </button>
+          </>
+        )}
+        {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
+          if (!item.url) return null;
+          // if the url is internal, we strip the domain
+          const url =
+            item.url.includes('myshopify.com') ||
+              item.url.includes(publicStoreDomain) ||
+              item.url.includes(primaryDomainUrl)
+              ? new URL(item.url).pathname
+              : item.url;
+          const icon = getMenuItemIcon(item.title);
+          return (
+            <NavLink
+              className="header-menu-item"
+              end
+              key={item.id}
+              onClick={close}
+              prefetch="intent"
+              style={activeLinkStyle}
+              to={url}
+            >
+              {icon ? (
+                <div className="icon-text-wrapper">
+                  {icon}
+                  {item.title}
+                </div>
+              ) : (
+                item.title
+              )}
+            </NavLink>
+          );
+        })}
       </div>
       {viewport === 'mobile' && (
 
@@ -162,19 +165,18 @@ export function HeaderMenu({
 function HeaderCtas({ isLoggedIn, cart }) {
   const { user, displayName } = useUser();
   const { logout } = useAuth();
-  
+
   return (
     <nav className="header-ctas" role="navigation">
-      <HeaderMenuMobileToggle />
       <div className="header-ctas-desktop">
-        {user ? (
+        {/* {user ? (
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <span>{displayName || user.email}</span>
-            <button 
+            <button
               onClick={logout}
-              style={{ 
-                background: 'none', 
-                border: 'none', 
+              style={{
+                background: 'none',
+                border: 'none',
                 cursor: 'pointer',
                 textDecoration: 'underline'
               }}
@@ -187,13 +189,17 @@ function HeaderCtas({ isLoggedIn, cart }) {
             Sign in
           </NavLink>
         )}
-        <SearchToggle />
+        <SearchToggle /> */}
+      <PillButton>Cart</PillButton>
       </div>
-      <CartToggle cart={cart} />
+      {/* <CartToggle cart={cart} /> */}
+      <HeaderMenuMobileToggle />
     </nav>
   );
 }
 
+
+import hamburgerButton from '../assets/hamburger-button.svg';
 function HeaderMenuMobileToggle() {
   const { open, close, type } = useAside();
   return (
@@ -208,7 +214,8 @@ function HeaderMenuMobileToggle() {
         }
       }}
     >
-      <HamburgerIcon />
+      {/* <HamburgerIcon /> */}
+      <img src={hamburgerButton} alt="Hamburger Menu" />
     </button>
   );
 }

@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { GrowingVines } from './GrowingVines';
 import { vinylFactCache } from '~/lib/cache';
+import { AGENT_HOST, ENV_PROTOCOL } from './Agent/constants';
 
 // FACTS SHOULD BE FETCHED FROM NEW AGENT
 export function WelcomeHero() {
@@ -15,20 +16,22 @@ export function WelcomeHero() {
             initRef.current = true;
             
             // Check cache first
-            const cachedFact = vinylFactCache.get();
-            if (cachedFact) {
-                console.log('Using cached vinyl fact');
-                setVinylFact(cachedFact);
-                setIsLoading(false);
-                return;
-            }
+            // const cachedFact = vinylFactCache.get();
+            // if (cachedFact) {
+            //     console.log('Using cached vinyl fact');
+            //     setVinylFact(cachedFact);
+            //     setIsLoading(false);
+            //     return;
+            // }
             
             // Cache miss - fetch from API
             const fetchVinylFact = async () => {
                 try {
                     console.log('Fetching vinyl fact from API');
-                    const response = await fetch('/api/vinyl-fact');
+                    // const response = await fetch('/api/vinyl-fact');
+                    const response = await fetch(`${ENV_PROTOCOL}://${AGENT_HOST}/agents/chat/default/api/music-fact`);
                     const data = await response.json();
+                    console.log('data', data)
 
                     if (data.success) {
                         setVinylFact(data.fact);

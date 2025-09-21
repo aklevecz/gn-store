@@ -1,14 +1,4 @@
-/* Good Neighbor Music - Header Layout Styles */
-
-.header {
-  background: var(--white-label);
-  border-bottom: 2px solid var(--black-wax);
-  /* height: auto; */
-  padding: 2rem;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
+/* Good Neighbor Music - Header Theme Styles */
 
 .header a {
   color: var(--black-wax);

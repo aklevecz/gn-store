@@ -47,7 +47,7 @@ This specification creates a Hydrogen-based e-commerce site that captures Good N
 ### Font Loading Strategy
 ```css
 @font-face {
-  font-family: 'ITC Avant Garde Pro';
+  font-family: 'ITC Avant Garde Gothic Pro';
   src: url('/fonts/ITCAVANTGARDEPRO-BOLD.OTF') format('opentype');
   font-weight: 700;
   font-style: normal;

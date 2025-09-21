@@ -1,7 +1,7 @@
 /* Good Neighbor Music - Responsive Design */
 
 /* Mobile container adjustments */
-@media (max-width: 768px) {
+@media (max-width: 48em) {
   .vinyl-grid { gap: 2rem; }
   .product-wrapper { flex: 0 calc(33.333% - 1.5rem); }
   .contact-card__copy { font-size: 2.4rem; }

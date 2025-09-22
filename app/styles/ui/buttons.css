@@ -1,19 +1,20 @@
 .pill-button {
   display: flex;
-  padding: 19.636px 39.273px;
+  padding: 0 39.273px;
   height: 54.2727px;
   justify-content: center;
   align-items: center;
   gap: 8.182px;
   border-radius: 29.455px;
-  background: #141412;
-  color: white;
+  background: var(--black-wax);
+  color: var(--white);
   border: none;
 }
 
 .pill-button__text {
   color: #FFF;
   text-align: center;
+  /* line-height: 1; */
   leading-trim: both;
   text-edge: cap;
   font-family: "ITC Avant Garde Gothic Pro";
@@ -22,4 +23,5 @@
   font-weight: 700;
   /* 195.958% */
   letter-spacing: -0.578px;
+  margin-top: 3px;
 }

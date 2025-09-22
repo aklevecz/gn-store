@@ -32,21 +32,44 @@ export function PageLayout({
           <CartAside cart={cart} />
           <SearchAside />
           <MobileMenuAside header={header} publicStoreDomain={publicStoreDomain} />
-          {header && (
-            <Header
+          <div className="site-grid">
+            {header && (
+              <Header
+                header={header}
+                cart={cart}
+                isLoggedIn={isLoggedIn}
+                publicStoreDomain={publicStoreDomain}
+              />
+            )}
+
+            <div className="desktop-sidebar" role="complementary" aria-label="Site sidebar">
+              <img src="/images/stacked-no-r-tag.png" alt="Good Neighbor Records" />
+              <nav>
+                <div className="shop-category-vertical-menu">
+                  <a>Latest</a>
+                  <a>Apparel</a>
+                  <a>Accessories</a>
+                  <a>Collectibles</a>
+                  <a>Exclusives</a>
+                </div>
+                <h1>Big Passion</h1>
+                <br />
+                <h1>Superior Quality</h1>
+                <p>At Good Neighbor, our merch has the same mission. A high-quality item that stands side-by-side with our commitment to preserving our planet.</p>
+                <img style={{width:"100%"}} src="/images/spin-blackwhite.png" alt="Spin" />
+              </nav>
+            </div>
+
+            <main className="main">{children}</main>
+
+            <Footer
+              footer={footer}
               header={header}
-              cart={cart}
-              isLoggedIn={isLoggedIn}
               publicStoreDomain={publicStoreDomain}
             />
-          )}
+          </div>
+
           <BackgroundGenerator />
-          <main>{children}</main>
-          <Footer
-            footer={footer}
-            header={header}
-            publicStoreDomain={publicStoreDomain}
-          />
           <Agent />
         </AgentProvider>
       </Toast.Provider>
@@ -131,7 +154,7 @@ function SearchAside() {
         <SearchResultsPredictive>
           {({ items, total, term, state, closeSearch }) => {
             const { articles, collections, pages, products, queries } = items;
-            
+
             if (state === 'idle' && products.length === 0) {
               return <SearchCta />;
             }
@@ -143,7 +166,7 @@ function SearchAside() {
             if (!total) {
               return <SearchResultsPredictive.Empty term={term} />;
             }
-            
+
             return (
               <>
                 <SearchResultsPredictive.Queries

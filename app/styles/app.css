@@ -37,11 +37,11 @@ img {
   }
 }
 
-aside {
+.overlay aside {
   background: var(--color-light);
-  box-shadow: 0 0 50px rgba(0, 0, 0, 0.3);
+  /* no shadow */
   /* height: calc(100vh - 109px); */
-  height:100%;
+  height: 100%;
   width: min(var(--aside-width), 100vw);
   position: fixed;
   right: calc(-1 * var(--aside-width));
@@ -53,7 +53,7 @@ aside {
   }
 }
 
-aside header {
+.overlay aside header {
   align-items: center;
   border-bottom: 1px solid var(--color-dark);
   display: flex;
@@ -62,11 +62,11 @@ aside header {
   padding: 0 20px;
 }
 
-aside header h3 {
+.overlay aside header h3 {
   margin: 0;
 }
 
-aside header .close {
+.overlay aside header .close {
   font-weight: bold;
   opacity: 0.8;
   text-decoration: none;
@@ -74,16 +74,16 @@ aside header .close {
   width: 20px;
 }
 
-aside header .close:hover {
+.overlay aside header .close:hover {
   opacity: 1;
 }
 
-aside header h2 {
+.overlay aside header h2 {
   margin-bottom: 0.6rem;
   margin-top: 0;
 }
 
-aside main {
+.overlay aside main {
   margin: 1rem;
   /* height: calc(100vh - var(--header-height) - 2rem); */
   /* height: calc(100vh - 330px); */
@@ -91,15 +91,15 @@ aside main {
   overflow-y: auto;
 }
 
-aside p {
+.overlay aside p {
   margin: 0 0 0.25rem;
 }
 
-aside p:last-child {
+.overlay aside p:last-child {
   margin: 0;
 }
 
-aside li {
+.overlay aside li {
   margin-bottom: 0.125rem;
 }
 
@@ -178,7 +178,7 @@ button.reset:hover:not(:has(> *)) {
 */
 .header {
   align-items: center;
-  background: #fff;
+  background: var(--white);
   display: flex;
   height: var(--header-height);
   padding: 0 1rem;
@@ -187,13 +187,82 @@ button.reset:hover:not(:has(> *)) {
   z-index: 1;
 }
 
+/*
+* --------------------------------------------------
+* Layout grid shell with desktop sidebar
+* --------------------------------------------------
+*/
+.site-grid {
+  display: block;
+}
+
+@media (min-width: 48em) {
+  .site-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "header header"
+      "sidebar main"
+      "footer footer";
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .header {
+    grid-area: header;
+    position: fixed;
+    width: 100%;
+    background: none;
+  }
+
+  .desktop-sidebar {
+    grid-area: sidebar;
+  }
+
+  .main {
+    grid-area: main;
+  }
+
+  .footer {
+    grid-area: footer;
+  }
+}
+
+.desktop-sidebar {
+  display: none;
+}
+
+@media (min-width: 48em) {
+  .desktop-sidebar {
+    display: block;
+    background: var(--white-label);
+    padding: 2rem 1.5rem;
+  }
+
+  .mobile-only {
+    display: none !important;
+  }
+}
+
+.main {
+  min-height: 0;
+}
+
+@media (min-width: 48em) {
+  .main {
+    overflow: auto;
+    overflow-x: hidden;
+  }
+}
+
 /* Mobile header setup and transitions */
 @media (max-width: 48em) {
   .header {
     height: 130px;
     transition: height 0.3s ease, box-shadow 0.3s ease;
   }
-  
+
   .header-ctas,
   .header img {
     transition: transform 0.2s ease;
@@ -208,13 +277,12 @@ button.reset:hover:not(:has(> *)) {
 @media (max-width: 48em) {
   .header-scrolled {
     height: 70px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
-  
+
   .header-scrolled .header-ctas {
     transform: scale(0.6);
   }
-  
+
   .header-scrolled img {
     transform: scale(0.5);
   }
@@ -296,14 +364,17 @@ button.reset:hover:not(:has(> *)) {
   overflow-y: auto;
   width: auto;
   padding: 1rem 1rem calc(var(--cart-aside-summary-height) + 1rem) 1rem;
-  
+
   /* Hide scrollbar */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* Internet Explorer 10+ */
 }
 
-.cart-main::-webkit-scrollbar { 
-  display: none; /* WebKit browsers */
+.cart-main::-webkit-scrollbar {
+  display: none;
+  /* WebKit browsers */
 }
 
 .cart-main.with-discount {

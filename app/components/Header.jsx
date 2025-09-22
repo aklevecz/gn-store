@@ -2,7 +2,7 @@ import { Suspense, useState, useEffect } from 'react';
 import { Await, NavLink, useAsyncValue } from 'react-router';
 import { useAnalytics, useOptimisticCart } from '@shopify/hydrogen';
 import { useAside } from '~/components/Aside';
-import { SearchIcon, CartIcon, HamburgerIcon, CatalogIcon, RecordIcon, ApparelIcon } from '~/components/Icons';
+import { SearchIcon, CartIcon, CatalogIcon, RecordIcon, ApparelIcon } from '~/components/Icons';
 import { useUser, useAuth } from '~/hooks/useUser';
 import PillButton from './Buttons/PillButton';
 
@@ -40,7 +40,7 @@ export function Header({ header, isLoggedIn, cart, publicStoreDomain }) {
     <header className={`header ${scrolled ? 'header-scrolled' : ''}`}>
       <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
         {/* <strong>{shop.name}</strong> */}
-        <img style={{ width: 140, height: 'auto', paddingTop: '10px' }} src="/images/stacked-no-r-tag.png" alt="Good Neighbor Records" />
+        <img className="mobile-only" style={{ paddingTop: '10px' }} src="/images/stacked-no-r-tag.png" alt="Good Neighbor Records" />
       </NavLink>
       {/* NOTE: THIS IS WHERE THE RECORD AND MERCH LINKS WERE */}
       {/* <HeaderMenu
@@ -190,7 +190,7 @@ function HeaderCtas({ isLoggedIn, cart }) {
           </NavLink>
         )}
         <SearchToggle /> */}
-      <PillButton>Cart</PillButton>
+        <PillButton>Cart</PillButton>
       </div>
       {/* <CartToggle cart={cart} /> */}
       <HeaderMenuMobileToggle />
@@ -199,13 +199,11 @@ function HeaderCtas({ isLoggedIn, cart }) {
 }
 
 
-import hamburgerButton from '../assets/hamburger-button.svg';
 function HeaderMenuMobileToggle() {
   const { open, close, type } = useAside();
   return (
     <button
       className="header-menu-mobile-toggle reset"
-      style={{ marginTop: '8px' }}
       onClick={() => {
         if (type === 'mobile') {
           close();
@@ -214,8 +212,11 @@ function HeaderMenuMobileToggle() {
         }
       }}
     >
-      {/* <HamburgerIcon /> */}
-      <img src={hamburgerButton} alt="Hamburger Menu" />
+      <img
+        src="/buttons/hamburger-button.svg"
+        alt="Hamburger Menu"
+        style={{ height: '54.2727px', width: 'auto', display: 'block' }}
+      />
     </button>
   );
 }

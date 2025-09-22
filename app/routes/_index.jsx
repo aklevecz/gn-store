@@ -4,6 +4,7 @@ import { Image } from '@shopify/hydrogen';
 import { ProductItem } from '~/components/ProductItem';
 import { WelcomeHero } from '~/components/WelcomeHero';
 import { BackgroundGenerator } from '~/components/BackgroundGenerator';
+import HeroProduct from '~/components/HeroProduct';
 // import { AgentChat } from '~/components/AgentChat';
 
 /**
@@ -65,6 +66,7 @@ function loadDeferredData({ context }) {
   };
 }
 
+// THIS IS THE HOMEPAGE
 export default function Homepage() {
   /** @type {LoaderReturnData} */
   const data = useLoaderData();
@@ -72,7 +74,8 @@ export default function Homepage() {
   return (
     <div className="home">
       {/* <FeaturedCollection collection={data.featuredCollection} /> */}
-      <WelcomeHero />
+      {/* <WelcomeHero /> */}
+      <HeroProduct/>
       <RecommendedProducts products={data.recommendedProducts} />
     </div>
   );

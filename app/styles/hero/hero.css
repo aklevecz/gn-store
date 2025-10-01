@@ -98,3 +98,96 @@
         font-size: 14px;
     }
 }
+
+/* Hero Product Styles */
+.hero-product {
+    width: 100%;
+    margin: 0;
+    position: relative;
+}
+
+.hero-product-image {
+    position: relative;
+    height: 70vh;
+}
+
+.overlay-image {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    user-select: none;
+    z-index: -1;
+}
+
+.hero-product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    z-index: 1;
+}
+
+.hero-product-content {
+    padding: 2rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+.hero-product-title {
+    font-family: 'ITC Avant Garde Gothic Pro';
+    font-size: 44px;
+    font-weight: bold;
+    margin: 0;
+    line-height: 1.2;
+    color: white;
+}
+
+.hero-product-cta {
+    font-family: 'ITC Avant Garde Gothic Pro';
+    display: flex;
+    gap: 8px;
+    background: white;
+    color: black;
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 20px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    width: 222px;
+    height: 47px;
+}
+
+.hero-product-cta:hover {
+    background: white;
+    color: #333;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .hero-product-image {
+        height: 50vh;
+        min-height: 300px;
+    }
+
+    .hero-product-content {
+        padding: 1.5rem;
+        gap: 1rem;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-product-title {
+        text-align: left;
+        font-size: 32px;
+    }
+}

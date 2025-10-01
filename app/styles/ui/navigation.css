@@ -48,7 +48,7 @@
   color: var(--black-wax);
   border: none;
   padding: 0;
-  font-family: 'ITC Avant Garde Pro', sans-serif;
+  font-family: 'ITC Avant Garde Gothic Pro', sans-serif;
   font-size: 1.8rem;
   font-weight: 700;
   cursor: pointer;
@@ -167,9 +167,45 @@ aside main {
 .shop-category-vertical-menu {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 8px;
 }
 
 .shop-category-vertical-menu a {
+  font-family: 'ITC Avant Garde Gothic Pro', sans-serif;
+  /* font-weight: 300; */
+  font-size: 16px;
   text-decoration: none;
+}
+
+.sidebar-subtagline > h1 {
+  font-size: 44px;
+  font-family: 'Doyle', sans-serif;
+  margin: 0;
+}
+
+/* Navigation Sidebar Styles */
+.navigation-sidebar {
+  padding: 2rem;
+}
+
+.navigation-sidebar img {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+/* .navigation-sidebar nav h1 {
+  font-size: 2rem;
+  margin: 1rem 0 0.5rem 0;
+}
+
+.navigation-sidebar nav p {
+  font-size: 1.4rem;
+  line-height: 1.4;
+  margin: 1rem 0;
+} */
+
+.sidebar-description {
+  font-family: 'ITC Avant Garde Gothic Pro', sans-serif;
+  font-size: 16px;
+  font-weight: 300;
 }

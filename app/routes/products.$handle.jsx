@@ -120,8 +120,9 @@ export default function Product() {
           <div> Scan to see magic <span className="sparkle">✨</span></div>
           <img src="/images/gizzard_yaytso_art_QR.png" alt="QR code for AR" style={{ width: 200, height: 200 }} />
         </div>}
+        
       </div>
-      <div className="product-content-section">
+      {/* <div className="product-content-section">
         <div className="product-title-price-desktop">
           <h2>{title}</h2>
           <ProductPrice
@@ -138,14 +139,11 @@ export default function Product() {
           />
           <br />
           <br />
-          {/* <p>
-            <strong>Description</strong>
-          </p> */}
           <br />
           <div style={{ marginTop: '24px' }} dangerouslySetInnerHTML={{ __html: descriptionHtml }} />
           <br />
         </div>
-      </div>
+      </div> */}
       <Analytics.ProductView
         data={{
           products: [

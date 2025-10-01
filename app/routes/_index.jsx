@@ -36,13 +36,40 @@ export async function loader(args) {
  * @param {LoaderFunctionArgs}
  */
 async function loadCriticalData({ context }) {
-  const [{ collections }] = await Promise.all([
+  const [{ collections }, { products }, debugAllProducts] = await Promise.all([
     context.storefront.query(FEATURED_COLLECTION_QUERY),
-    // Add other queries here, so that they are loaded in parallel
+    context.storefront.query(FEATURED_PRODUCT_QUERY, {
+      cache: context.storefront.CacheLong(),
+    }),
+    context.storefront.query(DEBUG_ALL_PRODUCTS_QUERY, {
+      cache: context.storefront.CacheLong(),
+    }),
   ]);
+
+  console.log('=== DEBUG: All products (first 5) ===');
+  debugAllProducts.products.nodes.forEach((product, index) => {
+    console.log(`Product ${index + 1}:`, {
+      title: product.title,
+      handle: product.handle,
+      tags: product.tags
+    });
+  });
+
+  console.log('=== Featured products query result ===');
+  console.log('Featured products found:', products?.nodes?.length || 0);
+  if (products?.nodes?.length > 0) {
+    console.log('Featured product:', {
+      title: products.nodes[0].title,
+      handle: products.nodes[0].handle,
+      tags: products.nodes[0].tags
+    });
+  } else {
+    console.log('No products found with "featured" tag');
+  }
 
   return {
     featuredCollection: collections.nodes[0],
+    featuredProduct: products.nodes[0],
   };
 }
 
@@ -75,7 +102,7 @@ export default function Homepage() {
     <div className="home">
       {/* <FeaturedCollection collection={data.featuredCollection} /> */}
       {/* <WelcomeHero /> */}
-      <HeroProduct/>
+      <HeroProduct product={data.featuredProduct} />
       <RecommendedProducts products={data.recommendedProducts} />
     </div>
   );
@@ -112,7 +139,6 @@ function FeaturedCollection({ collection }) {
 function RecommendedProducts({ products }) {
   return (
     <div className="recommended-products">
-      <h2>Records & Merch</h2>
       <Suspense fallback={<div>Loading...</div>}>
         <Await resolve={products}>
           {(response) => (
@@ -149,6 +175,65 @@ const FEATURED_COLLECTION_QUERY = `#graphql
     collections(first: 1, sortKey: UPDATED_AT, reverse: true) {
       nodes {
         ...FeaturedCollection
+      }
+    }
+  }
+`;
+
+const FEATURED_PRODUCT_QUERY = `#graphql
+  fragment FeaturedProduct on Product {
+    id
+    title
+    handle
+    description
+    tags
+    priceRange {
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+    featuredImage {
+      id
+      url
+      altText
+      width
+      height
+    }
+    variants(first: 1) {
+      nodes {
+        id
+        availableForSale
+        price {
+          amount
+          currencyCode
+        }
+        compareAtPrice {
+          amount
+          currencyCode
+        }
+      }
+    }
+  }
+  query FeaturedProduct($country: CountryCode, $language: LanguageCode)
+    @inContext(country: $country, language: $language) {
+    products(first: 1, query: "tag:featured") {
+      nodes {
+        ...FeaturedProduct
+      }
+    }
+  }
+`;
+
+const DEBUG_ALL_PRODUCTS_QUERY = `#graphql
+  query AllProducts($country: CountryCode, $language: LanguageCode)
+    @inContext(country: $country, language: $language) {
+    products(first: 5) {
+      nodes {
+        id
+        title
+        handle
+        tags
       }
     }
   }

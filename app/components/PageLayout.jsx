@@ -1,4 +1,4 @@
-import { Await, Link } from 'react-router';
+import { Await, Link, useRouteLoaderData, useLocation } from 'react-router';
 import { Suspense, useId } from 'react';
 import { Aside } from '~/components/Aside';
 import { Footer } from '~/components/Footer';
@@ -13,6 +13,8 @@ import { Toast } from '~/components/Toast';
 import { BackgroundGenerator } from './BackgroundGenerator';
 import { AgentProvider } from '~/components/Agent/AgentProvider';
 import { Agent } from '~/components/Agent/Agent';
+import { ProductSidebar } from './ProductSidebar';
+import { NavigationSidebar } from './NavigationSidebar';
 
 /**
  * @param {PageLayoutProps}
@@ -25,6 +27,21 @@ export function PageLayout({
   isLoggedIn,
   publicStoreDomain,
 }) {
+  const location = useLocation();
+  const isProductPage = location.pathname.startsWith('/products/');
+
+  // Try to access product route data
+  const productRouteData = useRouteLoaderData('routes/products.$handle');
+
+  console.log('=== PageLayout Route Data Debug ===');
+  console.log('Current location:', location.pathname);
+  console.log('Is product page:', isProductPage);
+  console.log('Product route data:', productRouteData);
+
+  if (isProductPage && productRouteData) {
+    console.log('Product data available:', productRouteData.product?.title);
+  }
+
   return (
     <Aside.Provider>
       <Toast.Provider>
@@ -43,21 +60,11 @@ export function PageLayout({
             )}
 
             <div className="desktop-sidebar" role="complementary" aria-label="Site sidebar">
-              <img src="/images/stacked-no-r-tag.png" alt="Good Neighbor Records" />
-              <nav>
-                <div className="shop-category-vertical-menu">
-                  <a>Latest</a>
-                  <a>Apparel</a>
-                  <a>Accessories</a>
-                  <a>Collectibles</a>
-                  <a>Exclusives</a>
-                </div>
-                <h1>Big Passion</h1>
-                <br />
-                <h1>Superior Quality</h1>
-                <p>At Good Neighbor, our merch has the same mission. A high-quality item that stands side-by-side with our commitment to preserving our planet.</p>
-                <img style={{width:"100%"}} src="/images/spin-blackwhite.png" alt="Spin" />
-              </nav>
+              {isProductPage && productRouteData ? (
+                <ProductSidebar product={productRouteData.product} />
+              ) : (
+                <NavigationSidebar />
+              )}
             </div>
 
             <main className="main">{children}</main>

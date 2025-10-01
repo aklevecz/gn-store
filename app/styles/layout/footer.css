@@ -4,7 +4,7 @@
   background: var(--black-wax);
   color: var(--white-label);
   padding: 4rem 2rem;
-  margin-top: 8rem;
+  /* margin-top: 8rem; */
   display: flex;
   justify-content: space-between;
   align-items: flex-start;

@@ -199,14 +199,13 @@ button.reset:hover:not(:has(> *)) {
 @media (min-width: 48em) {
   .site-grid {
     display: grid;
-    grid-template-columns: 280px 1fr;
+    grid-template-columns: 576px 1fr;
     grid-template-rows: auto 1fr auto;
     grid-template-areas:
       "header header"
       "sidebar main"
       "footer footer";
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
   }
 
   .header {
@@ -238,6 +237,7 @@ button.reset:hover:not(:has(> *)) {
     display: block;
     background: var(--white-label);
     padding: 2rem 1.5rem;
+    width: 576px;
   }
 
   .mobile-only {
@@ -508,15 +508,6 @@ button.reset:hover:not(:has(> *)) {
   object-fit: cover;
 }
 
-.recommended-products-grid {
-  display: grid;
-  grid-gap: 1.5rem;
-  grid-template-columns: repeat(2, 1fr);
-
-  @media (min-width: 45em) {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
 
 .recommended-product img {
   height: auto;

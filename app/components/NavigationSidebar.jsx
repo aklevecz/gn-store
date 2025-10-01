@@ -11,13 +11,13 @@ export function NavigationSidebar() {
           <a>Exclusives</a>
         </div>
         <div className="sidebar-subtagline">
-          <h1>Big Passion <br/>
+          <h1>Big Passion <br />
             Superior Quality</h1>
         </div>
         <div className="sidebar-description">
           <p>At Good Neighbor, our merch has the same mission. A high-quality item that stands side-by-side with our commitment to preserving our planet.</p>
-          <img style={{ width: 400 }} src="/images/spin-blackwhite.png" alt="Spin" />
         </div>
+        <img style={{ height: 400, width: 'auto', marginTop: 50 }} src="/images/spin-blackwhite.png" alt="Spin" />
       </nav >
     </div >
   );

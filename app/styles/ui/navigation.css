@@ -177,7 +177,11 @@ aside main {
   text-decoration: none;
 }
 
-.sidebar-subtagline > h1 {
+.sidebar-subtagline {
+  margin-top: 50px;
+}
+
+.sidebar-subtagline>h1 {
   font-size: 44px;
   font-family: 'Doyle', sans-serif;
   margin: 0;

@@ -3,7 +3,7 @@
 .footer {
   background: var(--black-wax);
   color: var(--white-label);
-  padding: 4rem 2rem;
+  padding: 4rem 4rem;
 }
 
 .footer-content {

@@ -1,0 +1,72 @@
+/* Product Image Carousel */
+.product-image-carousel {
+  position: relative;
+  width: 100%;
+}
+
+.carousel-container {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.carousel-container::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.carousel-slide {
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 8px 0;
+}
+
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #d1d1d1;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.carousel-dot:hover {
+  background: #999;
+}
+
+.carousel-dot.active {
+  background: #333;
+  transform: scale(1.2);
+}
+
+/* Desktop: hide dots, show all images stacked */
+@media (min-width: 48em) {
+  .carousel-container {
+    display: block;
+    overflow: visible;
+    scroll-snap-type: none;
+  }
+
+  .carousel-slide {
+    flex: none;
+    scroll-snap-align: none;
+    margin-bottom: 1rem;
+  }
+
+  .carousel-dots {
+    display: none;
+  }
+}

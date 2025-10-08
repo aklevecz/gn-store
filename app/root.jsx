@@ -34,6 +34,7 @@ import iconsStyles from '~/styles/ui/icons.css?url';
 import agentStyles from '~/styles/agent.css?url';
 import tictactoeStyles from '~/styles/tictactoe.css?url';
 import profileStyles from '~/styles/profile.css?url';
+import carouselStyles from '~/styles/components/product-image-carousel.css?url';
 
 import {PageLayout} from './components/PageLayout';
 import {UserProvider} from '~/contexts/UserContext';
@@ -183,6 +184,7 @@ export function Layout({children}) {
         <link rel="stylesheet" href={variablesStyles}></link>
         <link rel="stylesheet" href={baseStyles}></link>
         <link rel="stylesheet" href={productStyles}></link>
+        <link rel="stylesheet" href={carouselStyles}></link>
         <link rel="stylesheet" href={cartStyles}></link>
         <link rel="stylesheet" href={collectionsStyles}></link>
         <link rel="stylesheet" href={buttonsStyles}></link>

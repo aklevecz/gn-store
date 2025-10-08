@@ -3,9 +3,33 @@
 /* Font Loading */
 @font-face {
   font-family: 'ITC Avant Garde Gothic Pro';
+  src: url('/fonts/ITCAVANTGARDEPRO-BK.OTF') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ITC Avant Garde Gothic Pro';
+  src: url('/fonts/ITCAVANTGARDEPRO-BKOBL.OTF') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ITC Avant Garde Gothic Pro';
   src: url('/fonts/ITCAVANTGARDEPRO-BOLD.OTF') format('opentype');
   font-weight: 700;
   font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ITC Avant Garde Gothic Pro';
+  src: url('/fonts/ITCAVANTGARDEPRO-BOLDOBL.OTF') format('opentype');
+  font-weight: 700;
+  font-style: italic;
   font-display: swap;
 }
 

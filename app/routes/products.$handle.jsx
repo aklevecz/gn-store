@@ -10,6 +10,7 @@ import {
 import { ProductPrice } from '~/components/ProductPrice';
 import { ProductImage } from '~/components/ProductImage';
 import { ProductForm } from '~/components/ProductForm';
+import { ProductImageCarousel } from '~/components/ProductImageCarousel';
 import { redirectIfHandleIsLocalized } from '~/lib/redirect';
 
 /**
@@ -107,7 +108,10 @@ export default function Product() {
   return (
     <div className="product">
       <div className="product-image-section">
-        <ProductImage image={selectedVariant?.image} />
+        <ProductImageCarousel
+          images={product.images?.nodes || []}
+          selectedVariantImage={selectedVariant?.image}
+        />
         {/* PATCH TO SHOW QR CODE FOR GIZZRD, BUT NEEDS TO BE GENERALIZED FOR OTHER EXPERIENCES */}
         {product.handle === 'king-gizzard-the-lizard-wizard-bootleg-rpet' && <div className="product-image-section-qr">
           <div> Scan to see magic <span className="sparkle">✨</span></div>
@@ -142,13 +146,14 @@ export default function Product() {
         </div>
       </div>
 
-      <div className="product-additional-images">
+      <div className="product-additional-images mobile-only">
         {product.images?.nodes
           ?.filter((image) => image.id !== selectedVariant?.image?.id)
           .map((image) => (
             <ProductImage key={image.id} image={image} />
           ))}
       </div>
+
       {/* <div className="product-content-section">
         <div className="product-title-price-desktop">
           <h2>{title}</h2>

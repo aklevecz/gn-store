@@ -14,7 +14,7 @@ export function NavigationSidebar() {
           <h1>Big Passion <br />
             Superior Quality</h1>
           <div className="sidebar-description">
-            <p>At Good Neighbor, our merch has the same mission. A high-quality item that stands side-by-side with our commitment to preserving our planet.</p>
+            At Good Neighbor, our merch has the same mission. A high-quality item that stands side-by-side with our commitment to preserving our planet.
           </div>
         </div>
 

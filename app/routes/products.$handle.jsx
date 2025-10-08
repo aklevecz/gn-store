@@ -129,14 +129,15 @@ export default function Product() {
         </div>
 
         <div className="product-actions-mobile">
-          <ProductPrice
+          {/* <ProductPrice
             price={selectedVariant?.price}
             // compareAtPrice={selectedVariant?.compareAtPrice}
-          />
+          /> */}
           <ProductForm
             productOptions={productOptions}
             selectedVariant={selectedVariant}
             productTitle={title}
+            price={selectedVariant?.price || 0}
           />
         </div>
       </div>

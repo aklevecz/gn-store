@@ -1,17 +1,20 @@
-import {Link, useNavigate} from 'react-router';
-import {AddToCartButton} from './AddToCartButton';
-import {useAside} from './Aside';
+import { Link, useNavigate } from 'react-router';
+import { AddToCartButton } from './AddToCartButton';
+import { useAside } from './Aside';
 import { useToast } from './Toast';
+import { ProductPrice } from './ProductPrice';
 
 /**
  * @param {{
- *   productOptions: MappedProductOptions[];
- *   selectedVariant: ProductFragment['selectedOrFirstAvailableVariant'];
+ *  productOptions: MappedProductOptions[];
+ *  selectedVariant: ProductFragment['selectedOrFirstAvailableVariant'];
+ *  productTitle: string;
+ *  price: number;
  * }}
  */
-export function ProductForm({productOptions, selectedVariant, productTitle}) {
+export function ProductForm({ productOptions, selectedVariant, productTitle, price }) {
   const navigate = useNavigate();
-  const {open} = useAside();
+  const { open } = useAside();
   const toast = useToast();
   return (
     <div className="product-form">
@@ -20,9 +23,9 @@ export function ProductForm({productOptions, selectedVariant, productTitle}) {
         if (option.optionValues.length === 1) return null;
 
         return (
-          <div className="product-options" key={option.name}>
-            <h5>{option.name}</h5>
-            <div className="product-options-grid">
+          <div className="product-sidebar-options" key={option.name}>
+            <h4 className="option-title">{option.name}</h4>
+            <div className="option-values">
               {option.optionValues.map((value) => {
                 const {
                   name,
@@ -42,16 +45,13 @@ export function ProductForm({productOptions, selectedVariant, productTitle}) {
                   // as an anchor tag
                   return (
                     <Link
-                      className="product-options-item"
+                      className={`option-value ${selected ? 'selected' : ''}`}
                       key={option.name + name}
                       prefetch="intent"
                       preventScrollReset
                       replace
                       to={`/products/${handle}?${variantUriQuery}`}
                       style={{
-                        border: selected
-                          ? '1px solid black'
-                          : '1px solid transparent',
                         opacity: available ? 1 : 0.3,
                       }}
                     >
@@ -67,17 +67,10 @@ export function ProductForm({productOptions, selectedVariant, productTitle}) {
                   return (
                     <button
                       type="button"
-                      className={`product-options-item${
-                        exists && !selected ? ' link' : ''
-                      }`}
+                      className={`option-value ${selected ? 'selected' : ''}`}
                       key={option.name + name}
                       style={{
-                        // border: selected
-                        //   ? '1px solid black'
-                        //   : '1px solid transparent',
                         opacity: available ? 1 : 0.3,
-                        color: selected ? 'var(--neon-plum)' : 'var(--black-wax)',
-                        backgroundColor: selected ? 'var(--yellow-sunburst)' : 'var(--white-label)',
                       }}
                       disabled={!exists}
                       onClick={() => {
@@ -99,27 +92,33 @@ export function ProductForm({productOptions, selectedVariant, productTitle}) {
           </div>
         );
       })}
-      <AddToCartButton
-        disabled={!selectedVariant || !selectedVariant.availableForSale}
-        onClick={() => {
-          console.log('productOptions', productOptions);
-          // open('cart');
-          toast.show(`Sick! you just added ${productTitle} to your bag!`);
-        }}
-        lines={
-          selectedVariant
-            ? [
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+        <ProductPrice
+          price={price}
+        // compareAtPrice={selectedVariant?.compareAtPrice}
+        />
+        <AddToCartButton
+          disabled={!selectedVariant || !selectedVariant.availableForSale}
+          onClick={() => {
+            console.log('productOptions', productOptions);
+            // open('cart');
+            toast.show(`Sick! you just added ${productTitle} to your bag!`);
+          }}
+          lines={
+            selectedVariant
+              ? [
                 {
                   merchandiseId: selectedVariant.id,
                   quantity: 1,
                   selectedVariant,
                 },
               ]
-            : []
-        }
-      >
-        {selectedVariant?.availableForSale ? 'Add to Cart' : 'Sold out'}
-      </AddToCartButton>
+              : []
+          }
+        >
+          {selectedVariant?.availableForSale ? 'Add to Cart' : 'Sold out'}
+        </AddToCartButton>
+      </div>
     </div>
   );
 }
@@ -130,16 +129,19 @@ export function ProductForm({productOptions, selectedVariant, productTitle}) {
  *   name: string;
  * }}
  */
-function ProductOptionSwatch({swatch, name}) {
+function ProductOptionSwatch({ swatch, name }) {
   const image = swatch?.image?.previewImage?.url;
   const color = swatch?.color;
 
-  if (!image && !color) return name;
+  if (!image && !color) {
+    // For text options (like sizes), return just the text
+    return <span className="option-text">{name}</span>;
+  }
 
   return (
     <div
       aria-label={name}
-      className="product-option-label-swatch"
+      className="product-option-swatch"
       style={{
         backgroundColor: color || 'transparent',
       }}

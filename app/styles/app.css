@@ -196,6 +196,10 @@ button.reset:hover:not(:has(> *)) {
   display: block;
 }
 
+.desktop-sidebar {
+  display: none;
+}
+
 @media (min-width: 48em) {
   .site-grid {
     display: grid;
@@ -220,6 +224,14 @@ button.reset:hover:not(:has(> *)) {
     position: sticky;
     top: 0;
     align-self: start;
+    display: block;
+    gap: 50px;
+    background: var(--white-label);
+    padding: 40px;
+  }
+
+  .mobile-only {
+    display: none !important;
   }
 
   .main {
@@ -230,22 +242,6 @@ button.reset:hover:not(:has(> *)) {
 
   .footer {
     grid-area: footer;
-  }
-}
-
-.desktop-sidebar {
-  display: none;
-}
-
-@media (min-width: 48em) {
-  .desktop-sidebar {
-    display: block;
-    background: var(--white-label);
-    padding: 2rem 1.5rem;
-  }
-
-  .mobile-only {
-    display: none !important;
   }
 }
 

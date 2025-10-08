@@ -132,7 +132,7 @@
 }
 
 .hero-product-content {
-    padding: 2rem;
+    padding: 0 60px 90px;
     display: flex;
     flex-direction: row;
     align-items: center;

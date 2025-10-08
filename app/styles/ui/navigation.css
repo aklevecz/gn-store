@@ -179,22 +179,26 @@ aside main {
 
 .sidebar-subtagline {
   margin-top: 50px;
+  width: 410px
 }
 
 .sidebar-subtagline>h1 {
   font-size: 44px;
   font-family: 'Doyle', sans-serif;
-  margin: 0;
+  line-height: 1;
+  margin-bottom: 20px;
 }
 
 /* Navigation Sidebar Styles */
 .navigation-sidebar {
+  display: flex;
+  flex-direction: column;
   padding: 2rem;
 }
 
 .navigation-sidebar img {
   width: 100%;
-  margin-bottom: 2rem;
+  margin-bottom: 100px;
 }
 
 /* .navigation-sidebar nav h1 {

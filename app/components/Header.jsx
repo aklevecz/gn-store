@@ -165,6 +165,7 @@ export function HeaderMenu({
 function HeaderCtas({ isLoggedIn, cart }) {
   const { user, displayName } = useUser();
   const { logout } = useAuth();
+  const { open } = useAside();
 
   return (
     <nav className="header-ctas" role="navigation">
@@ -190,7 +191,7 @@ function HeaderCtas({ isLoggedIn, cart }) {
           </NavLink>
         )}
         <SearchToggle /> */}
-        <PillButton>Cart</PillButton>
+        <PillButton onClick={() => open('cart')}>Cart</PillButton>
       </div>
       {/* <CartToggle cart={cart} /> */}
       <HeaderMenuMobileToggle />

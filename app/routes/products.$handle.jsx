@@ -106,13 +106,6 @@ export default function Product() {
 
   return (
     <div className="product">
-      <div className="product-title-price">
-        <h2>{title}</h2>
-        <ProductPrice
-          price={selectedVariant?.price}
-          compareAtPrice={selectedVariant?.compareAtPrice}
-        />
-      </div>
       <div className="product-image-section">
         <ProductImage image={selectedVariant?.image} />
         {/* PATCH TO SHOW QR CODE FOR GIZZRD, BUT NEEDS TO BE GENERALIZED FOR OTHER EXPERIENCES */}
@@ -120,7 +113,40 @@ export default function Product() {
           <div> Scan to see magic <span className="sparkle">✨</span></div>
           <img src="/images/gizzard_yaytso_art_QR.png" alt="QR code for AR" style={{ width: 200, height: 200 }} />
         </div>}
-        
+      </div>
+
+      <div className="product-content-mobile mobile-only">
+        <nav className="product-breadcrumb">
+          <a href="/">Home</a>
+          <span> &gt; </span>
+          <span>{product.productType || 'Product'}</span>
+        </nav>
+
+        <h1>{title}</h1>
+
+        <div className="product-description">
+          <div dangerouslySetInnerHTML={{ __html: descriptionHtml }} />
+        </div>
+
+        <div className="product-actions-mobile">
+          <ProductPrice
+            price={selectedVariant?.price}
+            // compareAtPrice={selectedVariant?.compareAtPrice}
+          />
+          <ProductForm
+            productOptions={productOptions}
+            selectedVariant={selectedVariant}
+            productTitle={title}
+          />
+        </div>
+      </div>
+
+      <div className="product-additional-images">
+        {product.images?.nodes
+          ?.filter((image) => image.id !== selectedVariant?.image?.id)
+          .map((image) => (
+            <ProductImage key={image.id} image={image} />
+          ))}
       </div>
       {/* <div className="product-content-section">
         <div className="product-title-price-desktop">
@@ -208,6 +234,16 @@ const PRODUCT_FRAGMENT = `#graphql
     handle
     descriptionHtml
     description
+    productType
+    images(first: 10) {
+      nodes {
+        id
+        url
+        altText
+        width
+        height
+      }
+    }
     encodedVariantExistence
     encodedVariantAvailability
     options {

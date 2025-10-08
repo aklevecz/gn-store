@@ -183,9 +183,7 @@
     grid-template-columns: 1fr 1fr !important;
     gap: 4rem !important;
     align-items: start !important;
-    max-width: 1200px !important;
     margin: 18px auto !important;
-    padding: 2rem !important;
   }
 
   .product-title-price {
@@ -197,7 +195,7 @@
     margin-bottom: 2rem;
   }
 
-  .product-image-section {
+  .product-image-section, .product-additional-images {
     grid-column: 1 / span 2;
   }
 
@@ -292,7 +290,6 @@
   height: auto;
   aspect-ratio: 1;
   object-fit: cover;
-  border-radius: 2rem;
 }
 
 /* Product page price */
@@ -362,27 +359,6 @@
   display: none;
 }
 
-.product button[type="submit"] {
-  background-color: var(--yellow-sunburst);
-  color: var(--black-wax);
-  border-radius: 4.8rem;
-  padding: 2rem 4rem;
-  font-family: 'ITC Avant Garde Pro', sans-serif;
-  font-size: 2rem;
-  font-weight: 700;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  width: 90%;
-  margin-top: 2rem;
-  margin: 0 auto;
-  display: block;
-}
-
-.product button[type="submit"]:hover {
-  transform: scale(1.05);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-}
 
 .product-options {
   margin-bottom: 24px;
@@ -410,7 +386,7 @@
 
 /* Product Sidebar Styles */
 .product-sidebar {
-  padding: 2rem;
+  padding: 2rem 3rem;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -452,6 +428,7 @@
   display: flex;
   gap: 1.5rem;
   align-items: center;
+  justify-content: space-between;
   margin-top: auto;
 }
 
@@ -482,5 +459,110 @@
 .add-to-cart-text {
   display: block;
   text-align: center;
+}
+
+/* Product Sidebar Variant Options */
+.product-sidebar-options {
+  margin: 1.5rem 0;
+}
+
+.option-title {
+  font-family: 'ITC Avant Garde Gothic Pro', sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #333;
+  margin: 0 0 1rem 0;
+}
+
+.option-values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.option-value {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.option-value:disabled {
+  cursor: not-allowed;
+}
+
+/* Color swatch styles - just plain circles */
+.product-option-swatch {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 5px solid rgba(255, 255, 255, 0);
+  transition: border-color 0.9s ease;
+  position: relative;
+}
+
+.option-value.selected .product-option-swatch {
+  border-color:  rgba(255, 255, 255, 0.271);
+}
+
+.product-option-swatch img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Size/text option styles - gray pills with text */
+.option-value:has(.option-text) {
+  background: #e8e8e8;
+  border-radius: 24px;
+  padding: 12px 24px;
+  min-width: 60px;
+}
+
+.option-value.selected:has(.option-text) {
+  background: #333;
+}
+
+.option-text {
+  font-family: 'ITC Avant Garde Gothic Pro', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #333;
+}
+
+.option-value.selected .option-text {
+  color: white;
+}
+
+/* Mobile product actions */
+.product-actions-mobile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.product-actions-mobile .product-price {
+  font-size: 3rem;
+  margin: 0;
+}
+
+.product-content-mobile {
+  padding: 2rem 2rem;
+}
+
+.product-content-mobile .product-form .add-to-cart-button {
+  width: auto;
+  padding: 1.5rem 3rem;
+  border-radius: 50px;
+  margin: 0;
 }
 

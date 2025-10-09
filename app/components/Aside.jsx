@@ -25,8 +25,6 @@ export function Aside({children, heading, type}) {
     const abortController = new AbortController();
 
     if (expanded) {
-      const headerHeight = document.querySelector('.header').offsetHeight;
-      asideRef.current.style.paddingTop = `${headerHeight}px`;
       document.addEventListener(
         'keydown',
         function handler(event) {
@@ -47,14 +45,10 @@ export function Aside({children, heading, type}) {
       role="dialog"
     >
       <button className="close-outside" onClick={close} />
-      <aside ref={asideRef}>
-        {/* COMMENT OUT HEADER FOR NOW-- MIGHT NOT BE NEEDED OR WE NEED TO RESIZE MORE INTELLIGENTLY BASED ON THE HEADER HEIGHT */}
-        {/* <header>
-          <h3>{heading}</h3>
-          <button className="close reset" onClick={close} aria-label="Close">
-            &times;
-          </button>
-        </header> */}
+      <aside ref={asideRef} type={type}>
+        <button className="aside-close-btn" onClick={close} aria-label="Close">
+          &times;
+        </button>
         <main>{children}</main>
       </aside>
     </div>

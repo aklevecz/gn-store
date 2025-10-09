@@ -1,76 +1,201 @@
 /* Good Neighbor Music - Cart and Checkout Styles */
 
 /* Cart Aside Override */
-aside {
-  background: var(--off-white);
-  /* padding-top: 130px; */
-  /* border-left: 4px solid var(--black-wax); */
-}
-
-aside header {
-  border-bottom: 2px solid var(--black-wax);
+aside[type="cart"] {
   background: var(--yellow-sunburst);
 }
 
-aside header h3 {
-  font-size: 2.4rem;
+aside[type="cart"] main {
+  margin: 0;
+  background: var(--yellow-sunburst);
+}
+
+/* Cart Main */
+.cart-main {
+  background: var(--yellow-sunburst);
+  padding: 8rem 2rem 2rem 2rem;
+}
+
+.cart-main ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Cart Line Items */
+.cart-line {
+  display: flex;
+  gap: 1.5rem;
+  padding: 2rem 0;
+  list-style: none;
+}
+
+.cart-line-image {
+  flex-shrink: 0;
+  width: 150px;
+  height: 150px;
+  background: var(--off-white);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.cart-line-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cart-line-details {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.cart-line-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cart-line-item-title {
+  font-family: 'ITC Avant Garde Gothic Pro', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 400;
   color: var(--black-wax);
+  text-decoration: none;
 }
 
-/* Cart Buttons */
-.cart-line button,
-.cart-discount button,
-aside button[type="submit"],
-aside button {
-  background-color: var(--black-wax);
-  color: var(--white);
-  border: none;
-  border-radius: 2.4rem;
-  padding: 0.8rem 1.6rem;
-  font-family: 'ITC Avant Garde Pro', sans-serif;
-  font-size: 1.4rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.cart-line button:hover,
-.cart-discount button:hover,
-aside button[type="submit"]:hover,
-aside button:hover {
-  background-color: var(--neon-plum);
-  transform: scale(1.05);
-}
-
-/* Cart checkout button - using direct class selector */
-.checkout-button {
-  background-color: var(--yellow-sunburst);
-  color: var(--black-wax);
-  border-radius: 2.4rem;
-  padding: 1.2rem 2rem;
-  font-family: 'ITC Avant Garde Pro', sans-serif;
+.cart-line-variant {
+  font-family: 'ITC Avant Garde Gothic Pro', sans-serif;
   font-size: 1.6rem;
+  font-weight: 400;
+  color: var(--black-wax);
+}
+
+.cart-remove-btn {
+  background: none;
+  border: none;
+  font-family: 'ITC Avant Garde Gothic Pro', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--black-wax);
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+}
+
+.cart-remove-btn:hover {
+  opacity: 0.7;
+}
+
+.cart-line-price-qty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.cart-line-price-qty .product-price {
+  font-family: 'ITC Avant Garde Gothic Pro', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: var(--black-wax);
+}
+
+/* Quantity Controls */
+.cart-line-quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.qty-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: var(--black-wax);
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qty-btn:hover {
+  opacity: 0.7;
+}
+
+.qty-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.qty-number {
+  font-family: 'ITC Avant Garde Gothic Pro', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: var(--black-wax);
+  min-width: 20px;
+  text-align: center;
+}
+
+/* Cart Summary */
+.cart-summary-aside {
+  padding: 0 2rem 2rem 2rem;
+  background: var(--yellow-sunburst);
+}
+
+.cart-subtotal-row,
+.cart-shipping-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  font-family: 'ITC Avant Garde Gothic Pro', sans-serif;
+  font-size: 1.6rem;
+  color: var(--black-wax);
+}
+
+.cart-subtotal-label {
+  font-size: 2.4rem;
+  font-weight: 700;
+}
+
+.cart-subtotal-amount {
+  font-size: 2.4rem;
+  font-weight: 700;
+}
+
+.cart-shipping-row {
+  font-size: 1.4rem;
+  font-weight: 400;
+}
+
+/* Checkout Button */
+.checkout-button {
+  background-color: var(--black-wax);
+  color: var(--yellow-sunburst);
+  border-radius: 50px;
+  padding: 2rem;
+  font-family: 'ITC Avant Garde Gothic Pro', sans-serif;
+  font-size: 2rem;
   font-weight: 700;
   text-decoration: none;
   display: block;
   text-align: center;
   transition: all 0.2s ease;
-  margin-top: 1rem;
+  margin-top: 2rem;
   width: 100%;
   box-sizing: border-box;
 }
 
-.checkout-button p {
-  margin: 0 !important;
-  font-size: 1.6rem !important;
-  font-family: 'ITC Avant Garde Pro', sans-serif !important;
-  font-weight: 700 !important;
-  color: var(--black-wax) !important;
-}
-
 .checkout-button:hover {
   transform: scale(1.02);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  opacity: 0.9;
 }
 
 /* Cart Inputs */
@@ -102,23 +227,10 @@ aside input:focus {
   margin: 0 0.5rem;
 }
 
-/* Discount and Gift Card Form Layout */
-.cart-discount div,
-.cart-gift-card div {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.cart-discount input,
-.cart-gift-card input {
-  flex: 1;
-  width: auto;
-}
-
-.cart-discount button,
-.cart-gift-card button {
-  flex-shrink: 0;
+/* Discount and Gift Card Form Layout - Hidden for clean cart design */
+.cart-discount,
+.cart-gift-card {
+  display: none;
 }
 
 .cart-quantity {

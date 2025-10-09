@@ -149,11 +149,24 @@ export function HeaderMenu({
         })}
       </div>
       {viewport === 'mobile' && (
+        <>
+          <button
+            className="mobile-cart-button"
+            onClick={() => {
+              close();
+              open('cart');
+            }}
+          >
+            <div className="icon-text-wrapper">
+              <CartIcon /> Cart
+            </div>
+          </button>
 
-        <div className="mobile-menu-footer" style={{ marginTop: 'auto', padding: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '24px' }}>
-          <img src="/images/infatuation-color.svg" alt="Infatuation Color" style={{ width: "50%", height: 'auto' }} />
-          <img src="/images/header-stacked.png" alt="Good Neighbor Records" style={{ width: "50%", height: 'auto' }} />
-        </div>
+          <div className="mobile-menu-footer">
+            <img src="/images/infatuation-color.svg" alt="Infatuation Color" />
+            <img src="/images/header-stacked.png" alt="Good Neighbor Records" />
+          </div>
+        </>
       )}
     </nav>
   );

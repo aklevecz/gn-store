@@ -10,17 +10,20 @@ export function CartSummary({cart, layout}) {
 
   return (
     <div aria-labelledby="cart-summary" className={className}>
-      <h4>Totals</h4>
-      <dl className="cart-subtotal">
-        <dt>Subtotal</dt>
-        <dd>
+      <div className="cart-subtotal-row">
+        <span className="cart-subtotal-label">Subtotal</span>
+        <span className="cart-subtotal-amount">
           {cart.cost?.subtotalAmount?.amount ? (
             <Money data={cart.cost?.subtotalAmount} />
           ) : (
             '-'
           )}
-        </dd>
-      </dl>
+        </span>
+      </div>
+      <div className="cart-shipping-row">
+        <span>Shipping</span>
+        <span>Calculated at checkout</span>
+      </div>
       <CartDiscounts discountCodes={cart.discountCodes} />
       <CartGiftCard giftCardCodes={cart.appliedGiftCards} />
       <CartCheckoutActions checkoutUrl={cart.checkoutUrl} />
@@ -36,9 +39,8 @@ function CartCheckoutActions({checkoutUrl}) {
   return (
     <div>
       <a href={checkoutUrl} target="_self" className="checkout-button">
-        <p>Continue to Checkout &rarr;</p>
+        Checkout
       </a>
-      <br />
     </div>
   );
 }

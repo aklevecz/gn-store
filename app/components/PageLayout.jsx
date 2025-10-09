@@ -230,7 +230,10 @@ function MobileMenuAside({ header, publicStoreDomain }) {
   return (
     header.menu &&
     header.shop.primaryDomain?.url && (
-      <Aside type="mobile" heading="MENU">
+      <Aside type="mobile" heading="">
+        <div className="mobile-menu-logo">
+          <img src="/images/stacked-no-r-tag.png" alt="Good Neighbor Records" />
+        </div>
         <div className="mobile-menu-content">
           <HeaderMenu
             menu={header.menu}

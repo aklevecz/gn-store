@@ -26,23 +26,23 @@ export async function action({ request, context }) {
       
       case 'updateStats': {
         // Stats would be synchronized with MCP server
-        return json({ 
-          success: true, 
-          stats: body.stats 
+        return Response.json({
+          success: true,
+          stats: body.stats
         });
       }
       
       case 'getRecommendation': {
         const recommendation = await getRecommendation(body.context);
-        return json({ success: true, recommendation });
+        return Response.json({ success: true, recommendation });
       }
       
       default:
-        return json({ success: false, error: 'Unknown action' }, { status: 400 });
+        return Response.json({ success: false, error: 'Unknown action' }, { status: 400 });
     }
   } catch (error) {
     console.error('Agent API error:', error);
-    return json({ success: false, error: error.message }, { status: 500 });
+    return Response.json({ success: false, error: error.message }, { status: 500 });
   }
 }
 

@@ -1,4 +1,4 @@
-import { Suspense, useState, useEffect } from 'react';
+import { Suspense } from 'react';
 import { Await, NavLink, useAsyncValue } from 'react-router';
 import { useAnalytics, useOptimisticCart } from '@shopify/hydrogen';
 import { useAside } from '~/components/Aside';
@@ -7,37 +7,13 @@ import { useUser, useAuth } from '~/hooks/useUser';
 import PillButton from './Buttons/PillButton';
 
 /**
- * Custom hook to detect scroll position
- */
-function useScrollPosition() {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const isScrolled = window.scrollY > 20;
-      setScrolled(isScrolled);
-    };
-
-    // Check initial scroll position
-    handleScroll();
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  return scrolled;
-}
-
-
-/**
  * @param {HeaderProps}
  */
 export function Header({ header, isLoggedIn, cart, publicStoreDomain }) {
   const { shop, menu } = header;
-  const scrolled = useScrollPosition();
 
   return (
-    <header className={`header ${scrolled ? 'header-scrolled' : ''}`}>
+    <header className="header">
       <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
         {/* <strong>{shop.name}</strong> */}
         <img className="mobile-only" style={{ paddingTop: '10px', width: 140 }} src="/images/stacked-no-r-tag.png" alt="Good Neighbor Records" />

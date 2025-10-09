@@ -38,7 +38,7 @@ export function ProductSidebar({ product }) {
       {/* Breadcrumb */}
       <nav className="product-breadcrumb">
         <Link to="/">Home</Link>
-        <span> > </span>
+        <span> {'>'} </span>
         <span>Product</span>
       </nav>
 

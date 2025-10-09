@@ -1,26 +1,24 @@
-import { json } from '@shopify/remix-oxygen';
-
 /**
  * Unified agent API endpoint that communicates with MCP server
  * Handles all agent-related requests including insights, stats, and actions
  */
 export async function action({ request, context }) {
   const body = await request.json();
-  
+
   try {
     // In a real implementation, this would communicate with your MCP server
     // For now, we'll provide mock responses
-    
+
     switch (body.action) {
       case 'getInsight': {
         const insights = await generateInsight(body.context);
-        return json({ success: true, insight: insights });
+        return Response.json({ success: true, insight: insights });
       }
-      
+
       case 'feedItem': {
         // Log the feeding action (would be sent to MCP server)
-        return json({ 
-          success: true, 
+        return Response.json({
+          success: true,
           message: `Fed ${body.item} to agent`,
           response: getItemResponse(body.item)
         });

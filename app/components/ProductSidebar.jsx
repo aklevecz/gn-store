@@ -84,7 +84,7 @@ export function ProductSidebar({ product }) {
                         opacity: available ? 1 : 0.3,
                       }}
                     >
-                      <ProductOptionSwatch swatch={swatch} name={name} />
+                      <ProductOptionSwatch swatch={swatch} name={name} optionType={option.name} />
                     </Link>
                   );
                 } else {
@@ -106,7 +106,7 @@ export function ProductSidebar({ product }) {
                         }
                       }}
                     >
-                      <ProductOptionSwatch swatch={swatch} name={name} />
+                      <ProductOptionSwatch swatch={swatch} name={name} optionType={option.name} />
                     </button>
                   );
                 }
@@ -147,18 +147,52 @@ export function ProductSidebar({ product }) {
   );
 }
 
+// Color name to hex code mapping for common colors
+const COLOR_MAP = {
+  'black': '#000000',
+  'white': '#FFFFFF',
+  'red': '#FF0000',
+  'blue': '#0000FF',
+  'green': '#00FF00',
+  'yellow': '#FFFF00',
+  'orange': '#FFA500',
+  'purple': '#800080',
+  'pink': '#FFC0CB',
+  'brown': '#A52A2A',
+  'gray': '#808080',
+  'grey': '#808080',
+  'navy': '#000080',
+  'beige': '#F5F5DC',
+  'cream': '#FFFDD0',
+  'tan': '#D2B48C',
+  'olive': '#808000',
+  'maroon': '#800000',
+  'teal': '#008080',
+  'aqua': '#00FFFF',
+};
+
 /**
  * @param {{
  *   swatch?: Maybe<ProductOptionValueSwatch> | undefined;
  *   name: string;
+ *   optionType: string;
  * }}
  */
-function ProductOptionSwatch({swatch, name}) {
+function ProductOptionSwatch({swatch, name, optionType}) {
   const image = swatch?.image?.previewImage?.url;
   const color = swatch?.color;
 
-  if (!image && !color) {
-    // For text options (like sizes), return just the text
+  // Check if this is a Color option
+  const isColorOption = optionType?.toLowerCase().includes('color') || optionType?.toLowerCase().includes('colour');
+
+  // Try to get color from swatch or map color name to hex
+  let backgroundColor = color;
+  if (isColorOption && !backgroundColor) {
+    backgroundColor = COLOR_MAP[name.toLowerCase()] || '#CCCCCC';
+  }
+
+  // If no color/image and not a color option, render as text (for sizes, etc)
+  if (!image && !backgroundColor) {
     return <span className="option-text">{name}</span>;
   }
 
@@ -167,7 +201,7 @@ function ProductOptionSwatch({swatch, name}) {
       aria-label={name}
       className="product-option-swatch"
       style={{
-        backgroundColor: color || 'transparent',
+        backgroundColor: backgroundColor || 'transparent',
       }}
     >
       {!!image && <img src={image} alt={name} />}

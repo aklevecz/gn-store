@@ -1,5 +1,5 @@
 import { Await, Link, useRouteLoaderData, useLocation, useNavigation } from 'react-router';
-import { Suspense, useId, useEffect, useRef } from 'react';
+import { Suspense, useId, useEffect } from 'react';
 import { Aside } from '~/components/Aside';
 import { Footer } from '~/components/Footer';
 import { Header, HeaderMenu } from '~/components/Header';
@@ -29,7 +29,6 @@ export function PageLayout({
 }) {
   const location = useLocation();
   const navigation = useNavigation();
-  const mainRef = useRef(null);
   const isProductPage = location.pathname.startsWith('/products/');
 
   // Try to access product route data
@@ -46,8 +45,8 @@ export function PageLayout({
 
   // Reset scroll position on navigation
   useEffect(() => {
-    if (navigation.state === 'idle' && mainRef.current) {
-      mainRef.current.scrollTo(0, 0);
+    if (navigation.state === 'idle') {
+      window.scrollTo(0, 0);
     }
   }, [navigation.state]);
 
@@ -76,14 +75,15 @@ export function PageLayout({
               )}
             </div>
 
-            <main className="main" ref={mainRef}>
+            <main className="main">
               {children}
-              <Footer
-                footer={footer}
-                header={header}
-                publicStoreDomain={publicStoreDomain}
-              />
             </main>
+
+            <Footer
+              footer={footer}
+              header={header}
+              publicStoreDomain={publicStoreDomain}
+            />
           </div>
 
           <BackgroundGenerator />

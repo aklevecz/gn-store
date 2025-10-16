@@ -279,6 +279,7 @@ button.reset:hover:not(:has(> *)) {
     background: var(--white-label);
     padding: 40px;
     height: fit-content;
+    max-height: calc(100vh - 300px);
     overflow-y: auto;
   }
 

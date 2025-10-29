@@ -82,7 +82,7 @@ img {
   position: absolute;
   top: 2rem;
   right: 2rem;
-  background: var(--black-wax);
+  background: rgba(255, 255, 255, 0.2);
   color: var(--white);
   border: none;
   border-radius: 50%;
@@ -95,11 +95,20 @@ img {
   justify-content: center;
   cursor: pointer;
   transition: background 0.2s ease;
-  z-index: 100;
+  z-index: 101;
 }
 
 .aside-close-btn:hover {
-  background: var(--neon-plum);
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Mobile menu specific close button */
+aside[type="mobile"] .aside-close-btn {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+aside[type="mobile"] .aside-close-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
 }
 
 .overlay aside header {
@@ -164,7 +173,7 @@ img {
   transition: opacity 400ms ease-in-out;
   transition: opacity 400ms;
   visibility: hidden;
-  z-index: 10;
+  z-index: 100;
 }
 
 .overlay .close-outside {
@@ -251,36 +260,35 @@ button.reset:hover:not(:has(> *)) {
 
 @media (min-width: 48em) {
   .site-grid {
-    display: grid;
-    grid-template-columns: 576px 1fr;
-    grid-template-rows: auto 1fr auto;
-    grid-template-areas:
-      "header header"
-      "sidebar main"
-      "footer footer";
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
   }
 
   .header {
-    grid-area: header;
     position: fixed;
     width: 100%;
     background: none;
     z-index: 10;
   }
 
+  /* Content wrapper to hold sidebar and main */
+  .content-wrapper {
+    display: grid;
+    grid-template-columns: 576px 1fr;
+    flex: 1;
+  }
+
   .desktop-sidebar {
-    grid-area: sidebar;
     position: sticky;
     top: 0;
+    bottom: 0;
     align-self: start;
     display: block;
     gap: 50px;
     background: var(--white-label);
     padding: 40px;
     height: fit-content;
-    max-height: 100vh;
-    /* overflow-y: auto; */
   }
 
   .mobile-only {
@@ -288,12 +296,8 @@ button.reset:hover:not(:has(> *)) {
   }
 
   .main {
-    grid-area: main;
+    padding-top: var(--header-height);
     min-height: calc(100vh - var(--header-height));
-  }
-
-  .footer {
-    grid-area: footer;
   }
 }
 

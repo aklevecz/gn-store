@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
-import { Await, NavLink } from 'react-router';
+import { Await, NavLink, Link } from 'react-router';
+import { InstagramIcon, TikTokIcon, XIcon } from '~/components/Icons';
 
 /**
  * @param {FooterProps}
@@ -8,35 +9,56 @@ export function Footer({ footer: footerPromise, header, publicStoreDomain }) {
   return (
     <footer className="footer">
       <div className="footer-content">
-        <div className="footer-left">
+        <div className="footer-header">
           <h2 className="footer-title">Vinyl<br/>Reimagined</h2>
-          <p className="footer-copyright">© 2024 Good Neighbor</p>
-        </div>
-        <div className="footer-space"></div>
-
-        {/* MIDDLE IS REALLY PART OF RIGHT */}
-        <div className="footer-middle">
-          <h3 className="footer-section-title">Make Records</h3>
-          <nav className="footer-nav">
-            <a href="/color-gallery" className="footer-link">Color Gallery</a>
-            <a href="/faq" className="footer-link">FAQ</a>
-            <a href="/meet-your-neighbors" className="footer-link">Meet Your Neighbors</a>
-            <a href="/in-the-press" className="footer-link">In the Press</a>
-          </nav>
         </div>
 
-        <div className="footer-right">
-          <h3 className="footer-section-title">Shop</h3>
-          <nav className="footer-nav">
-            <a href="/latest" className="footer-link">Latest</a>
-            <a href="/apparel" className="footer-link">Apparel</a>
-            <a href="/accessories" className="footer-link">Accessories</a>
-            <a href="/collectibles" className="footer-link">Collectibles</a>
-          </nav>
-          <div className="footer-legal">
-            <NavLink to="/policies/privacy-policy" className="footer-link">Privacy Policy</NavLink>
-            <NavLink to="/policies/terms-of-service" className="footer-link">Terms of Service</NavLink>
+        <div className="footer-columns">
+          <div className="footer-column">
+            <h3 className="footer-section-title">Make Records</h3>
+            <nav className="footer-nav">
+              <Link to="/pages/color-gallery" className="footer-link">Color Gallery</Link>
+              <Link to="/pages/faq" className="footer-link">FAQ</Link>
+              <Link to="/pages/meet-your-neighbors" className="footer-link">Meet Your Neighbors</Link>
+              <Link to="/pages/in-the-press" className="footer-link">In the Press</Link>
+              <Link to="/pages/start-your-order" className="footer-link">Start Your Order</Link>
+            </nav>
           </div>
+
+          <div className="footer-column">
+            <h3 className="footer-section-title">Shop</h3>
+            <nav className="footer-nav">
+              <Link to="/collections/latest" className="footer-link">Latest</Link>
+              <Link to="/collections/apparel" className="footer-link">Apparel</Link>
+              <Link to="/collections/accessories" className="footer-link">Accessories</Link>
+              <Link to="/collections/collectibles" className="footer-link">Collectibles</Link>
+              <Link to="/collections/exclusives" className="footer-link">Exclusives</Link>
+            </nav>
+          </div>
+
+          <div className="footer-column">
+            <h3 className="footer-section-title">More</h3>
+            <nav className="footer-nav">
+              <Link to="/pages/returns" className="footer-link">Returns</Link>
+              <NavLink to="/policies/privacy-policy" className="footer-link">Privacy</NavLink>
+              <NavLink to="/policies/terms-of-service" className="footer-link">Terms</NavLink>
+            </nav>
+            <div className="footer-social-icons">
+              <a href="https://instagram.com/goodneighbormusic" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                <InstagramIcon width={24} height={24} />
+              </a>
+              <a href="https://tiktok.com/@goodneighbormusic" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+                <TikTokIcon width={24} height={24} />
+              </a>
+              <a href="https://twitter.com/goodneighbormusic" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+                <XIcon width={24} height={24} />
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div className="footer-copyright">
+          <p>© 2024 Good Neighbor</p>
         </div>
       </div>
     </footer>

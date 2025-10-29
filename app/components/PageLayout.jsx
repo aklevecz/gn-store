@@ -15,6 +15,7 @@ import { AgentProvider } from '~/components/Agent/AgentProvider';
 import { Agent } from '~/components/Agent/Agent';
 import { ProductSidebar } from './ProductSidebar';
 import { NavigationSidebar } from './NavigationSidebar';
+import { InstagramIcon, TikTokIcon, XIcon, EmailIcon } from '~/components/Icons';
 
 /**
  * @param {PageLayoutProps}
@@ -67,17 +68,19 @@ export function PageLayout({
               />
             )}
 
-            <div className="desktop-sidebar" role="complementary" aria-label="Site sidebar">
-              {isProductPage && productRouteData ? (
-                <ProductSidebar product={productRouteData.product} />
-              ) : (
-                <NavigationSidebar />
-              )}
-            </div>
+            <div className="content-wrapper">
+              <div className="desktop-sidebar" role="complementary" aria-label="Site sidebar">
+                {isProductPage && productRouteData ? (
+                  <ProductSidebar product={productRouteData.product} />
+                ) : (
+                  <NavigationSidebar />
+                )}
+              </div>
 
-            <main className="main">
-              {children}
-            </main>
+              <main className="main">
+                {children}
+              </main>
+            </div>
 
             <Footer
               footer={footer}
@@ -238,22 +241,46 @@ function SearchAside() {
  */
 function MobileMenuAside({ header, publicStoreDomain }) {
   return (
-    header.menu &&
-    header.shop.primaryDomain?.url && (
-      <Aside type="mobile" heading="">
-        <div className="mobile-menu-logo">
-          <img src="/images/stacked-no-r-tag.png" alt="Good Neighbor Records" />
+    <Aside type="mobile" heading="">
+      <div className="mobile-menu-content">
+        <div className="mobile-menu-section">
+          <h2 className="mobile-menu-section-title">Shop</h2>
+          <nav className="mobile-menu-nav">
+            <Link to="/collections/latest" className="mobile-menu-link">Latest</Link>
+            <Link to="/collections/apparel" className="mobile-menu-link">Apparel</Link>
+            <Link to="/collections/accessories" className="mobile-menu-link">Accessories</Link>
+            <Link to="/collections/collectibles" className="mobile-menu-link">Collectibles</Link>
+            <Link to="/collections/exclusives" className="mobile-menu-link">Exclusives</Link>
+          </nav>
         </div>
-        <div className="mobile-menu-content">
-          <HeaderMenu
-            menu={header.menu}
-            viewport="mobile"
-            primaryDomainUrl={header.shop.primaryDomain.url}
-            publicStoreDomain={publicStoreDomain}
-          />
+
+        <div className="mobile-menu-section">
+          <h2 className="mobile-menu-section-title">More</h2>
+          <nav className="mobile-menu-nav">
+            <Link to="/pages/make-records" className="mobile-menu-link">Make Records</Link>
+            <Link to="/pages/subscribe" className="mobile-menu-link">Subscribe for Updates</Link>
+            <div className="mobile-menu-link-with-icon">
+              <Link to="/pages/contact" className="mobile-menu-link">Contact Us</Link>
+              <EmailIcon width={20} height={20} />
+            </div>
+            <div className="mobile-menu-social-row">
+              <span className="mobile-menu-link">Follow Us</span>
+              <div className="mobile-menu-social-icons">
+                <a href="https://instagram.com/goodneighbormusic" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                  <InstagramIcon width={20} height={20} />
+                </a>
+                <a href="https://tiktok.com/@goodneighbormusic" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+                  <TikTokIcon width={20} height={20} />
+                </a>
+                <a href="https://twitter.com/goodneighbormusic" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+                  <XIcon width={20} height={20} />
+                </a>
+              </div>
+            </div>
+          </nav>
         </div>
-      </Aside>
-    )
+      </div>
+    </Aside>
   );
 }
 

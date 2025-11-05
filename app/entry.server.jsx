@@ -23,9 +23,11 @@ export default async function handleRequest(
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
     },
     imgSrc: [
-      'cdn.shopify.com', 
+      "'self'",
+      'shop.goodneighbormusic.com',
+      'cdn.shopify.com',
       'v3.fal.media',
-      'fal.media', 
+      'fal.media',
       'localhost:3000',
       '*.myshopify.dev',
       "192.168.1.2:3000"

@@ -487,6 +487,31 @@
   border-color:  rgba(255, 255, 255, 0.271);
 }
 
+/* Unavailable swatch - diagonal strike-through */
+.option-value.unavailable .product-option-swatch::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to top right,
+    transparent calc(50% - 2px),
+    rgba(255, 255, 255, 0.9) calc(50% - 2px),
+    rgba(255, 255, 255, 0.9) calc(50% + 2px),
+    transparent calc(50% + 2px)
+  );
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.option-value.unavailable {
+  cursor: not-allowed;
+  filter: grayscale(40%);
+}
+
 .product-option-swatch img {
   width: 100%;
   height: 100%;

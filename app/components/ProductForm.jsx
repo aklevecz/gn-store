@@ -3,6 +3,7 @@ import { AddToCartButton } from './AddToCartButton';
 import { useAside } from './Aside';
 import { useToast } from './Toast';
 import { ProductPrice } from './ProductPrice';
+import { getSwatchColor } from '~/lib/colorMapper';
 
 /**
  * @param {{
@@ -45,17 +46,14 @@ export function ProductForm({ productOptions, selectedVariant, productTitle, pri
                   // as an anchor tag
                   return (
                     <Link
-                      className={`option-value ${selected ? 'selected' : ''}`}
+                      className={`option-value ${selected ? 'selected' : ''} ${!available ? 'unavailable' : ''}`}
                       key={option.name + name}
                       prefetch="intent"
                       preventScrollReset
                       replace
                       to={`/products/${handle}?${variantUriQuery}`}
-                      style={{
-                        opacity: available ? 1 : 0.3,
-                      }}
                     >
-                      <ProductOptionSwatch swatch={swatch} name={name} />
+                      <ProductOptionSwatch swatch={swatch} name={name} available={available} />
                     </Link>
                   );
                 } else {
@@ -67,11 +65,8 @@ export function ProductForm({ productOptions, selectedVariant, productTitle, pri
                   return (
                     <button
                       type="button"
-                      className={`option-value ${selected ? 'selected' : ''}`}
+                      className={`option-value ${selected ? 'selected' : ''} ${!available ? 'unavailable' : ''}`}
                       key={option.name + name}
-                      style={{
-                        opacity: available ? 1 : 0.3,
-                      }}
                       disabled={!exists}
                       onClick={() => {
                         if (!selected) {
@@ -82,7 +77,7 @@ export function ProductForm({ productOptions, selectedVariant, productTitle, pri
                         }
                       }}
                     >
-                      <ProductOptionSwatch swatch={swatch} name={name} />
+                      <ProductOptionSwatch swatch={swatch} name={name} available={available} />
                     </button>
                   );
                 }
@@ -129,9 +124,21 @@ export function ProductForm({ productOptions, selectedVariant, productTitle, pri
  *   name: string;
  * }}
  */
-function ProductOptionSwatch({ swatch, name }) {
+function ProductOptionSwatch({ swatch, name, available }) {
   const image = swatch?.image?.previewImage?.url;
-  const color = swatch?.color;
+  const shopifyColor = swatch?.color;
+
+  // Use our color mapper to get accurate colors, falling back to Shopify's color
+  const color = getSwatchColor(name, shopifyColor);
+
+  // Log color info for debugging
+  console.log('Color swatch:', {
+    name,
+    shopifyColor,
+    mappedColor: color,
+    hasImage: !!image,
+    available
+  });
 
   if (!image && !color) {
     // For text options (like sizes), return just the text
@@ -143,10 +150,34 @@ function ProductOptionSwatch({ swatch, name }) {
       aria-label={name}
       className="product-option-swatch"
       style={{
-        backgroundColor: color || 'transparent',
+        backgroundColor: image ? 'transparent' : color,
       }}
     >
       {!!image && <img src={image} alt={name} />}
+      {!available && (
+        <svg
+          className="unavailable-line"
+          width="100%"
+          height="100%"
+          viewBox="0 0 48 48"
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            pointerEvents: 'none'
+          }}
+        >
+          <line
+            x1="10"
+            y1="38"
+            x2="38"
+            y2="10"
+            stroke="rgba(255, 255, 255, 0.9)"
+            strokeWidth="3"
+            strokeLinecap="round"
+          />
+        </svg>
+      )}
     </div>
   );
 }

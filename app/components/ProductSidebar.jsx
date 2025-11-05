@@ -74,28 +74,22 @@ export function ProductSidebar({ product }) {
                 if (isDifferentProduct) {
                   return (
                     <Link
-                      className={`option-value ${selected ? 'selected' : ''}`}
+                      className={`option-value ${selected ? 'selected' : ''} ${!available ? 'unavailable' : ''}`}
                       key={option.name + name}
                       prefetch="intent"
                       preventScrollReset
                       replace
                       to={`/products/${handle}?${variantUriQuery}`}
-                      style={{
-                        opacity: available ? 1 : 0.3,
-                      }}
                     >
-                      <ProductOptionSwatch swatch={swatch} name={name} optionType={option.name} />
+                      <ProductOptionSwatch swatch={swatch} name={name} optionType={option.name} available={available} />
                     </Link>
                   );
                 } else {
                   return (
                     <button
                       type="button"
-                      className={`option-value ${selected ? 'selected' : ''}`}
+                      className={`option-value ${selected ? 'selected' : ''} ${!available ? 'unavailable' : ''}`}
                       key={option.name + name}
-                      style={{
-                        opacity: available ? 1 : 0.3,
-                      }}
                       disabled={!exists}
                       onClick={() => {
                         if (!selected) {
@@ -106,7 +100,7 @@ export function ProductSidebar({ product }) {
                         }
                       }}
                     >
-                      <ProductOptionSwatch swatch={swatch} name={name} optionType={option.name} />
+                      <ProductOptionSwatch swatch={swatch} name={name} optionType={option.name} available={available} />
                     </button>
                   );
                 }

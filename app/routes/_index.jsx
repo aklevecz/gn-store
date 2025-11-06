@@ -141,15 +141,59 @@ function RecommendedProducts({ products }) {
     <div className="recommended-products">
       <Suspense fallback={<div>Loading...</div>}>
         <Await resolve={products}>
-          {(response) => (
-            <div className="recommended-products-grid">
-              {response
-                ? response.products.nodes.map((product) => (
-                  <ProductItem key={product.id} product={product} />
-                ))
-                : null}
-            </div>
-          )}
+          {(response) => {
+            if (!response) return null;
+
+            // Flatten products to show each COLOR variant as a separate card
+            const variantCards = [];
+            response.products.nodes.forEach((product) => {
+              if (product.variants?.nodes?.length > 0) {
+                // Group variants by color option
+                const colorVariants = new Map();
+
+                product.variants.nodes.forEach((variant) => {
+                  // Find the color option
+                  const colorOption = variant.selectedOptions.find(
+                    opt => opt.name.toLowerCase() === 'color' || opt.name.toLowerCase() === 'colour'
+                  );
+
+                  if (colorOption) {
+                    const colorValue = colorOption.value;
+                    // Only add the first variant of each color (to avoid duplicates from sizes)
+                    if (!colorVariants.has(colorValue)) {
+                      colorVariants.set(colorValue, variant);
+                    }
+                  }
+                });
+
+                // If we found color variants, create a card for each color
+                if (colorVariants.size > 0) {
+                  colorVariants.forEach((variant) => {
+                    variantCards.push({
+                      ...product,
+                      id: variant.id,
+                      featuredImage: variant.image || product.featuredImage,
+                      variant: variant,
+                    });
+                  });
+                } else {
+                  // No color variants, show product as-is
+                  variantCards.push(product);
+                }
+              } else {
+                // No variants, show product as-is
+                variantCards.push(product);
+              }
+            });
+
+            return (
+              <div className="recommended-products-grid">
+                {variantCards.map((item) => (
+                  <ProductItem key={item.id} product={item} />
+                ))}
+              </div>
+            );
+          }}
         </Await>
       </Suspense>
       <br />
@@ -256,6 +300,28 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
       altText
       width
       height
+    }
+    variants(first: 10) {
+      nodes {
+        id
+        title
+        availableForSale
+        image {
+          id
+          url
+          altText
+          width
+          height
+        }
+        price {
+          amount
+          currencyCode
+        }
+        selectedOptions {
+          name
+          value
+        }
+      }
     }
   }
   query RecommendedProducts ($country: CountryCode, $language: LanguageCode)

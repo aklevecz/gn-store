@@ -225,7 +225,7 @@ export function TikTokIcon({ width = 24, height = 24, className = "tiktok-icon" 
  *   className?: string;
  * }}
  */
-export function XIcon({ width = 24, height = 24, className = "x-icon" }) {
+export function XIcon({ width = 24, height = 24, className = "x-social-icon" }) {
   return (
     <svg
       className={className}

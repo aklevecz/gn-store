@@ -132,7 +132,7 @@
 }
 
 .hero-product-content {
-    padding: 0 60px 90px;
+    padding: 0 0px 90px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -143,18 +143,18 @@
 .hero-product-title {
     font-family: 'ITC Avant Garde Gothic Pro';
     font-size: 44px;
+    flex: 0 1 64%;
     font-weight: bold;
     margin: 0;
     line-height: 1.2;
-    color: white;
 }
 
 .hero-product-cta {
     font-family: 'ITC Avant Garde Gothic Pro';
     display: flex;
     gap: 8px;
-    background: white;
-    color: black;
+    background: black;
+    color: white;
     padding: 1rem 2.5rem;
     border-radius: 50px;
     font-weight: 600;
@@ -163,6 +163,7 @@
     transition: all 0.2s ease;
     width: 222px;
     height: 47px;
+    margin-right: 30px;
 }
 
 .hero-product-cta:hover {

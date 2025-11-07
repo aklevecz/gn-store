@@ -103,7 +103,7 @@ export default function Homepage() {
       {/* <FeaturedCollection collection={data.featuredCollection} /> */}
       {/* <WelcomeHero /> */}
       <HeroProduct product={data.featuredProduct} />
-      <RecommendedProducts products={data.recommendedProducts} />
+      <RecommendedProducts products={data.recommendedProducts} featuredProductId={data.featuredProduct?.id} />
     </div>
   );
 }
@@ -134,9 +134,10 @@ function FeaturedCollection({ collection }) {
 /**
  * @param {{
  *   products: Promise<RecommendedProductsQuery | null>;
+ *   featuredProductId?: string;
  * }}
  */
-function RecommendedProducts({ products }) {
+function RecommendedProducts({ products, featuredProductId }) {
   return (
     <div className="recommended-products">
       <Suspense fallback={<div>Loading...</div>}>
@@ -146,7 +147,9 @@ function RecommendedProducts({ products }) {
 
             // Flatten products to show each COLOR variant as a separate card
             const variantCards = [];
-            response.products.nodes.forEach((product) => {
+            response.products.nodes
+              .filter((product) => product.id !== featuredProductId) // Filter out featured product
+              .forEach((product) => {
               if (product.variants?.nodes?.length > 0) {
                 // Group variants by color option
                 const colorVariants = new Map();

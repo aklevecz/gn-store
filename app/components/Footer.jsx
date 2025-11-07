@@ -12,20 +12,20 @@ export function Footer({ footer: footerPromise, header, publicStoreDomain }) {
         <div className="footer-header">
           <h2 className="footer-title">Vinyl<br/>Reimagined</h2>
         </div>
-
+        <div className="footer-separator" />
         <div className="footer-columns">
           <div className="footer-column">
             <h3 className="footer-section-title">Make Records</h3>
             <nav className="footer-nav">
-              <Link to="/pages/color-gallery" className="footer-link">Color Gallery</Link>
-              <Link to="/pages/faq" className="footer-link">FAQ</Link>
-              <Link to="/pages/meet-your-neighbors" className="footer-link">Meet Your Neighbors</Link>
-              <Link to="/pages/in-the-press" className="footer-link">In the Press</Link>
-              <Link to="/pages/start-your-order" className="footer-link">Start Your Order</Link>
+              <Link to="https://www.goodneighbormusic.com/#color-gallery" className="footer-link">Color Gallery</Link>
+              <Link to="https://www.goodneighbormusic.com/#faq" className="footer-link">FAQ</Link>
+              <Link to="https://www.goodneighbormusic.com/meet-your-neighbors" className="footer-link">Meet Your Neighbors</Link>
+              <Link to="https://www.goodneighbormusic.com/press" className="footer-link">In the Press</Link>
+              <Link to="https://order-form.goodneighbormusic.com/" className="footer-link">Start Your Order</Link>
             </nav>
           </div>
 
-          <div className="footer-column">
+          {/* <div className="footer-column">
             <h3 className="footer-section-title">Shop</h3>
             <nav className="footer-nav">
               <Link to="/collections/latest" className="footer-link">Latest</Link>
@@ -34,23 +34,23 @@ export function Footer({ footer: footerPromise, header, publicStoreDomain }) {
               <Link to="/collections/collectibles" className="footer-link">Collectibles</Link>
               <Link to="/collections/exclusives" className="footer-link">Exclusives</Link>
             </nav>
-          </div>
+          </div> */}
 
           <div className="footer-column">
             <h3 className="footer-section-title">More</h3>
             <nav className="footer-nav">
-              <Link to="/pages/returns" className="footer-link">Returns</Link>
-              <NavLink to="/policies/privacy-policy" className="footer-link">Privacy</NavLink>
-              <NavLink to="/policies/terms-of-service" className="footer-link">Terms</NavLink>
+              {/* <Link to="/pages/returns" className="footer-link">Returns</Link> */}
+              <NavLink to="https://www.goodneighbormusic.com/privacy-policy" className="footer-link">Privacy</NavLink>
+              <NavLink to="https://www.goodneighbormusic.com/terms-of-service" className="footer-link">Terms</NavLink>
             </nav>
             <div className="footer-social-icons">
-              <a href="https://instagram.com/goodneighbormusic" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+              <a href="https://www.instagram.com/goodneighboreco" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                 <InstagramIcon width={24} height={24} />
               </a>
-              <a href="https://tiktok.com/@goodneighbormusic" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+              <a href="https://www.tiktok.com/@goodneighborrecords" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
                 <TikTokIcon width={24} height={24} />
               </a>
-              <a href="https://twitter.com/goodneighbormusic" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+              <a href="https://x.com/goodneighboreco" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
                 <XIcon width={24} height={24} />
               </a>
             </div>

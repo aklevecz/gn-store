@@ -3,13 +3,13 @@ export function NavigationSidebar() {
     <div className="navigation-sidebar">
       <img src="/images/stacked-no-r-tag.png" style={{ width: 280 }} alt="Good Neighbor Records" />
       <nav style={{ display: 'flex', flexDirection: 'column', gap: 100 }}>
-        <div className="shop-category-vertical-menu">
+        {/* <div className="shop-category-vertical-menu">
           <a>Latest</a>
           <a>Apparel</a>
           <a>Accessories</a>
           <a>Collectibles</a>
           <a>Exclusives</a>
-        </div>
+        </div> */}
         <div className="sidebar-subtagline">
           <h1>Big Passion <br />
             Superior Quality</h1>

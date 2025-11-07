@@ -28,7 +28,7 @@ export default function HeroProduct({ product }) {
           Add to Cart<Money data={price} withoutTrailingZeros />
         </Link>
       </div>
-      <img src="/images/PLANTS.png" alt="Plants" className="overlay-image" />
+      {/* <img src="/images/PLANTS.png" alt="Plants" className="overlay-image" /> */}
     </div>
   );
 }

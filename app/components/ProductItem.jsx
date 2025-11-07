@@ -12,7 +12,7 @@ import {useVariantUrl} from '~/lib/variants';
  * }}
  */
 export function ProductItem({product, loading}) {
-  const variantUrl = useVariantUrl(product.handle);
+  const variantUrl = useVariantUrl(product.handle, product.variant?.selectedOptions);
   const image = product.featuredImage;
   return (
     <Link

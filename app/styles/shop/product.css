@@ -537,6 +537,7 @@
   font-weight: 600;
   text-transform: uppercase;
   color: #333;
+  line-height: .7;
 }
 
 .option-value.selected .option-text {

@@ -1,4 +1,4 @@
-import { useLoaderData } from 'react-router';
+import { useLoaderData, Link } from 'react-router';
 import {
   getSelectedProductOptions,
   Analytics,
@@ -25,6 +25,21 @@ export const meta = ({ data }) => {
     },
   ];
 };
+
+/**
+ * Prevent loader from re-running when only search params change (variant selection).
+ * This keeps the experience smooth and SPA-like when selecting variants.
+ */
+export function shouldRevalidate({ currentUrl, nextUrl, defaultShouldRevalidate }) {
+  // If the pathname changed, revalidate as normal
+  if (currentUrl.pathname !== nextUrl.pathname) {
+    return defaultShouldRevalidate;
+  }
+
+  // If only search params changed (variant selection), don't revalidate
+  // The useOptimisticVariant hook handles the UI update
+  return false;
+}
 
 /**
  * @param {LoaderFunctionArgs} args
@@ -121,7 +136,7 @@ export default function Product() {
 
       <div className="product-content-mobile mobile-only">
         <nav className="product-breadcrumb">
-          <a href="/">Home</a>
+          <Link to="/">Home</Link>
           <span> &gt; </span>
           <span>{product.productType || 'Product'}</span>
         </nav>

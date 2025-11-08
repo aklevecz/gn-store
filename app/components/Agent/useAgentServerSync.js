@@ -79,15 +79,24 @@ export function useAgentServerSync({ agent, isInitialized, selectedCharacter, se
         if (response.ok) {
           const initialMessages = await response.json();
           if (initialMessages && initialMessages.length > 0) {
-            const convertedMessages = initialMessages.map((msg) => ({
-              id: msg.id,
+            // Server messages have permanent IDs - use them directly
+            const serverMessages = initialMessages.map((msg) => ({
+              id: msg.id,          // Server's permanent UUID
               role: msg.role,
-              status: 'complete',
+              status: 'complete',  // Server messages are always complete
               content: msg.content,
               tools: msg.toolInvocations || [],
-              usage: msg.usage
+              usage: msg.usage,
+              createdAt: msg.createdAt,
+              tempId: undefined    // No temp IDs for server messages
             }));
-            dispatchChat({ type: 'SET_MESSAGES', messages: convertedMessages });
+
+            dispatchChat({ type: 'SET_MESSAGES', messages: serverMessages });
+
+            console.log('📥 Loaded messages from server:', {
+              count: serverMessages.length,
+              sampleIds: serverMessages.map(m => m.id).slice(0, 3)
+            });
           }
         }
       } catch (error) {

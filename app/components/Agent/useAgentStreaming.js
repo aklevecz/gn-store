@@ -65,12 +65,34 @@ export function useAgentStreaming(agent, dispatchChat, onComplete) {
     const handleMessage = (event) => {
       try {
         const data = JSON.parse(event.data);
+
         if (data.type === "cf_agent_use_chat_response") {
           handleStreamingResponse(data);
-        } else if (data.type !== "cf_agent_mcp_servers" && data.type !== "cf_agent_state") {
+        }
+        // NEW: Handle message ID mapping from server
+        else if (data.type === "cf_agent_message_ids") {
+          const idMap = {};
+          data.messages.forEach(msg => {
+            if (msg.tempId && msg.id) {
+              idMap[msg.tempId] = msg.id;
+            }
+          });
+
+          if (Object.keys(idMap).length > 0) {
+            console.log('🔄 Received ID mappings from server:', idMap);
+            dispatchChat({ type: 'REPLACE_MESSAGE_IDS', idMap });
+          }
+        }
+        // Handle full message sync from server
+        else if (data.type === "cf_agent_chat_messages") {
+          console.log('📥 Received full message sync from server');
+          dispatchChat({ type: 'SET_MESSAGES', messages: data.messages });
+        }
+        else if (data.type !== "cf_agent_mcp_servers" && data.type !== "cf_agent_state") {
           dispatchChat({ type: 'ADD_SYSTEM', content: data.type });
         }
       } catch (e) {
+        console.error('❌ Error handling WebSocket message:', e);
       }
     };
 

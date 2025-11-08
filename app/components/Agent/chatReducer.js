@@ -10,6 +10,7 @@ export const initialChatState = {
   messages: [],
   streams: new Map(),
   seq: 0,
+  tempIdMap: new Map(), // Track temp ID -> server ID mapping
 };
 
 export const mergeStreamingText = (previousText, incomingText) => {
@@ -65,12 +66,17 @@ export function chatReducer(state, action) {
   switch (action.type) {
     case 'ADD_USER_MESSAGE': {
       const nextSeq = state.seq + 1;
+      const tempId = `temp:user:${nextSeq}:${Date.now()}`;
+
       const userMessage = {
-        id: `user:${nextSeq}`,
+        id: tempId,           // Temporary ID
+        tempId: tempId,       // Store for later mapping
         role: 'user',
-        status: 'complete',
+        status: 'pending',    // Mark as pending until server confirms
         content: action.content,
+        createdAt: new Date().toISOString()
       };
+
       return { ...state, seq: nextSeq, messages: [...state.messages, userMessage] };
     }
     case 'STREAM_TEXT': {
@@ -82,7 +88,7 @@ export function chatReducer(state, action) {
       let seq = state.seq;
       if (!stream.messageKey) {
         seq += 1;
-        stream.messageKey = `assistant:${seq}`;
+        stream.messageKey = `temp:assistant:${seq}:${Date.now()}`;
       }
       stream.content = mergeStreamingText(stream.content, text);
       const newStreams = new Map(state.streams);
@@ -92,6 +98,7 @@ export function chatReducer(state, action) {
       );
       const streamingMessage = {
         id: stream.messageKey,
+        tempId: stream.messageKey,  // Store temp ID
         role: 'assistant',
         status: 'streaming',
         content: stream.content,
@@ -148,14 +155,15 @@ export function chatReducer(state, action) {
       let seq = state.seq;
       if (!stream.messageKey) {
         seq += 1;
-        stream.messageKey = `assistant:${seq}`;
+        stream.messageKey = `temp:assistant:${seq}:${Date.now()}`;
       }
       newStreams.delete(id);
       const withoutStreaming = state.messages.filter(m => !(m.role === 'assistant' && m.status === 'streaming' && m.id === stream.messageKey));
       const completeMessage = {
         id: stream.messageKey,
+        tempId: stream.messageKey,  // Keep temp ID for replacement
         role: 'assistant',
-        status: 'complete',
+        status: 'pending',  // Pending until server confirms with real ID
         content: stream.content,
         tools: stream.tools,
         usage: stream.usage,
@@ -176,9 +184,59 @@ export function chatReducer(state, action) {
       return initialChatState;
     }
     case 'SET_MESSAGES': {
+      // Messages from server already have permanent IDs
       const normalized = normalizeMessages(action.messages);
       const maxSeq = getMaxSeqFromMessages(normalized);
-      return { ...state, messages: normalized, seq: Math.max(state.seq, maxSeq), streams: new Map() };
+
+      // Mark all server messages as complete and remove temp IDs
+      const serverMessages = normalized.map(msg => ({
+        ...msg,
+        status: msg.status || 'complete',
+        tempId: undefined  // Server messages don't have temp IDs
+      }));
+
+      console.log('[chatReducer] SET_MESSAGES:', {
+        count: serverMessages.length,
+        sampleIds: serverMessages.map(m => m.id).slice(0, 5)
+      });
+
+      return {
+        ...state,
+        messages: serverMessages,
+        seq: Math.max(state.seq, maxSeq),
+        streams: new Map(),
+        tempIdMap: new Map() // Clear temp ID map on full reload
+      };
+    }
+    case 'REPLACE_MESSAGE_IDS': {
+      const { idMap } = action; // { tempId: serverId, ... }
+
+      console.log('[chatReducer] Replacing message IDs:', idMap);
+
+      const updatedMessages = state.messages.map(msg => {
+        // If this message has a temp ID that got replaced
+        if (msg.tempId && idMap[msg.tempId]) {
+          return {
+            ...msg,
+            id: idMap[msg.tempId],   // Replace with server ID
+            tempId: undefined,        // Remove temp ID marker
+            status: 'complete'        // Mark as confirmed by server
+          };
+        }
+        return msg;
+      });
+
+      // Update the mapping
+      const newTempIdMap = new Map(state.tempIdMap);
+      Object.entries(idMap).forEach(([tempId, serverId]) => {
+        newTempIdMap.set(tempId, serverId);
+      });
+
+      return {
+        ...state,
+        messages: updatedMessages,
+        tempIdMap: newTempIdMap
+      };
     }
     default:
       return state;

@@ -32,7 +32,12 @@ export default async function handleRequest(
       '*.myshopify.dev',
       "192.168.1.2:3000"
     ],
-    connectSrc: ['gn-mcp.raptorz.workers.dev', 'gn-friend.good-neighbor.workers.dev', 'localhost:5173'],
+    connectSrc: [
+      'gn-mcp.raptorz.workers.dev',
+      'https://gn-friend.good-neighbor.workers.dev',
+      'http://localhost:5173',
+      'localhost:5173'
+    ],
   });
 
   const body = await renderToReadableStream(

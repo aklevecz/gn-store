@@ -35,7 +35,9 @@ export default async function handleRequest(
     connectSrc: [
       'gn-mcp.raptorz.workers.dev',
       'https://gn-friend.good-neighbor.workers.dev',
+      'wss://gn-friend.good-neighbor.workers.dev',
       'http://localhost:5173',
+      'ws://localhost:5173',
       'localhost:5173'
     ],
   });

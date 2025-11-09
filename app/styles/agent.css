@@ -108,6 +108,7 @@
 .agent-selector-choose {
   /* Will inherit base button styles */
   margin-top: auto;
+  color: white;
 }
 
 /* Agent Widget */
@@ -193,10 +194,38 @@
   }
 }
 
+.agent-drag-area {
+  padding: 12px 16px 8px;
+  background: linear-gradient(135deg, var(--neon-plum) 0%, var(--purple-haze) 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: grab;
+  touch-action: none;
+}
+
+.agent-drag-area:active {
+  cursor: grabbing;
+}
+
+.agent-drag-handle {
+  width: 48px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 3px;
+}
+
 .agent-header {
-  padding: 16px;
+  padding: 0 16px 16px;
   background: linear-gradient(135deg, var(--neon-plum) 0%, var(--purple-haze) 100%);
   color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.agent-header-content {
+  flex: 1;
 }
 
 .agent-header h3 {
@@ -208,6 +237,27 @@
   font-size: 14px;
   opacity: 0.9;
   margin-top: 4px;
+}
+
+.agent-close-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.agent-close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
 }
 
 .agent-body {
@@ -278,6 +328,7 @@
   border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
+  color: #1f2937;
   transition: all 0.2s ease;
 }
 
@@ -383,6 +434,7 @@
   border-radius: 6px;
   cursor: pointer;
   font-size: 12px;
+  color: #1f2937;
   transition: all 0.2s ease;
 }
 
@@ -407,6 +459,7 @@
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   cursor: pointer;
+  color: #1f2937;
   transition: all 0.2s ease;
 }
 
@@ -473,24 +526,34 @@
 @media (max-width: 640px) {
   .agent-widget {
     bottom: 16px;
-    /* right: 16px; */
+    right: 16px;
   }
-  
+
   .agent-panel {
-    width: calc(100vw - 32px);
-    /* right: 12px; */
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    max-height: 90vh;
+    border-radius: 16px 16px 0 0;
   }
-  
+
   .agent-modal-content {
     width: 95%;
     padding: 20px;
   }
-  
+
   .agent-selector-options {
     grid-template-columns: 1fr;
   }
+
   .agent-chat-tab {
     height: 420px;
+  }
+
+  .chat-input {
+    font-size: 16px;
   }
 }
 /* Agent Chat Tab */

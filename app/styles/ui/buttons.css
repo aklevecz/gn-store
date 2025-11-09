@@ -1,3 +1,24 @@
+.button {
+  display: inline-flex;
+  padding: 12px 24px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  background: var(--neon-plum);
+  color: white;
+  border: none;
+  font-family: "ITC Avant Garde Gothic Pro", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.button:hover {
+  background: var(--purple-haze);
+  transform: translateY(-2px);
+}
+
 .pill-button {
   display: flex;
   padding: 0 39.273px;

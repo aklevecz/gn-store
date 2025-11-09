@@ -6,6 +6,8 @@ import { chatReducer, initialChatState } from './chatReducer';
 import { useAgentStreaming } from './useAgentStreaming';
 import { useAgentServerSync } from './useAgentServerSync';
 import { useCharacterState } from './useCharacterState';
+import { ErrorToastContainer } from './ErrorToast';
+import ErrorBoundary from './ErrorBoundary';
 
 const AgentContext = createContext(null);
 
@@ -14,6 +16,8 @@ export function AgentProvider({ children }) {
   const [isVisible, setIsVisible] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [currentGame, setCurrentGame] = useState(null);
+  const [errors, setErrors] = useState([]);
+  const [lastMessageTime, setLastMessageTime] = useState(0);
 
   // moved below agent creation
 
@@ -44,6 +48,69 @@ export function AgentProvider({ children }) {
     name: instanceName  // This creates separate DO instances per user
   });
 
+  // Error handling utilities
+  const handleError = useCallback((error, context) => {
+    console.error(`[${context}]`, error);
+
+    const errorObj = {
+      id: Date.now().toString(),
+      title: context,
+      message: getFriendlyErrorMessage(error),
+      timestamp: Date.now(),
+      originalError: error
+    };
+
+    setErrors(prev => [...prev, errorObj]);
+
+    // Auto-dismiss after 5 seconds
+    setTimeout(() => {
+      setErrors(prev => prev.filter(e => e.id !== errorObj.id));
+    }, 5000);
+  }, []);
+
+  const getFriendlyErrorMessage = (error) => {
+    if (!error) return 'An unknown error occurred';
+
+    if (error.message?.includes('Failed to fetch')) {
+      return 'Unable to connect to server. Please check your connection.';
+    }
+
+    if (error.message?.includes('timeout')) {
+      return 'Request timed out. Please try again.';
+    }
+
+    if (error.message?.includes('Network')) {
+      return 'Network error. Please check your internet connection.';
+    }
+
+    if (error.message?.includes('WebSocket')) {
+      return 'Connection lost. Attempting to reconnect...';
+    }
+
+    return error.message || 'Something went wrong. Please try again.';
+  };
+
+  const dismissError = useCallback((errorId) => {
+    setErrors(prev => prev.filter(e => e.id !== errorId));
+  }, []);
+
+  const retryWithBackoff = useCallback(async (fn, maxRetries = 3, context = 'Operation') => {
+    for (let i = 0; i < maxRetries; i++) {
+      try {
+        return await fn();
+      } catch (err) {
+        if (i === maxRetries - 1) {
+          handleError(err, context);
+          throw err;
+        }
+
+        const delay = Math.pow(2, i) * 1000; // Exponential backoff: 1s, 2s, 4s
+        console.log(`[${context}] Retry ${i + 1}/${maxRetries} after ${delay}ms`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+      }
+    }
+  }, [handleError]);
+
   const {
     selectedCharacter,
     setSelectedCharacter,
@@ -72,6 +139,8 @@ export function AgentProvider({ children }) {
     setStats,
     setLastInteraction,
     dispatchChat,
+    handleError,
+    retryWithBackoff,
   });
 
   // Debug logging now handled in useAgentServerSync
@@ -106,16 +175,22 @@ export function AgentProvider({ children }) {
     }
   }, [selectedCharacter, stats, inventory, lastInteraction, insights, isInitialized]);
 
+  // Error handling utilities (defined above)
+
   // Periodic sync handled in useAgentServerSync
 
-  useAgentStreaming(agent, dispatchChat, () => setIsProcessing(false));
+  useAgentStreaming(agent, dispatchChat, () => setIsProcessing(false), handleError);
 
   // Character decay handled in useCharacterState
 
   // Watch for completed messages with TicTacToe tools and update game state
   useEffect(() => {
     const latestMessage = chatState.messages[chatState.messages.length - 1];
-    if (latestMessage?.role === 'assistant' && latestMessage?.status === 'complete' && latestMessage?.tools) {
+    // Check for both 'complete' and 'pending' status (pending = streaming just finished, waiting for server ID)
+    const isReady = latestMessage?.role === 'assistant' &&
+                    (latestMessage?.status === 'complete' || latestMessage?.status === 'pending');
+
+    if (isReady && latestMessage?.tools) {
       latestMessage.tools.forEach(tool => {
         if (tool.toolName && tool.result) {
           updateGameStateFromTool(tool.toolName, tool.result);
@@ -142,6 +217,18 @@ export function AgentProvider({ children }) {
 
   // Chat functions (from AgentChat.jsx)
   const sendChatMessage = useCallback((content, options = {}) => {
+    // Rate limiting: minimum 1 second between messages
+    const now = Date.now();
+    const timeSinceLastMessage = now - lastMessageTime;
+
+    if (timeSinceLastMessage < 1000 && !options.bypassRateLimit) {
+      const error = new Error('Please wait a moment before sending another message');
+      handleError(error, 'Rate Limit');
+      return;
+    }
+
+    setLastMessageTime(now);
+
     const messageId = Math.random().toString(36).substring(2, 8);
     const agentUrl = agent._url.replace("ws://", "http://").replace("wss://", "https://");
 
@@ -208,9 +295,15 @@ export function AgentProvider({ children }) {
       }
     };
 
-    agent.send(JSON.stringify(message));
-    dispatchChat({ type: 'ADD_USER_MESSAGE', id: messageId, content });
-  }, [agent, chatState.messages]);
+    try {
+      agent.send(JSON.stringify(message));
+      dispatchChat({ type: 'ADD_USER_MESSAGE', id: messageId, content });
+    } catch (error) {
+      console.error('[sendChatMessage] Failed to send message:', error);
+      handleError(error, 'Send Message');
+      setIsProcessing(false);
+    }
+  }, [agent, chatState.messages, lastMessageTime, handleError]);
 
   const handleTicTacToeMove = useCallback((row, col) => {
     const moveMessage = `I want to make my TicTacToe move. Please call the makeTicTacToeMove tool with row: ${row} and col: ${col}`;
@@ -325,12 +418,19 @@ export function AgentProvider({ children }) {
 
     // Agent connection
     agent,
+
+    // Error handling
+    handleError,
+    retryWithBackoff,
   };
 
   return (
-    <AgentContext.Provider value={value}>
-      {children}
-    </AgentContext.Provider>
+    <ErrorBoundary onError={(error, errorInfo) => handleError(error, 'React Error Boundary')}>
+      <AgentContext.Provider value={value}>
+        {children}
+        <ErrorToastContainer errors={errors} onDismiss={dismissError} />
+      </AgentContext.Provider>
+    </ErrorBoundary>
   );
 }
 

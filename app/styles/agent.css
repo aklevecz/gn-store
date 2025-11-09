@@ -174,7 +174,7 @@
   position: absolute;
   bottom: 80px;
   right: 0;
-  width: 320px;
+  width: 520px;
   background: white;
   border-radius: 16px;
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
@@ -490,7 +490,7 @@
     grid-template-columns: 1fr;
   }
   .agent-chat-tab {
-    height: 320px;
+    height: 420px;
   }
 }
 /* Agent Chat Tab */

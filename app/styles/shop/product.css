@@ -523,7 +523,7 @@
 .option-value:has(.option-text) {
   background: #e8e8e8;
   border-radius: 24px;
-  padding: 12px 24px;
+  padding: 0px 24px;
   min-width: 60px;
 }
 
@@ -537,7 +537,8 @@
   font-weight: 600;
   text-transform: uppercase;
   color: #333;
-  line-height: .7;
+  line-height: 1.5;
+  padding-top: 4px;
 }
 
 .option-value.selected .option-text {

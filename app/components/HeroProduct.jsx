@@ -26,8 +26,8 @@ export default function HeroProduct({ product }) {
           <Link to={`/products/${product.handle}`} className="hero-product-image">
             <Image
               data={product.featuredImage}
-              sizes="100vw"
               loading="eager"
+              style={{ width: 'auto', height: '100%', maxHeight: '700px', margin: '0 auto' }}
             />
           </Link>
         </>

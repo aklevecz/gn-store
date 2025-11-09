@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { FRAME_TEXT, FRAME_TOOL_START, FRAME_TOOL_RESULT, FRAME_USAGE_E, FRAME_USAGE_D, FRAME_META } from './chatReducer';
 
-export function useAgentStreaming(agent, dispatchChat, onComplete) {
+export function useAgentStreaming(agent, dispatchChat, onComplete, handleError) {
   useEffect(() => {
     if (!agent) return;
 
@@ -27,6 +27,7 @@ export function useAgentStreaming(agent, dispatchChat, onComplete) {
               const text = JSON.parse(content);
               dispatchChat({ type: 'STREAM_TEXT', id, text });
             } catch (e) {
+              console.warn('[useAgentStreaming] Failed to parse text, using raw content:', e);
               dispatchChat({ type: 'STREAM_TEXT', id, text: content });
             }
             break;
@@ -35,14 +36,20 @@ export function useAgentStreaming(agent, dispatchChat, onComplete) {
             try {
               const toolCall = JSON.parse(content);
               dispatchChat({ type: 'TOOL_START', id, toolCall });
-            } catch (e) {}
+            } catch (e) {
+              console.warn('[useAgentStreaming] Failed to parse tool start:', e);
+              if (handleError) handleError(e, 'Tool Start Parsing');
+            }
             break;
           }
           case FRAME_TOOL_RESULT: {
             try {
               const toolResult = JSON.parse(content);
               dispatchChat({ type: 'TOOL_RESULT', id, toolResult });
-            } catch (e) {}
+            } catch (e) {
+              console.warn('[useAgentStreaming] Failed to parse tool result:', e);
+              if (handleError) handleError(e, 'Tool Result Parsing');
+            }
             break;
           }
           case FRAME_USAGE_E:
@@ -50,7 +57,9 @@ export function useAgentStreaming(agent, dispatchChat, onComplete) {
             try {
               const usage = JSON.parse(content);
               dispatchChat({ type: 'USAGE', id, usage });
-            } catch (e) {}
+            } catch (e) {
+              console.warn('[useAgentStreaming] Failed to parse usage:', e);
+            }
             break;
           }
           case FRAME_META: {
@@ -93,13 +102,24 @@ export function useAgentStreaming(agent, dispatchChat, onComplete) {
         }
       } catch (e) {
         console.error('❌ Error handling WebSocket message:', e);
+        if (handleError) handleError(e, 'WebSocket Message');
       }
     };
 
     agent.onmessage = handleMessage;
-    agent.onopen = () => dispatchChat({ type: 'ADD_SYSTEM', content: 'Connection opened' });
-    agent.onerror = (error) => dispatchChat({ type: 'ADD_ERROR', content: `Error: ${error}` });
-    agent.onclose = () => dispatchChat({ type: 'ADD_SYSTEM', content: 'Connection closed' });
+    agent.onopen = () => {
+      console.log('✅ WebSocket connection opened');
+      dispatchChat({ type: 'ADD_SYSTEM', content: 'Connection opened' });
+    };
+    agent.onerror = (error) => {
+      console.error('❌ WebSocket error:', error);
+      if (handleError) handleError(error, 'WebSocket Connection');
+      dispatchChat({ type: 'ADD_ERROR', content: `Error: ${error}` });
+    };
+    agent.onclose = () => {
+      console.log('🔌 WebSocket connection closed');
+      dispatchChat({ type: 'ADD_SYSTEM', content: 'Connection closed' });
+    };
 
     return () => {
       agent.onmessage = null;
@@ -107,7 +127,7 @@ export function useAgentStreaming(agent, dispatchChat, onComplete) {
       agent.onerror = null;
       agent.onclose = null;
     };
-  }, [agent, dispatchChat, onComplete]);
+  }, [agent, dispatchChat, onComplete, handleError]);
 }
 
 

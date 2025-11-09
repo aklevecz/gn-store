@@ -22,7 +22,8 @@ export const COLOR_MAP = {
 /**
  * Get the correct hex color for a color variant name
  * Falls back to Shopify's color if not in our map
+ * Returns null for non-color options (like sizes) so they render as text
  */
 export function getSwatchColor(colorName, shopifyColor) {
-  return COLOR_MAP[colorName] || shopifyColor || '#CCCCCC';
+  return COLOR_MAP[colorName] || shopifyColor || null;
 }

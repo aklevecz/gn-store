@@ -44,12 +44,7 @@ export function PageLayout({
     console.log('Product data available:', productRouteData.product?.title);
   }
 
-  // Reset scroll position on navigation
-  useEffect(() => {
-    if (navigation.state === 'idle') {
-      window.scrollTo(0, 0);
-    }
-  }, [navigation.state]);
+  // Removed scroll-to-top on navigation for better SPA UX (variant selection was scrolling to top)
 
   return (
     <Aside.Provider>

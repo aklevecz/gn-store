@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { GrowingVines } from './GrowingVines';
 import { vinylFactCache } from '~/lib/cache';
-import { AGENT_HOST, ENV_PROTOCOL } from './Agent/constants';
+import { AGENT_HOST } from './Agent/constants';
 
 // FACTS SHOULD BE FETCHED FROM NEW AGENT
 export function WelcomeHero() {
@@ -29,7 +29,7 @@ export function WelcomeHero() {
                 try {
                     console.log('Fetching vinyl fact from API');
                     // const response = await fetch('/api/vinyl-fact');
-                    const response = await fetch(`${ENV_PROTOCOL}://${AGENT_HOST}/agents/chat/default/api/music-fact`);
+                    const response = await fetch(`${AGENT_HOST}/agents/chat/default/api/music-fact`);
                     const data = await response.json();
                     console.log('data', data)
 

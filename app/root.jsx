@@ -101,6 +101,7 @@ export async function loader(args) {
     ...deferredData,
     ...criticalData,
     publicStoreDomain: env.PUBLIC_STORE_DOMAIN,
+    publicAgentHost: env.PUBLIC_AGENT_HOST,
     workosUser,
     shop: getShopAnalytics({
       storefront,
@@ -218,6 +219,14 @@ export function Layout({children}) {
           children
         )}
         <ScrollRestoration nonce={nonce} />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.ENV = ${JSON.stringify({
+              PUBLIC_AGENT_HOST: data?.publicAgentHost,
+            })}`,
+          }}
+          nonce={nonce}
+        />
         <Scripts nonce={nonce} />
       </body>
     </html>

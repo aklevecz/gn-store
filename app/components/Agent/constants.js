@@ -1,7 +1,7 @@
-export const AGENT_HOST = process.env.NODE_ENV === 'development'
-  ? "localhost:5173"
-  : "gn-friend.good-neighbor.workers.dev";
-export const ENV_PROTOCOL = process.env.NODE_ENV === 'development' ? 'http' : 'https';
+// Get agent host from env (with protocol included)
+export const AGENT_HOST = typeof window !== 'undefined' && window.ENV?.PUBLIC_AGENT_HOST
+  ? window.ENV.PUBLIC_AGENT_HOST
+  : 'http://localhost:5173';
 export const AGENT_NAME = "chat";
 
 export const CHARACTERS = {

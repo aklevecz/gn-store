@@ -18,39 +18,28 @@ export function Agent() {
   } = useAgentCompanion();
 
   const [activeTab, setActiveTab] = useState('status');
-  const [dragStart, setDragStart] = useState(null);
-  const [dragOffset, setDragOffset] = useState(0);
-  const panelRef = useRef(null);
 
-  const handleTouchStart = (e) => {
-    const touch = e.touches[0];
-    setDragStart(touch.clientY);
-  };
+  // Lock body scroll when agent is visible on mobile
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
 
-  const handleTouchMove = (e) => {
-    if (dragStart === null) return;
-
-    const touch = e.touches[0];
-    const offset = touch.clientY - dragStart;
-
-    // Only allow dragging down
-    if (offset > 0) {
-      setDragOffset(offset);
-      // Prevent browser pull-to-refresh when dragging
-      e.preventDefault();
-    }
-  };
-
-  const handleTouchEnd = () => {
-    // If dragged down more than 50px, dismiss (more sensitive)
-    if (dragOffset > 50) {
-      toggleVisibility();
+    const isMobile = window.innerWidth <= 640;
+    if (isMobile && isVisible) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+    } else {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
     }
 
-    // Reset
-    setDragStart(null);
-    setDragOffset(0);
-  };
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    };
+  }, [isVisible]);
 
   // Don't render on server or before initialization
   if (!isInitialized || typeof window === 'undefined') {
@@ -93,38 +82,17 @@ export function Agent() {
         </button>
 
         {isVisible && (
-          <div
-            ref={panelRef}
-            className="agent-panel"
-            style={{
-              transform: `translateY(${dragOffset}px)`,
-              transition: dragStart === null ? 'transform 0.3s ease' : 'none'
-            }}
-          >
-            <div
-              className="agent-drag-area"
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-            >
-              <div className="agent-drag-handle"></div>
-            </div>
-            <div className="agent-header">
-              <div className="agent-header-content">
-                <h3>{selectedCharacter.name}</h3>
-                <div className="agent-mood">Feeling {mood}</div>
-              </div>
-              <button
-                className="agent-close-btn"
-                onClick={toggleVisibility}
-                aria-label="Close agent"
-              >
-                ✕
-              </button>
-            </div>
-
+          <div className="agent-panel">
             <div className="agent-body">
-              <div className="agent-character" data-character={selectedCharacter.id} data-mood={mood}>
+              <div className={`agent-character ${activeTab === 'chat' ? 'compact' : ''}`} data-character={selectedCharacter.id} data-mood={mood}>
+                <button
+                  className="agent-close-btn"
+                  onClick={toggleVisibility}
+                  aria-label="Close agent"
+                >
+                  ✕
+                </button>
+                <h3 className="agent-name">{selectedCharacter.name}</h3>
                 <div className="agent-character-image">
                   {playingAnimation ? (
                     <video
@@ -136,13 +104,14 @@ export function Agent() {
                       onEnded={() => {/* Animation will be cleared by timeout in feedItem */}}
                     />
                   ) : (
-                    <img 
+                    <img
                       src={selectedCharacter.moods[mood]}
                       alt={`${selectedCharacter.name} feeling ${mood}`}
                       style={{width:150, height:"auto"}}
                     />
                   )}
                 </div>
+                <div className="agent-mood">Feeling {mood}</div>
               </div>
 
               {/* <div className="agent-quick-stats">

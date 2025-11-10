@@ -216,7 +216,7 @@
 }
 
 .agent-header {
-  padding: 0 16px 16px;
+  padding: 7px 16px 10px;
   background: linear-gradient(135deg, var(--neon-plum) 0%, var(--purple-haze) 100%);
   color: white;
   display: flex;
@@ -267,9 +267,70 @@
 .agent-character {
   text-align: center;
   padding: 16px;
-  background: #f9fafb;
+  background: white;
   border-radius: 12px;
   margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.agent-character .agent-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #f3f4f6;
+  border: none;
+  color: #374151;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.agent-character .agent-close-btn:hover {
+  background: #e5e7eb;
+  transform: scale(1.1);
+}
+
+.agent-name {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.agent-character.compact {
+  padding: 8px;
+  margin-bottom: 8px;
+}
+
+.agent-character.compact .agent-name {
+  font-size: 14px;
+}
+
+.agent-character.compact .agent-character-image img {
+  width: 80px !important;
+  height: auto;
+}
+
+.agent-character.compact .agent-character-image video {
+  height: 120px !important;
+}
+
+.agent-mood {
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 500;
 }
 
 .agent-character-image {
@@ -529,14 +590,58 @@
     right: 16px;
   }
 
+  /* When visible, take over the entire screen */
+  .agent-widget.agent-visible {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+  }
+
+  .agent-toggle {
+    /* Hide the toggle button when panel is visible since we have a close button */
+    display: none;
+  }
+
+  .agent-widget.agent-minimized .agent-toggle {
+    /* Show toggle button when minimized */
+    display: flex;
+  }
+
   .agent-panel {
     position: fixed;
-    bottom: 0;
-    right: 0;
+    top: 0;
     left: 0;
+    right: 0;
+    bottom: 0;
     width: 100%;
-    max-height: 90vh;
-    border-radius: 16px 16px 0 0;
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* Remove drag area on mobile since we're fullscreen */
+  .agent-drag-area {
+    display: none;
+  }
+
+  .agent-header {
+    flex-shrink: 0;
+  }
+
+  .agent-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: visible;
   }
 
   .agent-modal-content {
@@ -549,7 +654,31 @@
   }
 
   .agent-chat-tab {
-    height: 420px;
+    height: 100%;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .chat-messages {
+    flex: 1;
+    overflow-y: scroll !important;
+    padding-bottom: 150px !important;
+    min-height: 0;
+  }
+
+  .chat-input-form {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    padding: 12px 16px;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom, 16px));
+    border-top: 1px solid #e5e7eb;
+    z-index: 100;
   }
 
   .chat-input {
@@ -562,7 +691,6 @@
   border-top: 1px solid #e5e7eb;
   display: flex;
   flex-direction: column;
-  height: 360px;
 }
 
 .chat-header {
@@ -597,9 +725,11 @@
 .chat-messages {
   flex: 1;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 8px 0;
   margin-bottom: 12px;
   border-bottom: 1px solid #e5e7eb;
+  min-height: 0;
 }
 
 .message {

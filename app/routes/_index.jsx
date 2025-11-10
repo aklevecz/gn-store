@@ -251,6 +251,18 @@ const FEATURED_PRODUCT_QUERY = `#graphql
       nodes {
         id
         availableForSale
+        title
+        image {
+          id
+          url
+          altText
+          width
+          height
+        }
+        selectedOptions {
+          name
+          value
+        }
         price {
           amount
           currencyCode
@@ -258,6 +270,11 @@ const FEATURED_PRODUCT_QUERY = `#graphql
         compareAtPrice {
           amount
           currencyCode
+        }
+        product {
+          id
+          title
+          handle
         }
       }
     }

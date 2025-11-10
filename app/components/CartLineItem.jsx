@@ -15,8 +15,14 @@ import { useAside } from './Aside';
 export function CartLineItem({ layout, line }) {
   const { id, merchandise } = line;
   const { product, title, image, selectedOptions } = merchandise;
-  const lineItemUrl = useVariantUrl(product.handle, selectedOptions);
   const { close } = useAside();
+
+  // Handle case where product data isn't loaded yet
+  if (!product) {
+    return null;
+  }
+
+  const lineItemUrl = useVariantUrl(product.handle, selectedOptions);
 
   return (
     <li key={id} className="cart-line">

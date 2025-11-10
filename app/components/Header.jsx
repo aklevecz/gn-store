@@ -158,31 +158,7 @@ function HeaderCtas({ isLoggedIn, cart }) {
 
   return (
     <nav className="header-ctas" role="navigation">
-      <div className="header-ctas-desktop">
-        {/* {user ? (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <span>{displayName || user.email}</span>
-            <button
-              onClick={logout}
-              style={{
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                textDecoration: 'underline'
-              }}
-            >
-              Logout
-            </button>
-          </div>
-        ) : (
-          <NavLink prefetch="intent" to="/auth/login" style={activeLinkStyle}>
-            Sign in
-          </NavLink>
-        )}
-        <SearchToggle /> */}
-        <PillButton onClick={() => open('cart')}>Cart</PillButton>
-      </div>
-      {/* <CartToggle cart={cart} /> */}
+      <CartToggle cart={cart} />
       <HeaderMenuMobileToggle />
     </nav>
   );

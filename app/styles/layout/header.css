@@ -12,3 +12,29 @@
 .header a:hover {
   color: var(--neon-plum);
 }
+
+/* Mobile Header Size Reduction */
+@media (max-width: 768px) {
+  .header .mobile-only {
+    width: 100px !important;
+    padding-top: 5px !important;
+  }
+
+  .header-menu-mobile-toggle img {
+    height: 40px !important;
+    width: auto !important;
+  }
+
+  .header-ctas svg {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .cart-quantity {
+    width: 18px !important;
+    height: 18px !important;
+    font-size: 1.1rem !important;
+    top: -8px !important;
+    right: -6px !important;
+  }
+}

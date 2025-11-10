@@ -242,7 +242,7 @@ aside input:focus {
   font-family: 'Doyle', sans-serif;
   background: var(--neon-plum);
   position: absolute;
-  top: -14px;
+  top: -12px;
   color: var(--white-label);
   width: 26px;
   height: 26px;
@@ -256,4 +256,44 @@ aside input:focus {
   font-size: 1.6rem;
   font-weight: 700;
   color: var(--black-wax);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .cart-line {
+    gap: 1rem;
+    padding: 1.5rem 0;
+  }
+
+  .cart-line-image {
+    width: 80px;
+    height: 80px;
+  }
+
+  .cart-line-details {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .cart-line-item-title {
+    font-size: 1.4rem;
+  }
+
+  .cart-line-variant {
+    font-size: 1.2rem;
+  }
+
+  .cart-line-price-qty {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .cart-line-price-qty .product-price {
+    font-size: 1.6rem;
+  }
+
+  .cart-main {
+    padding: 6rem 1.5rem 2rem 1.5rem;
+  }
 }
